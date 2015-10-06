@@ -48,7 +48,7 @@ module Bank
 
 end
 
-JENNA_ACCT = Bank::Account.new("Jenna ID", 1200)
+JENNA_ACCT = Bank::Account.new("Jenna ID", 1200)  # for example
 
 jenna_info = {
   first_name: "Jenna",
