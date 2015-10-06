@@ -22,8 +22,9 @@ module Bank
     end
   end
   class Owner
-    attr_reader :first, :last, :street_address, :city, :state, :zip
+    attr_reader :id, :first, :last, :street_address, :city, :state, :zip
     def initialize(owner_info)
+      @id = rand(1000000)
       @first = owner_info[:first]
       @last = owner_info[:last]
       @street_address = owner_info[:street_address]
@@ -38,4 +39,4 @@ owner_info = {first: "Kelly", last: "Devlin", street_address: "4538 46th Ave SW"
               state: "WA", zip: "98116"}
 owner = Bank::Owner.new(owner_info)
 account = Bank::Account.new(owner)
-puts "Account ##{account.id} is owned by #{account.owner.first} #{account.owner.last}."
+puts "Account ##{account.id} is owned by #{account.owner.first} #{account.owner.last} (owner id##{account.owner.id})."
