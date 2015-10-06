@@ -19,10 +19,14 @@ module Bank
     end
 
     def withdraw(amount)
-      puts "Starting balance: " + Money.new(@balance, "USD").format
-      puts "Amount withdrawn: " + Money.new(amount, "USD").format
-      @balance -= amount
-      puts "Updated balance: " + Money.new(@balance, "USD").format
+      if @balance - amount < 0
+        puts "You cannot withdraw more than your account balance."
+      else
+        puts "Starting balance: " + Money.new(@balance, "USD").format
+        puts "Amount withdrawn: " + Money.new(amount, "USD").format
+        @balance -= amount
+        puts "Updated balance: " + Money.new(@balance, "USD").format
+      end
       return @balance
     end
 
