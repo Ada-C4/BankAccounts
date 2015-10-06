@@ -5,7 +5,7 @@ acct = Bank::Account.new(121212, 10)
 
 
 #withdraw money
-acct.withdraw(2)
+acct.withdraw(20)
 
 #deposit money
 acct.deposit(1)
