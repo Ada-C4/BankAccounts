@@ -1,22 +1,23 @@
 module Bank
-  attr_reader :balance
   class Account
-    def initialize
-      @id = id
+    attr_reader :balance
+    def initialize(balance = 0)
+      @id = rand(1000000)
       @balance = balance
-      new_account_balance
-    end
-    def new_account_balance
-      #if initial balance is negative, raise an ArgumentError
+      if balance < 0
+        raise ArgumentError, "Not a valid initial balance!"
+      end
     end
     def withdraw(amount)
-      #withdraw amount from balance
-      #if withdraw amount is greater than balance, output warning message and return unmodified balance
-      #return updated balance
+      if amount > @balance
+        puts "Not enough fundz!"
+      else
+        @balance = @balance - amount
+      end
+      return @balance
     end
     def deposit(amount)
-      #deposit amount to balance
-      #return updated balance
+      @balance = @balance + amount
     end
   end
 end
