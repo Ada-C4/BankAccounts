@@ -29,7 +29,7 @@ def withdraw (amount)
   if amount > @balance
     puts "The maximun amount you can draw is $#{@balance}"
   else
-  puts "Ypu had $#{@balance}"
+  puts "You had $#{@balance}"
   @balance = @balance - amount
   puts "The update account balance is $#{@balance/100}"
   end
