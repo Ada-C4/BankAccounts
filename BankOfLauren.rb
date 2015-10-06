@@ -13,7 +13,7 @@ module Bank
   attr_reader :balance
 
 # - A new account should be created with an ID and an initial balance
-    def initialize (initial_deposit)
+    def initialize(initial_deposit)
       @account_num = generate_act_num
       @balance = open_deposit_check(initial_deposit)
     end
@@ -61,8 +61,7 @@ module Bank
           puts "You cannot withdaw #{withdraw_amount}. Your account currently have a blance of #{@balance}."
           print "Would you like to withdaw a differnt amount? "
           diff_amount = gets.chomp.downcase
-            case diff_amount
-            when "yes" || "y"
+            if diff_amount == "yes" || diff_amount == "y"
               transacting = true
             else
               transacting = false
@@ -76,40 +75,56 @@ module Bank
     end
 
 # - Should have a `deposit` method that accepts a single parameter which represents the amount of money that will be deposited.
-  def deposit (deposit_amount)
+  def deposit(deposit_amount)
     transacting = true
     deposit_amount = deposit_amount.to_i
     while transacting do
       if deposit_amount < 0
         puts "You cannot deposit a negative amount."
-        print "Would you like to withdaw instead?"
+        print "Would you like to withdaw instead?  "
         withdraw_instead = gets.chomp.downcase
-          case withdraw_instead
-          when "yes" || "y"
-            withdraw
+          if withdraw_instead == "yes" || withdraw_instead == "y"
+            print "How much would you like to withdraw?  "
+            amount = gets.chomp.to_i
+            withdraw(amount)
+            transacting = false
           end
-        print "Would you like to deposit a differnt amount?"
+        print "Would you like to deposit a differnt amount?  "
         diff_deposit = gets.chomp.downcase
-          case diff_deposit
-          when "yes" || "y"
+          if diff_deposit == "yes" || diff_deposit == "y"
             transacting = true
+            print "How much would you like to deposit?  "
+            deposit_amount = gets.chomp.to_i
           else
             transacting = false
           end
       else
-        @balance = @blance + deposit_amount
-        puts "You have deposited #{deposit_amount}. Your blance is now #{@balance}."
+        puts @balance
+        puts deposit_amount
+        @balance = @balance + deposit_amount
+        puts "You have deposited #{deposit_amount}. Your balance is now #{@balance}."
         transacting = false
       end
     end
+  end
   end
 
 
 # #### Optional:
 # - Create an `Owner` class which will store information about those who own the `Accounts`.
-#   - This should have info like name and address and any other identifying information that an account owner would have.
-# - Add an `owner` property to each Account to track information about who owns the account.
-#   - The `Account` can be created with an `owner`, OR you can create a method that will add the `owner` after the `Account` has already been created.
+  # class Owner
+  #
+  #   attr_reader :first_name, :last_name
+  #
+  #   def initialize (ADDRESS_HASHES)
+  #     ADDRESS_HASHES = address_hash[name]
+  #     @first_name
+  #     @last_name
+  #     @middle_name
+  #     @address = address_hash[:name]
+  #   end
+  #   #   - This should have info like name and address and any other identifying information that an account owner would have.
+  #   # - Add an `owner` property to each Account to track information about who owns the account.
+  #   #   - The `Account` can be created with an `owner`, OR you can create a method that will add the `owner` after the `Account` has already been created.
 
-  end
 end
