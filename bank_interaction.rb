@@ -21,6 +21,7 @@ new_account.add_owner(jess)
 
 puts new_account.owner.first_name
 
+new_account.withdraw(10000)
 #new_account.
 #puts new_account.
 
