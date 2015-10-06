@@ -1,11 +1,16 @@
+require 'pry'
+
 module Bank
   class Account
 
-    attr_reader :balance
+    attr_reader :balance, :owner
 
     def initialize(id, initial_balance)
+      #@account_owner = owner.first_name
       @id = id
       @balance = initial_balance
+      @owner = nil
+
       # Raises an argument error if the initial balance is less than 0
       if initial_balance < 0
         raise ArgumentError, "The balance cannot be less than 0."
@@ -35,8 +40,34 @@ module Bank
     def current_balance
       puts "The account with ID #{@id} currently has a balance of $#{@balance}."
     end
+
+    def add_owner(owner)
+      @owner = owner
+    end
+
+
   end
+
+  class Owner
+    attr_reader :first_name, :last_name, :street, :city, :state, :zip_code
+
+    def initialize(owner_hash)
+      @first_name = owner_hash[:first_name]
+      @last_name = owner_hash[:last_name]
+      @street = owner_hash[:street]
+      @city = owner_hash[:city]
+      @state = owner_hash[:state]
+      @zip_code = owner_hash[:zip_code]
+    end
+
+    def print_owner_details
+      puts "The owner of this account is #{@first_name} #{@last_name}."
+      puts "Street: #{@street}"
+      puts "City: #{@city}"
+      puts "State: #{@state}"
+      puts "Zip: #{@zip_code}"
+    end
+
+  end
+
 end
-
-
-# to create a new account: a = Bank::Account.new("ID", "INITIAL")
