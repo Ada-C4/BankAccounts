@@ -26,25 +26,29 @@ end
 
 
 def withdraw (amount)
-  if amount < @balance
-    puts "You have only $#{@balance} in your account"
+  if amount > @balance
+    puts "The maximun amount you can draw is $#{@balance}"
   else
+  puts "Ypu had $#{@balance}"
   @balance = @balance - amount
   puts "The update account balance is $#{@balance/100}"
   end
 end
 
 def deposit (amount)
+  if amount < 0
+    puts "If you want to withdraw, that's a different method :)"
+  else
   @balance = @balance + amount
+  puts "After you deposited $#{amount/100}"
   puts "The update account balance is $#{@balance/100}"
+  end
 end
 
 def print_balance
-  puts @balance
+  puts "Your current balance is $#{@balance}"
 end
 
 
 end
 end
-
-b = Bank::Account.new
