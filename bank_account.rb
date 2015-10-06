@@ -1,5 +1,6 @@
 # Bank Account Project: Wave 1
 # by Jennie
+# Dependency: Ruby money -- gem install money
 require 'money'
 I18n.enforce_available_locales = false
 
@@ -7,11 +8,12 @@ module Bank
 
   class Account
     attr_reader :balance, :id, :owner
-
+    # Instantiation of object has optional parameters of balance and owner
     def initialize(balance = 0, owner = nil)
       @owner = owner
       # Creates an ID of random numbers
       @id = ('0'..'9').to_a.shuffle[0..8].join
+      # Raises an error with a rescue for a negative initial balance
       if balance < 0
         begin
           raise ArgumentError.new("You may not create an account with a negative balance.")
