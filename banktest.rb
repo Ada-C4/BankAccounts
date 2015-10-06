@@ -1,3 +1,5 @@
+require './bank_account'
+
 # Test 1: Account 1 with positive balance
 
 account1 = Bank::Account.new(5000)
