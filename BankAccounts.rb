@@ -34,25 +34,24 @@ module Bank
       @owner = owner
     end
 
-
   end
 
-class Owner
+  class Owner
 
-  attr_reader :first_name ,:last_name, :address_line_1, :address_line_2, :city, :state, :zip, :email
+    attr_reader :first_name ,:last_name, :address_line_1, :address_line_2, :city, :state, :zip, :email
 
-  def initialize(owner_hash)
-    @first_name = owner_hash[:first_name]
-    @last_name = owner_hash[:last_name]
-    @address_line_1 = owner_hash[:address_line_1]
-    @address_line_2 = owner_hash[:address_line_2]
-    @city = owner_hash[:city]
-    @state = owner_hash[:state]
-    @zip = owner_hash[:zip]
-    @email = owner_hash[:email]
+    def initialize(owner_hash)
+      @first_name = owner_hash[:first_name]
+      @last_name = owner_hash[:last_name]
+      @address_line_1 = owner_hash[:address_line_1]
+      @address_line_2 = owner_hash[:address_line_2]
+      @city = owner_hash[:city]
+      @state = owner_hash[:state]
+      @zip = owner_hash[:zip]
+      @email = owner_hash[:email]
+    end
+
   end
-
-end
 
 end
 
