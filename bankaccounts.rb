@@ -9,7 +9,7 @@ module Bank
 
     def check_initial_balance(initial_balance)
       if initial_balance < 0
-        raise ArgumentError, "Invalid Balance: Can not add a negative balance."
+          raise ArgumentError, "Invalid Balance: Balance may not be negative."
       else
         return initial_balance
       end
@@ -30,7 +30,7 @@ module Bank
       return @balance
     end
 
-    def add_owner(owner_name)
+    def assign_owner(owner_name)
       @owner = owner_name
     end
 
@@ -50,12 +50,11 @@ module Bank
 end
 
 
-
 # Testing
 # a = Bank::Account.new(500000)
 # b = Bank::Account.new(4000)
 # chandler_hash = { firstname: "Chandler", lastname: "Bing", birthdate: "4/8/68", address: "NYC" }
 # chandler = Bank::Owner.new(chandler_hash)
 # joey = Bank::Owner.new({firstname: "Joey", lastname: "Tribbiani", birthdate: "1/9/68", address: "NYC" })
-# a.add_owner(chandler)
-# b.add_owner(joey)
+# a.assign_owner(chandler)
+# b.assign_owner(joey)
