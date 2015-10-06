@@ -48,7 +48,11 @@ module Bank
 
 end
 
-JENNA_ACCT = Bank::Account.new("Jenna ID", 1200)  # for example
+
+### example ###
+### global variables are used for availability in irb ###
+
+JENNA_ACCT = Bank::Account.new("Jenna ID", 1200)
 
 jenna_info = {
   first_name: "Jenna",
