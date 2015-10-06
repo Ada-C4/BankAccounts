@@ -10,13 +10,38 @@ module Bank
 
 # - Should be able to access the current `balance` of an account at any time.
 
-  att_reader :balance
+  attr_reader :balance
 
 # - A new account should be created with an ID and an initial balance
     def initialize (initial_deposit)
       @account_num = generate_act_num
-      @balance = initial_deposit
+      @balance = open_deposit_check(initial_deposit)
     end
+
+# ### Error handling
+# - A new account cannot be created with initial negative balance - this will `raise` an `ArgumentError` (Google this)
+  # begin
+    def open_deposit_check(initial_deposit)
+    transacting = true
+    while transacting do
+      if initial_deposit <= 0
+        raise Exception.new("New accounts must be opened with a positive balance.")
+      else
+        transacting = false
+      end
+      return initial_deposit
+    end
+  # rescue Exception
+  #   puts "New accounts must be opened with a positive balance. Would you like to change your opening deposit amount?"
+  #   change = gets.chomp.downcase
+  #     case change
+  #       when "yes" || "y"
+  #         print "What amound would you like to deposit?  "
+  #         initial_deposit = gets.chomp.to_i
+  #       else
+  #         exit
+  #     end
+  end
 
     def generate_act_num
       rand_num = rand(100_000)
@@ -53,7 +78,7 @@ module Bank
 # - Should have a `deposit` method that accepts a single parameter which represents the amount of money that will be deposited.
   def deposit (deposit_amount)
     transacting = true
-    # deposit_check = @balance - withdraw_amount.to_i
+    deposit_amount = deposit_amount.to_i
     while transacting do
       if deposit_amount < 0
         puts "You cannot deposit a negative amount."
@@ -79,10 +104,7 @@ module Bank
     end
   end
 
-# ### Error handling
-# - A new account cannot be created with initial negative balance - this will `raise` an `ArgumentError` (Google this)
-# - The `withdraw` method does not allow the account to go negative - Will output a warning message and return the original un-modified balance
-#
+
 # #### Optional:
 # - Create an `Owner` class which will store information about those who own the `Accounts`.
 #   - This should have info like name and address and any other identifying information that an account owner would have.
