@@ -30,7 +30,7 @@ module Bank
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
     def withdraw (withdraw_amount)
       transacting = true
-      withdraw_check = @balance - withdraw_amount
+      withdraw_check = @balance - withdraw_amount.to_i
       while transacting do
         if withdraw_check < 0
           puts "You cannot withdaw #{withdraw_amount}. Your account currently have a blance of #{@balance}."
@@ -43,6 +43,7 @@ module Bank
               transacting = false
             end
         else
+          @balance = withdraw_check
           puts "You have withdrawn #{withdraw_amount}. Your blance is now #{@balance}."
           transacting = false
         end
@@ -50,9 +51,32 @@ module Bank
     end
 
 # - Should have a `deposit` method that accepts a single parameter which represents the amount of money that will be deposited.
-
   def deposit (deposit_amount)
-    #
+    transacting = true
+    # deposit_check = @balance - withdraw_amount.to_i
+    while transacting do
+      if deposit_amount < 0
+        puts "You cannot deposit a negative amount."
+        print "Would you like to withdaw instead?"
+        withdraw_instead = gets.chomp.downcase
+          case withdraw_instead
+          when "yes" || "y"
+            withdraw
+          end
+        print "Would you like to deposit a differnt amount?"
+        diff_deposit = gets.chomp.downcase
+          case diff_deposit
+          when "yes" || "y"
+            transacting = true
+          else
+            transacting = false
+          end
+      else
+        @balance = @blance + deposit_amount
+        puts "You have deposited #{deposit_amount}. Your blance is now #{@balance}."
+        transacting = false
+      end
+    end
   end
 
 # ### Error handling
