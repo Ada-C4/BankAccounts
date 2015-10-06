@@ -17,7 +17,7 @@ module Bank
 
     def withdraw(withdraw_amount)
       if withdraw_amount > @balance
-        puts "Warning: Can not withdraw more than is account. Transaction terminated."
+        puts "Warning: Can not withdraw more than is in account. Transaction terminated."
         return @balance
       else
         @balance -= withdraw_amount
@@ -51,9 +51,11 @@ end
 
 
 
-
-# a = Bank::Account.new(50000)
+# Testing
+# a = Bank::Account.new(500000)
+# b = Bank::Account.new(4000)
 # chandler_hash = { firstname: "Chandler", lastname: "Bing", birthdate: "4/8/68", address: "NYC" }
 # chandler = Bank::Owner.new(chandler_hash)
 # joey = Bank::Owner.new({firstname: "Joey", lastname: "Tribbiani", birthdate: "1/9/68", address: "NYC" })
 # a.add_owner(chandler)
+# b.add_owner(joey)
