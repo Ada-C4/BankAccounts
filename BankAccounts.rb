@@ -24,7 +24,7 @@ module Bank
 
     def check_initial_balance(initial_balance)
       if initial_balance < 0
-        raise ArgumentError
+        raise ArgumentError.new("Your initial balance must be positive!")
       else
         return initial_balance
       end
