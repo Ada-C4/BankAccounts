@@ -12,3 +12,8 @@ acct.deposit(1)
 
 #check amount in account
 acct.check_balance
+
+
+lizzie = Bank::Owner.new(123, "Lizzie", "453 Magpie Lane", "454-436-2343")
+
+acct.add_owner(lizzie)

@@ -2,11 +2,12 @@ module Bank
 
   class Account
 
-    attr_reader :id, :balance
+    attr_reader :account_id, :balance, :owner
 
-    def initialize(id, balance)
-      @id = id
+    def initialize(account_id, balance, owner = nil)
+      @account_id = account_id
       @balance = balance
+      @owner = owner
       confirm_initial_balance
       account_info
     end
@@ -18,8 +19,13 @@ module Bank
     end
 
     def account_info
-      puts "\n     Account ID: #{@id}"
+      puts "\n     Account ID: #{@account_id}"
       puts "Initial Balance: #{@balance}"
+    end
+
+    def add_owner(owner) #adds owner from an existing owner, rather than making a new owner
+      @owner = owner
+      puts "\n#{@owner.name} is now the owner of account \##{@account_id}.\n"
     end
 
     def withdraw(withdrawal_amount)
@@ -27,7 +33,7 @@ module Bank
       # withdrawal_amount = gets.chomp.to_i
       if withdrawal_amount > @balance
         puts "\nWithdrawal denied."
-        puts "\nBalance: #{@balance}.\n"
+        puts "Balance: #{@balance}\n"
         return @balance
       else
         @balance = @balance - withdrawal_amount
@@ -48,4 +54,28 @@ module Bank
       puts "\nBalance: #{@balance}\n"
     end
   end
+
+  class Owner
+
+    attr_reader :owner_id, :name, :address, :phone_number
+
+    def initialize(owner_id, name, address, phone_number)
+      @owner_id = owner_id
+      @name = name
+      @address = address
+      @phone_number = phone_number
+      owner_info
+    end
+
+    def owner_info
+      puts "\n    Owner ID: #{@owner_id}"
+      puts "        Name: #{@name}"
+      puts "     Address: #{@address}"
+      puts "Phone number: #{@phone_number}"
+    end
+
+  end
+
+
+
 end
