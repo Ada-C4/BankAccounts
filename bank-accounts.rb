@@ -56,7 +56,7 @@ jenna_info = {
   address_one: "4900 Linden Ave N",
   city: "Seattle",
   state: "WA",
-  zip: 98103
+  zip: "98103"
 }
 
 JENNA_OWNER = Bank::Owner.new(jenna_info)
