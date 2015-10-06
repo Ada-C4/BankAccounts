@@ -14,7 +14,7 @@ module Bank
 
     def assign_owner(person) # pass in an instance of Owner
       @owner = person
-      puts "The other of the account is #{@owner.first_name} #{@owner.last_name}"
+      puts "The owner of the account is #{@owner.first_name} #{@owner.last_name}"
     end
 
     def withdraw(withdraw_amount)
