@@ -6,13 +6,25 @@ module Bank
       @account_id = account_id
       @account_balance = account_balance.to_i
       @amount = amount.to_i
+      if @account_balance < 0
+        raise ArgumentError.new("Cannot create a new account with a negative balance")
+
+      else
+         puts "You deposited #{@amount} dollars."
+         puts "Your new balance is #{@account_balance} dollars."
+      end
     end
 
     def withdraw
       puts "Type the amount you would like to withdraw:"
       @amount = gets.chomp.to_i
-      @account_balance  -= @amount
-      puts "Your new balance is: #{@account_balance} dollars."
+      if @account_balance - @amount < 0
+        puts ("Cannot withdraw an amount that will make the balance negative.")
+        puts @account_balance
+      else
+        @account_balance  -= @amount
+        puts "Your new balance is: #{@account_balance} dollars."
+      end
     end
 
     def deposit
@@ -22,7 +34,9 @@ module Bank
       puts "Your new balance is #{@account_balance} dollars."
     end
 
-  
+    def balance
+      puts account_balance
+    end
 
   end
 end
