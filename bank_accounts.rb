@@ -1,8 +1,7 @@
 module Bank
-
   class Account
     attr_reader :id, :balance, :owner
-    def initialize(id, owner, initial_balance = 0)
+    def initialize(id, initial_balance, owner = nil)
       if(initial_balance < 0)
         raise ArgumentError, "Your initial balance must be a positive value."
       end
@@ -11,8 +10,12 @@ module Bank
       @owner = owner
     end
 
+    def add_owner(owner)
+      @owner = owner
+    end
+
     def withdraw(amount)
-      if (@balance - amount < 0)
+      if (@balance < amount)
         puts "This will result in a negative account balance. Transaction terminated."
       else
         @balance -= amount
@@ -29,6 +32,7 @@ module Bank
   class Owner
     attr_reader :name, :street, :city, :state, :zip
     def initialize(info_hash)
+      @id = info_hash[:id]
       @name = info_hash[:name]
       @street = info_hash[:street]
       @city = info_hash[:city]
