@@ -13,7 +13,12 @@ module Bank
       # Creates an ID of random numbers
       @id = ('0'..'9').to_a.shuffle[0..8].join
       if balance < 0
-        raise ArgumentError.new("You may not create an account with a negative balance.")
+        begin
+          raise ArgumentError.new("You may not create an account with a negative balance.")
+        rescue
+          puts "Setting balance to a default value of 0."
+          @balance = 0
+        end
       else
         @balance = balance
       end
