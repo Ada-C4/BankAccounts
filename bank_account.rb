@@ -52,10 +52,6 @@ module Bank
       puts "The current balance of this account is " + money.format
     end
 
-    def formatted_name
-      return @owner.first_name + " " + @owner.last_name
-    end
-
     def assign_owner(owner)
       @owner = owner
       puts "The new owner of account ##{id} is #{formatted_name}"
@@ -85,15 +81,27 @@ module Bank
   end
 
   class Owner
-    attr_reader :first_name, :last_name, :address1, :address2, :city, :state, :zip
-    def initialize(person_hash)
-      @first_name = person_hash[:first_name]
-      @last_name = person_hash[:last_name]
-      @address1 = person_hash[:address1]
-      @address2 = person_hash[:address2]
-      @city = person_hash[:city]
-      @state = person_hash[:state]
-      @zip = person_hash[:zip]
+    attr_reader :id, :first_name, :last_name, :address, :city, :state
+    def initialize(id, last_name, first_name, address, city, state)
+      @id = id
+      @last_name = last_name
+      @first_name = first_name
+      @address = address
+      @city = city
+      @state = state
+    end
+
+    def self.all
+      csv_file = CSV.read("./support/accounts.csv")
+      # Create empty array which will hold all the account objects
+      owners_array = []
+      csv_file.each do |row|
+        # Create an account object from each row in the csv file
+        temp = Bank::Owner.new(row[0].to_i, row[1], row[2], row[3], row[4], row[5])
+        # Push account object to array of accounts
+        owners_array.push(temp)
+      end
+      return owners_array
     end
 
   end
