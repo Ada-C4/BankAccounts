@@ -39,11 +39,6 @@ module Bank
       puts "The account with ID #{@id} currently has a balance of $#{@balance}."
     end
 
-    def add_owner(owner)
-      @owner = owner
-    end
-
-
   end
 
   class Owner
