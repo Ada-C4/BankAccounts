@@ -36,7 +36,12 @@ module Bank
 
     def self.all
       account_array = CSV.read("support/accounts.csv")
-      print account_array
+
+      account_array.map! do |account|
+        Bank::Account.new(account[0],account[1],account[2])
+      end
+      
+      return account_array
     end
 
     def self.find(id)
