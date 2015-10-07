@@ -76,9 +76,10 @@ module Bank
     end
 
     def self.find(id)
-      accounts = self.all
-      match = accounts.find { |account| account.id == id }
-      return match
+      # Create array from csv file
+      csv_file = CSV.read("./support/accounts.csv")
+      match = csv_file.find { |row| row[0].to_i == id }
+      return Bank::Account.new(match[0].to_i, match[1].to_i, match[2].to_i)
     end
 
   end
