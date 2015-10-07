@@ -1,18 +1,19 @@
 # Bank Account Project: Wave 1
 # by Jennie
 # Dependency: Ruby money -- gem install money
+require 'csv'
 require 'money'
 I18n.enforce_available_locales = false
 
 module Bank
 
   class Account
-    attr_reader :balance, :id, :owner
+    attr_reader :balance, :id, :owner, :open_date
     # Instantiation of object has optional parameters of balance and owner
-    def initialize(balance = 0, owner = nil)
+    def initialize(id, balance, open_date, owner = nil)
       @owner = owner
       # Creates an ID of random numbers
-      @id = ('0'..'9').to_a.shuffle[0..8].join
+      @id = id
       # Raises an error with a rescue for a negative initial balance
       if balance < 0
         begin
@@ -58,6 +59,20 @@ module Bank
     def assign_owner(owner)
       @owner = owner
       puts "The new owner of account ##{id} is #{formatted_name}"
+    end
+
+    def self.all
+      # Create array from csv file
+      csv_file = CSV.read("./support/accounts.csv")
+      # Create empty array which will hold all the account objects
+      accounts_array = []
+      csv_file.each do |row|
+        # Create an account object from each row in the csv file
+        temp = Bank::Account.new(row[0], row[1].to_i, row[2])
+        # Push account object to array of accounts
+        accounts_array.push(temp)
+      end
+      return accounts_array
     end
 
   end
