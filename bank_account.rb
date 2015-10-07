@@ -75,6 +75,12 @@ module Bank
       return accounts_array
     end
 
+    def self.find(id)
+      accounts = self.all
+      match = accounts.find { |account| account.id == id }
+      return match
+    end
+
   end
 
   class Owner
