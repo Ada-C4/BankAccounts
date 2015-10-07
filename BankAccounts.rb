@@ -57,30 +57,32 @@ module Bank
 
   class Owner
 
-    attr_reader :first_name ,:last_name, :address_line_1, :address_line_2, :city, :state, :zip, :email
+    attr_reader :owner_id, :last_name, :first_name, :street_address, :city, :state
 
-    def initialize(owner_hash)
-      @first_name = owner_hash[:first_name]
-      @last_name = owner_hash[:last_name]
-      @address_line_1 = owner_hash[:address_line_1]
-      @address_line_2 = owner_hash[:address_line_2]
-      @city = owner_hash[:city]
-      @state = owner_hash[:state]
-      @zip = owner_hash[:zip]
-      @email = owner_hash[:email]
+    def initialize(owner_id, last_name, first_name, street_address, city, state)
+      @owner_id = owner_id.to_i
+      @last_name = last_name
+      @first_name = first_name
+      @street_address = street_address
+      @city = city
+      @state = state
+    end
+
+    def self.all
+      owner_array = CSV.read("support/owners.csv")
+
+      owner_array.map! do |owner|
+        Bank::Owner.new(owner[0],owner[1],owner[2],owner[3],owner[4], owner[5])
+      end
+      return owner_array
+    end
+
+    def self.find(id)
+      Bank::Owner.all.find do |owner|
+        owner.owner_id == id
+      end
     end
 
   end
 
 end
-
-test_owner_hash = {
-  first_name: "Joe",
-  last_name: "Scmoe",
-  address_line_1: "123 Apple Street",
-  city: "Seattle",
-  state: "WA",
-  zip: "98103",
-  email: "joe@example.com",
-
-}
