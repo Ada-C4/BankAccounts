@@ -4,12 +4,12 @@ module Bank
   class Account
     attr_reader :id, :balance, :open_date
     def initialize(id, balance, open_date)
-      @id = id
-      @balance = balance
-      if balance < 0
+      @id = id.to_i
+      @balance = balance.to_i
+      if @balance < 0
         raise ArgumentError, "Not a valid initial balance!"
       end
-      @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %Q")
+      @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
     end
     def withdraw(amount)
       if amount > @balance
@@ -22,10 +22,15 @@ module Bank
     def deposit(amount)
       @balance = @balance + amount
     end
-    csv_file = CSV.read("./support/accounts.csv")
+    def self.all
+      account_array = []
+      csv_file = CSV.read("./support/accounts.csv")
+      csv_file.each do |row|
+        new_acct = Bank::Account.new(row[0], row[1], row[2])
+        account_array.push(new_acct)
+      end
+    end
+    def self.find(id)
+    end
   end
 end
-account = Bank::Account.new("1212", 1235667, "1999-03-27 11:30:09 -0800")
-puts account.id
-puts account.balance
-puts account.open_date
