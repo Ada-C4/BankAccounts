@@ -1,3 +1,5 @@
+require 'csv'
+
 module Bank
 
   class Owner
@@ -17,14 +19,14 @@ module Bank
     # @@id_variable = 1000
 
     attr_reader :balance, :id
-    attr_accessor :owner, :date
+    attr_accessor :owner, :date, :account_list
 
-    def initialize(id, initial_balance = 0, date = nil, owner = nil )
-      @id = id
+    def initialize(id, initial_balance, open_date, owner = nil)
+      @id = id.to_i
       @balance = initial_balance.to_i
       # @id = @@id_variable
       # @@id_variable += 1
-      @date = date
+      @date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       @owner = owner
 
       raise ArgumentError if @balance < 0
@@ -46,60 +48,39 @@ module Bank
       return @balance
     end
 
+    def self.all
+      account_list = []
+      account_csv = CSV.read("./support/accounts.csv")
+
+      account_csv.each do |row|
+        account = Bank::Account.new(row[0], row[1], row[2])
+        account_list.push(account)
+      end
+
+      return account_list
+    end
+
+    def self.find(id)
+      account_list = self.all
+
+      account_list.find do |instance|
+        instance.id == id
+      end
+    end
+
   end
 
 end
 
 # Instantiate a test manually using CSV data and test it
-test = Bank::Account.new("1212","1235667","1999-03-27 11:30:09 -0800")
-puts test.id
-puts test.date
-puts test.balance
-puts test.owner
-
-# # TEST TAIMMMMMMM!
-#
-# test = Bank::Account.new(654321)
-# puts "Your bank ID is: #{test.id}."
-# puts "Your initial balance is: #{test.balance}"
-# puts "Your balance after the deposit is: #{test.deposit(20)}."
-# puts "Your balance after withdrawal is: #{test.withdraw(10)}"
-# puts "Your balance is #{test.withdraw(500)}."
-# puts "Your balance after withdrawal is: #{test.withdraw(5)}"
-#
-# # test2 = Bank::Account.new(-10)
-# # puts test2.balance
-#
-# daphne_hash = {
-#   first: "Daphne",
-#   last: "Gold",
-#   address: "1601 9th Ave Apt 302, Seattle, WA 98101",
-#   owner_id: 5555
-# }
-#
-# daphne = Bank::Owner.new(daphne_hash)
-#
-# test.owner = daphne
-# puts test.owner.first
+# test = Bank::Account.new("1212","1235667","1999-03-27 11:30:09 -0800")
 # puts test.id
-# puts test.owner.owner_id
-#
-# testing_hash = {
-#   first: "Unicorn",
-#   last: "Man",
-#   address: "Happy Unicorn Fun Land",
-#   owner_id: 1234
-# }
-#
-# unicorn_man = Bank::Owner.new(testing_hash)
-# test2 = Bank::Account.new(123456, unicorn_man)
-# puts test2.owner.first
-# puts test2.id
-# puts test2.owner.owner_id
-#
-# puts "Your balance after the deposit is: #{test2.deposit(1000)}."
-# puts "Your balance after withdrawal is: #{test2.withdraw(10)}"
-# puts "Your balance is #{test2.withdraw(500)}."
-#
+# puts test.date
 # puts test.balance
-# puts test2.balance
+# puts test.owner
+
+# Test self.all method
+# puts Bank::Account.all
+
+acc = Bank::Account.find(1212)
+puts acc.id
