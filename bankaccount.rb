@@ -8,7 +8,9 @@ module Bank
       @account_id = generate_id
       @balance = balance
       #prevents initial balance from being a negative amount
+      if balance < 0
         raise ArgumentError, "No negative balance allowed! Live within your means!"
+      end
     end
 
 
@@ -52,5 +54,6 @@ module Bank
     def add_account(account)
       @account.push(account)
     end
+
   end
 end
