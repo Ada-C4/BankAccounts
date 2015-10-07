@@ -1,4 +1,5 @@
 require 'csv'
+require 'pry'
 
 module Bank
   class Account
@@ -57,14 +58,32 @@ module Bank
   end
 
   class Owner
-    attr_reader :id, :firstname, :lastname, :birthdate, :address
-    def initialize(owner_hash)
-      @id = rand(99999)
-      @firstname = owner_hash[:firstname]
-      @lastname = owner_hash[:lastname]
-      @birthdate = owner_hash[:birthdate]
-      @address = owner_hash[:address]
+    attr_reader :id, :lastname, :firstname, :street, :city, :state
+    def initialize(id, lastname, firstname, street, city, state)
+      @id = id.to_i
+      @lastname = lastname
+      @firstname = firstname
+      @street = street
+      @city = city
+      @state = state
     end
+
+    def self.all
+      owners_array =[]
+      CSV.read('support/owners.csv').map do |o|
+         x = Bank::Owner.new(o[0],o[1],o[2],o[3],o[4],o[5])
+         owners_array.push(x)
+      end
+      return owners_array
+    end
+
+    def self.find(id)
+      owners_array = self.all
+      owners_array.find do |owner|
+        owner.id == id
+      end
+    end
+
   end
 
 end
