@@ -1,13 +1,21 @@
+require 'pry'
+require 'csv'
+# accounts_csv = CSV.read("./support/accounts.csv")
+
 module Bank
 
   class Account
 
-    attr_reader :account_id, :balance, :owner
+    @@account_list = []
 
-    def initialize(account_id, balance, owner = nil)
+    attr_reader :account_id, :balance, :open_date, :owner
+
+    def initialize(account_id, balance, open_date, owner = nil)
       @account_id = account_id
-      @balance = balance
+      @balance = balance.to_i
+      @open_date = open_date
       @owner = owner
+      @@account_list.push(self)
       confirm_initial_balance
       account_info
     end
@@ -52,6 +60,27 @@ module Bank
 
     def check_balance
       puts "\nBalance: #{@balance}\n"
+    end
+
+    def self.generate_accounts(account_info) #takes an array, makes an instance for each of the entries in the csv, and push those into the account_list which belongs to the Account class.
+      account_info.each do  |a|
+        Account.new(a[0], a[1], a[2])
+        # @@account_list.push(Account.new(a[0], a[1], a[2]))
+      end
+    end
+
+    def self.all #returns all of the accounts that currently belong to the account class
+      puts "\nThere are currently #{@@account_list.length} accounts."
+      # puts @@account_list
+      return @@account_list
+    end
+
+    def self.find(id) #returns an instance of Account where the value of the id field in the CSV matches the passed parameter
+       idmatch = @@account_list.find do |a|
+        a.account_id == id
+        end
+        puts "\n#{idmatch}"
+        puts idmatch.balance
     end
   end
 
