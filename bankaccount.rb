@@ -1,62 +1,59 @@
-#balance should be a read only attr_reader so that
-#user cannot change their balance
 
-#we want to use raise ArgumentError.new("something about not opening an account with a negative balance")
 module Bank
   class Account
     attr_reader :account_id, :balance
-
+    #allows account to be created with an initial balance as a parameter
     def initialize(balance)
-      #creates unique ID#
+      #creates ID#
       @account_id = generate_id
-      #supplies an initial balance on zero
-      @balance = balance #need to figure out how to have neg balance check on this
+      @balance = balance
+      #prevents initial balance from being a negative amount
       if balance < 0
         raise ArgumentError, "No negative balance allowed! Live within your means!"
-        return @balance
       end
     end
 
-  #  def neg_balance
-  #    if @balance < 0
-  #      raise ArgumentError "No negative balance allowed! Live within your means!"
-  #      return @balance
-  #    end
-  #  end
 
 
-    #method to create an ID
+    #method to create an ID number, not unique number yet
     def generate_id
       user_id = rand(0..101)
       return user_id
     end
-      #supplies an initial balance
-        #ArgumentError that will not allow negative balance
-    #def new_balance()
-    #  current_balance = 0
-    #end
+
     #method for withdrawal
     def withdrawal(subtract_money)
       if (@balance - subtract_money) >= 0
         @balance = (@balance - subtract_money)
+        #returns updated account balance
         return @balance
       else
-
+      #rejects negative balance, and returns current balance
         puts "Your withdrawal was rejected. You only have #{@balance} dollars."
         puts "You are not allowed to overdraft. Try a smaller withdrawal."
-      #takes a single parameter
-      #returns updated account balance
-        #ArgumentError that will not allow negative balance
       end
     end
 
   #method for deposit
     def deposit(add_money)
       @balance = (@balance + add_money)
-      #neg_balance
-      return @balance
-      #takes a single parameter
       #returns updated account balance
+      return @balance
     end
+  end
+
+#still working on the Owner class
+  class Owner
+    attr_reader :name, :address, :account
+    def initialize (owner_hash)
+      @name = owner_hash [:name]
+      @address = owner_hash[:address]
+      @account = owner_hash [:account] || []
+    end
+
+    def add_account(account)
+      @account.push(account)
+    end
+
   end
 end
