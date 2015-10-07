@@ -1,4 +1,5 @@
 require 'chronic'
+require 'csv'
 
 module Bank
 
@@ -31,6 +32,14 @@ module Bank
       else
         return initial_balance
       end
+    end
+
+    def self.all
+      account_array = CSV.read("support/accounts.csv")
+      print account_array
+    end
+
+    def self.find(id)
     end
 
     def add_owner(owner)
