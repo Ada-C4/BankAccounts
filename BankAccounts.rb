@@ -2,9 +2,9 @@ require 'csv'
 
 module Bank
   class Account
-    attr_reader :id, :balance, :open_date
-    def initialize(id, balance, open_date)
-      @id = id.to_i
+    attr_reader :ident, :balance, :open_date
+    def initialize(ident, balance, open_date)
+      @ident = ident.to_i
       @balance = balance.to_i
       if @balance < 0
         raise ArgumentError, "Not a valid initial balance!"
@@ -23,14 +23,16 @@ module Bank
       @balance = @balance + amount
     end
     def self.all
-      account_array = []
-      csv_file = CSV.read("./support/accounts.csv")
-      csv_file.each do |row|
-        new_acct = Bank::Account.new(row[0], row[1], row[2])
-        account_array.push(new_acct)
+      CSV.read("./support/accounts.csv").map do |row|
+      Bank::Account.new(row[0], row[1], row[2])
       end
     end
     def self.find(id)
+      self.all.find do |account|
+        account.ident == id
+      end
     end
   end
 end
+
+Bank::Account.find(1213)
