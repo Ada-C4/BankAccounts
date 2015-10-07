@@ -17,14 +17,14 @@ module Bank
     # @@id_variable = 1000
 
     attr_reader :balance, :id
-    attr_accessor :owner
+    attr_accessor :owner, :date
 
-    def initialize(id, owner = nil, initial_balance = 0)
-      @balance = initial_balance
+    def initialize(id, initial_balance = 0, date = nil, owner = nil )
       @id = id
+      @balance = initial_balance.to_i
       # @id = @@id_variable
       # @@id_variable += 1
-
+      @date = date
       @owner = owner
 
       raise ArgumentError if @balance < 0
@@ -50,49 +50,56 @@ module Bank
 
 end
 
-# TEST TAIMMMMMMM!
-
-test = Bank::Account.new(654321)
-puts "Your bank ID is: #{test.id}."
-puts "Your initial balance is: #{test.balance}"
-puts "Your balance after the deposit is: #{test.deposit(20)}."
-puts "Your balance after withdrawal is: #{test.withdraw(10)}"
-puts "Your balance is #{test.withdraw(500)}."
-puts "Your balance after withdrawal is: #{test.withdraw(5)}"
-
-# test2 = Bank::Account.new(-10)
-# puts test2.balance
-
-daphne_hash = {
-  first: "Daphne",
-  last: "Gold",
-  address: "1601 9th Ave Apt 302, Seattle, WA 98101",
-  owner_id: 5555
-}
-
-daphne = Bank::Owner.new(daphne_hash)
-
-test.owner = daphne
-puts test.owner.first
+# Instantiate a test manually using CSV data and test it
+test = Bank::Account.new("1212","1235667","1999-03-27 11:30:09 -0800")
 puts test.id
-puts test.owner.owner_id
-
-testing_hash = {
-  first: "Unicorn",
-  last: "Man",
-  address: "Happy Unicorn Fun Land",
-  owner_id: 1234
-}
-
-unicorn_man = Bank::Owner.new(testing_hash)
-test2 = Bank::Account.new(123456, unicorn_man)
-puts test2.owner.first
-puts test2.id
-puts test2.owner.owner_id
-
-puts "Your balance after the deposit is: #{test2.deposit(1000)}."
-puts "Your balance after withdrawal is: #{test2.withdraw(10)}"
-puts "Your balance is #{test2.withdraw(500)}."
-
+puts test.date
 puts test.balance
-puts test2.balance
+puts test.owner
+
+# # TEST TAIMMMMMMM!
+#
+# test = Bank::Account.new(654321)
+# puts "Your bank ID is: #{test.id}."
+# puts "Your initial balance is: #{test.balance}"
+# puts "Your balance after the deposit is: #{test.deposit(20)}."
+# puts "Your balance after withdrawal is: #{test.withdraw(10)}"
+# puts "Your balance is #{test.withdraw(500)}."
+# puts "Your balance after withdrawal is: #{test.withdraw(5)}"
+#
+# # test2 = Bank::Account.new(-10)
+# # puts test2.balance
+#
+# daphne_hash = {
+#   first: "Daphne",
+#   last: "Gold",
+#   address: "1601 9th Ave Apt 302, Seattle, WA 98101",
+#   owner_id: 5555
+# }
+#
+# daphne = Bank::Owner.new(daphne_hash)
+#
+# test.owner = daphne
+# puts test.owner.first
+# puts test.id
+# puts test.owner.owner_id
+#
+# testing_hash = {
+#   first: "Unicorn",
+#   last: "Man",
+#   address: "Happy Unicorn Fun Land",
+#   owner_id: 1234
+# }
+#
+# unicorn_man = Bank::Owner.new(testing_hash)
+# test2 = Bank::Account.new(123456, unicorn_man)
+# puts test2.owner.first
+# puts test2.id
+# puts test2.owner.owner_id
+#
+# puts "Your balance after the deposit is: #{test2.deposit(1000)}."
+# puts "Your balance after withdrawal is: #{test2.withdraw(10)}"
+# puts "Your balance is #{test2.withdraw(500)}."
+#
+# puts test.balance
+# puts test2.balance
