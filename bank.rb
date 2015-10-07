@@ -19,6 +19,7 @@ module Bank
       end
     end
 
+    # Creates accounts from the accounts.csv file
     def self.all
       @accounts = []
       accounts_csv = CSV.read("support/accounts.csv")
@@ -26,25 +27,11 @@ module Bank
         id = Bank::Account.new(id,balance,date)
         @accounts.push(id)
       end
-      puts @accounts
+      #puts @accounts
       return @accounts
     end
 
-
-    # Displays the account details nicely printed for all the accounts in accounts.csv
-    # (Made this on accident and didn't want to let it go to waste!)
-    def self.all_print_nice
-      #binding.pry
-      if @accounts == nil
-        puts "There are no accounts."
-      else
-        @accounts.each do |account|
-          account.current_balance
-        end
-      end
-      return
-    end
-
+    # Finds the account with the ID that matches the passed parameter and returns the instance
     def self.find(id_search)
       found = @accounts.find do |account|
         account.id == id_search
@@ -52,7 +39,25 @@ module Bank
       return found
     end
 
-    # Finds an account by id and displays the account information
+    # ----------------------------------------- #
+              # Work below is extra #
+
+    # Displays (with formatting) the account details for all the accounts in accounts.csv
+    # (Made this on accident and didn't want to let it go to waste!)
+    def self.all_print_nice
+      #binding.pry
+      if @accounts == nil
+        puts "There are no accounts."
+      else
+        @accounts.each do |account|
+          puts account
+          account.current_balance
+        end
+      end
+      return
+    end
+
+    # Finds an account by id passed in as a parameter and displays the account information nicely formatted
     # (Made this on accident and didn't want to let it go to waste!)
     def self.find_and_display(id_search)
       found = @accounts.find do |account|
@@ -60,15 +65,18 @@ module Bank
       end
       return found.current_balance
     end
+          # end of extra work #
+# ----------------------------------------#
 
-
-
+    # Method for withdrawing from account
     def withdraw(amount_to_withdraw)
+      # Checks that the user is not withdrawing more than what is available in the account
       if (@balance - amount_to_withdraw)< 0
         puts "The requested withdrawal is more than the available funds."
         puts "You only have $#{@balance} available for withdrawal."
         return @balance
       else
+        # makes the withdrawal and displays info to the user
         @balance -= amount_to_withdraw
         puts "You have withdrawn $#{amount_to_withdraw}."
         puts "Your current balance is $#{@balance}"
@@ -76,13 +84,16 @@ module Bank
       end
     end
 
+    # Method for depositing into account
     def deposit(amount_to_deposit)
+      # Makes the deposit and displays info to the user
       @balance += amount_to_deposit
       puts "You have deposited $#{amount_to_deposit}."
       puts "Your current balance is $#{@balance}."
       return @balance
     end
 
+    # Displays current balance in the account
     def current_balance
       puts "The account with ID #{@id} currently has a balance of $#{@balance}."
       puts "This account was set up on #{@open_date}"
@@ -102,6 +113,7 @@ module Bank
       @state = owner_hash[:state]
     end
 
+    # Method to display details of an owner instance
     def print_owner_details
       puts "The owner of this account is #{@first_name} #{@last_name}."
       puts "Street: #{@street_address}"
@@ -109,6 +121,7 @@ module Bank
       puts "State: #{@state}"
     end
 
+    # Creates accounts from the accounts.csv file
     def self.all
       owner_hash = Hash.new
       @owners = []
@@ -127,7 +140,20 @@ module Bank
       return @owners
     end
 
-    # Displays the owner information in a nice format
+    # Finds the owner with the ID that matches the passed parameter and returns the instance
+    def self.find(id_search)
+      found = @owners.find do |owner|
+        binding.pry
+        owner.id == id_search
+      end
+      return found
+    end
+
+
+# ----------------------------------------- #
+          # Work below is extra #
+
+    # Displays (with formatting) the owner details for all the accounts in owners.csv
     def self.all_print_nice
       if @owners == nil
         puts "There are no accounts."
@@ -139,20 +165,16 @@ module Bank
       return
     end
 
-    def self.find(id_search)
-      found = @owners.find do |owner|
-        binding.pry
-        owner.id == id_search
-      end
-      return found
-    end
-
+    # Finds an owner by id passed in as a parameter and displays the owner information nicely formatted
     def self.find_and_display(id_search)
       found = @owners.find do |owner|
         owner.id == id_search
       end
       return found.print_owner_details
     end
+
+        # end of extra work #
+# ----------------------------------------#
 
   end
 
