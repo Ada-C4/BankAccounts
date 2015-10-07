@@ -68,7 +68,7 @@ module Bank
       accounts_array = []
       csv_file.each do |row|
         # Create an account object from each row in the csv file
-        temp = Bank::Account.new(row[0], row[1].to_i, row[2])
+        temp = Bank::Account.new(row[0].to_i, row[1].to_i, row[2])
         # Push account object to array of accounts
         accounts_array.push(temp)
       end
