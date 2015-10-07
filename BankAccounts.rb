@@ -5,7 +5,7 @@ module Bank
 
   class Account
 
-    attr_reader :balance, :owner
+    attr_reader :balance, :owner, :account_id
 
     def initialize(account_id, initial_balance, open_date)
       @account_id = account_id.to_i
@@ -40,11 +40,13 @@ module Bank
       account_array.map! do |account|
         Bank::Account.new(account[0],account[1],account[2])
       end
-      
       return account_array
     end
 
     def self.find(id)
+      Bank::Account.all.find do |account|
+        account.account_id == id
+      end
     end
 
     def add_owner(owner)
