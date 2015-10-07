@@ -92,7 +92,7 @@ module Bank
     end
 
     def self.all
-      csv_file = CSV.read("./support/accounts.csv")
+      csv_file = CSV.read("./support/owners.csv")
       # Create empty array which will hold all the account objects
       owners_array = []
       csv_file.each do |row|
@@ -102,6 +102,12 @@ module Bank
         owners_array.push(temp)
       end
       return owners_array
+    end
+
+    def self.find(id)
+      csv_file = CSV.read("./support/owners.csv")
+      match = csv_file.find { |row| row[0].to_i == id }
+      return Bank::Owner.new(match[0].to_i, match[1], match[2], match[3], match[4], match[5])
     end
 
   end
