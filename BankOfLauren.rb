@@ -55,20 +55,23 @@ module Bank
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
     def withdraw (withdraw_amount)
       transacting = true
-      withdraw_check = @balance - withdraw_amount.to_i
       while transacting do
+        withdraw_check = withdraw_amount
         if withdraw_check < 0
           puts "You cannot withdaw #{withdraw_amount}. Your account currently have a blance of #{@balance}."
           print "Would you like to withdaw a differnt amount? "
           diff_amount = gets.chomp.downcase
             if diff_amount == "yes" || diff_amount == "y"
+              puts "How much would you like to withdraw? "
+              withdraw_amount = gets.chomp.to_i
               transacting = true
             else
               transacting = false
             end
         else
-          @balance = withdraw_check
-          puts "You have withdrawn #{withdraw_amount}. Your blance is now #{@balance}."
+          balance_before = @balance
+          @balance = @balance - withdraw_check
+          puts "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}. Your balance is now #{@balance}."
           transacting = false
         end
       end
@@ -88,21 +91,21 @@ module Bank
             amount = gets.chomp.to_i
             withdraw(amount)
             transacting = false
-          end
-        print "Would you like to deposit a differnt amount?  "
-        diff_deposit = gets.chomp.downcase
-          if diff_deposit == "yes" || diff_deposit == "y"
-            transacting = true
-            print "How much would you like to deposit?  "
-            deposit_amount = gets.chomp.to_i
           else
-            transacting = false
+            print "Would you like to deposit a differnt amount?  "
+            diff_deposit = gets.chomp.downcase
+            if diff_deposit == "yes" || diff_deposit == "y"
+              transacting = true
+              print "How much would you like to deposit?  "
+              deposit_amount = gets.chomp.to_i
+            else
+              transacting = false
+            end
           end
       else
-        puts @balance
-        puts deposit_amount
+        balance_before = @balance
         @balance = @balance + deposit_amount
-        puts "You have deposited #{deposit_amount}. Your balance is now #{@balance}."
+        puts "Your balance was #{balance_before}. You have deposited #{deposit_amount}. Your balance is now #{@balance}."
         transacting = false
       end
     end
