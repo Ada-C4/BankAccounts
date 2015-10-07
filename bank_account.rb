@@ -75,7 +75,7 @@ module Bank
       # Create array from csv file
       csv_file = CSV.read("./support/accounts.csv")
       match = csv_file.find { |row| row[0].to_i == id }
-      return Bank::Account.new(match[0].to_i, match[1].to_i, match[2].to_i)
+      return Bank::Account.new(match[0].to_i, match[1].to_i, match[2])
     end
 
   end
