@@ -16,6 +16,7 @@ print "Would you like to set up your account owner information today? (enter yes
 response = gets.chomp.downcase
 if response == 'yes'
   owner_hash = Hash.new()
+  # Not sanitized yet
   print "What is your first name? "
   owner_first_name = gets.chomp
   print "What is your last name? "
