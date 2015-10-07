@@ -1,12 +1,15 @@
+require 'chronic'
+
 module Bank
 
   class Account
 
     attr_reader :balance, :owner
 
-    def initialize(account_id, initial_balance = 0)
-      @account_id = account_id
-      @balance = check_initial_balance(initial_balance)
+    def initialize(account_id, initial_balance, open_date)
+      @account_id = account_id.to_i
+      @balance = check_initial_balance(initial_balance.to_i)
+      @open_date = Chronic.parse(open_date)
     end
 
     def withdraw(amount)
