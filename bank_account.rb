@@ -52,9 +52,9 @@ module Bank
       puts "The current balance of this account is " + money.format
     end
 
+    # Assign an owner to an account
     def assign_owner(owner)
       @owner = owner
-      puts "The new owner of account ##{id} is #{formatted_name}"
     end
 
     def self.all
@@ -76,6 +76,22 @@ module Bank
       csv_file = CSV.read("./support/accounts.csv")
       match = csv_file.find { |row| row[0].to_i == id }
       return Bank::Account.new(match[0].to_i, match[1].to_i, match[2])
+    end
+
+    # Create an ultimate array of relationships between accounts and owners
+    def self.all_relationships
+      # Create an empty array of account and owner relationships
+      relationships = []
+      # Read the accounts and owners relationship
+      csv_file = CSV.read("./support/account_owners.csv")
+      # For each account, find an owner and assign it to the Account
+      csv_file.each do |row|
+        temp_account = Bank::Account.find(row[0].to_i)
+        temp_owner = Bank::Owner.find(row[1].to_i)
+        temp_account.assign_owner(temp_owner)
+        relationships.push(temp_account)
+      end
+      return relationships
     end
 
   end
@@ -109,7 +125,5 @@ module Bank
       match = csv_file.find { |row| row[0].to_i == id }
       return Bank::Owner.new(match[0].to_i, match[1], match[2], match[3], match[4], match[5])
     end
-
   end
-
 end
