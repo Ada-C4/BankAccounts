@@ -50,7 +50,7 @@ end
 
 
 ### example ###
-### global variables are used for availability in irb ###
+### constants are used for availability in irb ###
 
 JENNA_ACCT = Bank::Account.new("Jenna ID", 1200)
 
