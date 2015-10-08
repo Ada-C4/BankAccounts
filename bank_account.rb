@@ -10,10 +10,11 @@ module Bank
   class Account
     attr_reader :balance, :id, :owner, :open_date
     # Instantiation of object has optional parameters of balance and owner
-    def initialize(id, balance, open_date, owner = nil)
+    def initialize(id, balance, open_date = "today", owner = nil)
       @owner = owner
       # Creates an ID of random numbers
       @id = id
+      @open_date = open_date
       # Raises an error with a rescue for a negative initial balance
       if balance < 0
         begin
@@ -93,7 +94,6 @@ module Bank
       end
       return relationships
     end
-
   end
 
   class Owner
