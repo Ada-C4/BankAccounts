@@ -3,10 +3,21 @@ require './lib/checking'
 require './lib/mma'
 
 # - Money Market Account Tests -
-mma = Bank::MoneyMarketAccount.new(1, 999999999999) # Valid MMA account
-mma.print_balance
+mma = Bank::MoneyMarketAccount.new(1, 10000000) # Valid MMA account
+# mma.print_balance
+# Test withdrawing more than 6 times
+# 10.times do
+#   mma.withdraw(1000000)
+# end
+#
+# mma.reset_transactions
 
-mma = Bank::MoneyMarketAccount.new(1, 9999) # Invalid account - not enough funds
+# Test withdrawing to balance below $10,000
+4.times do
+  mma.withdraw(3300000)
+end
+
+# mma = Bank::MoneyMarketAccount.new(1, 9999) # Invalid account - not enough funds
 
 # - Normal Account Tests -
 # account = Bank::Account.new(1, 100)
