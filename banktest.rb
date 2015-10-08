@@ -20,5 +20,14 @@ require './lib/checking'
 # savings.add_interest(1)
 
 # - Checking Account Tests -
-checking = Bank::CheckingAccount.new(1, -100)
-checking.print_balance
+checking = Bank::CheckingAccount.new(1, 10000)
+# checking.print_balance
+
+5.times do
+  checking.withdraw_using_check(600)
+end
+
+checking.reset_checks
+2.times do
+  checking.withdraw_using_check(6000)
+end
