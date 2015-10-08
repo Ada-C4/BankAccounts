@@ -1,21 +1,47 @@
 #WELCOME TO THE BANK OF LAUREN
 #
+require "csv"
+
 # Create a `Bank` module which will contain your `Account` class and any future bank account logic.
 module Bank
 
 # Create an `Account` class which should have the following functionality:
   class Account
 
-    @@bank_of_lauren_act_nums = []
+    @@number_of_accounts = 0
 
 # - Should be able to access the current `balance` of an account at any time.
 
   attr_reader :balance
 
 # - A new account should be created with an ID and an initial balance
-    def initialize(initial_deposit)
-      @account_num = generate_act_num
-      @balance = open_deposit_check(initial_deposit)
+    def initialize
+      array_of_accounts = CSV.read("./support/accounts.csv")
+      @account_num = array_of_accounts[@@number_of_accounts][0]
+      initial_deposit = array_of_accounts[@@number_of_accounts][1]
+      @balance = open_deposit_check(initial_deposit.to_i)
+      @open_date = array_of_accounts[@@number_of_accounts][2]
+      @@number_of_accounts += 1
+    end
+
+    #self.all - returns a collection of Account instances, representing all of the Accounts described in the CSV. See below for the CSV file specifications
+
+    def self.all
+      @all_acts_array = []
+      begin_count = @@number_of_accounts
+      array_of_accounts = CSV.read("./support/accounts.csv")
+      while @@number_of_accounts < (array_of_accounts.length + begin_count) do
+        @all_acts_array.push(Account.new)
+      end
+      return @all_acts_array
+    end
+
+     #self.find(id) - returns an instance of `Account` where the value of the id field in the CSV matches the passed parameter
+
+    def self.find(id)
+      @all_acts_array.find do |x|
+        x = id
+      end
     end
 
 # ### Error handling
@@ -29,28 +55,9 @@ module Bank
       else
         transacting = false
       end
-      return initial_deposit
+      return initial_deposit.to_i
     end
-  # rescue Exception
-  #   puts "New accounts must be opened with a positive balance. Would you like to change your opening deposit amount?"
-  #   change = gets.chomp.downcase
-  #     case change
-  #       when "yes" || "y"
-  #         print "What amound would you like to deposit?  "
-  #         initial_deposit = gets.chomp.to_i
-  #       else
-  #         exit
-  #     end
   end
-
-    def generate_act_num
-      rand_num = rand(100_000)
-      while @@bank_of_lauren_act_nums.include?(rand_num) do
-        rand_num = rand(100_000)
-      end
-        @@bank_of_lauren_act_nums.push(rand_num)
-      return rand_num
-    end
 
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
     def withdraw (withdraw_amount)
