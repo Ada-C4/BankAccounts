@@ -42,21 +42,61 @@ module Bank
     end
 
     def withdraw_using_check(amount)
+      many_checks_fee = 200
       @balance -= amount.to_i
       @check_count += 1
-      if @check_count > 3
-        puts "You do not have any more checks this month. Transaction cancelled."
-        @balance += amount.to_i
-      end
       if @balance < -1000
         puts "OVERDRAFT: You cannot have less than -$10. Transaction cancelled"
         @balance += amount.to_i
+      end
+      if @balance > -8000
+        if @check_count > 3
+          puts "You have used your three free checks this month. Now you get a fee!"
+          @balance = @balance - amount.to_i - many_checks_fee
+        end
       end
       return @balance
     end
 
     def reset_checks
       @check_count = 0
+    end
+  end
+
+  class MoneyMarketAccount < Account
+    def initialize(id, balance, open_date)
+      super(id, balance, open_date)
+      @transaction_count = 0
+        if @balance < 1000000
+          raise ArgumentError, "Accounts cannot be opened with less than $10000. Please try again."
+        end
+    end
+
+    def withdraw(withdraw_amount)
+      overdraft_fee = 10000
+      if @balance >= 1000000
+        @balance -= withdraw_amount.to_i
+        @transaction_count += 1
+        return @balance
+        if @balance < 1000000
+          @balance -= overdraft_fee
+          puts "OVERDRAFT. Your account can not have less than $10,000. A fee of $#{overdraft_fee} has been imposed. Deposit more money before withdrawing again."
+          return @balance
+        end
+      else
+        puts "You do not have enough money in this account for this transaction. Deposit and try again."
+        return @balance
+      end
+    end
+
+    def deposit(deposit_amount)
+      if @balance < 1000000
+        @balance += deposit_amount
+      else
+        @balance += deposit_amount
+        transaction_count += 1
+      end
+      return @balance
     end
   end
 end
