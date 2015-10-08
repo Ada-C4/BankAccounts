@@ -60,12 +60,12 @@ module Bank
   end
 
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
-    def withdraw (withdraw_amount)
+    def withdraw (withdraw_amount, min_balance)
       transacting = true
       while transacting do
         withdraw_check = withdraw_amount
         if withdraw_check < 0
-          puts "You cannot withdaw #{withdraw_amount}. Your account currently have a blance of #{@balance}."
+          puts "You cannot withdaw a negative amount. Your account currently have a blance of #{@balance}."
           print "Would you like to withdaw a differnt amount? "
           diff_amount = gets.chomp.downcase
             if diff_amount == "yes" || diff_amount == "y"
@@ -75,13 +75,25 @@ module Bank
             else
               transacting = false
             end
-        else
-          balance_before = @balance
-          @balance = @balance - withdraw_check
-          puts "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}. Your balance is now #{@balance}."
-          transacting = false
+          elsif @balance - withdraw_check <= min_balance
+            puts "You cannot withdaw #{withdraw_amount}. Your account currently have a blance of #{@balance}."
+            print "Would you like to withdaw a differnt amount? "
+            diff_amount = gets.chomp.downcase
+              if diff_amount == "yes" || diff_amount == "y"
+                puts "How much would you like to withdraw? "
+                withdraw_amount = gets.chomp.to_i
+                transacting = true
+              else
+                transacting = false
+              end
+          else
+            balance_before = @balance
+            @balance = @balance - withdraw_check
+            puts "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}. Your balance is now #{@balance}."
+            transacting = false
+          end
         end
-      end
+      return @balance
     end
 
 # - Should have a `deposit` method that accepts a single parameter which represents the amount of money that will be deposited.
