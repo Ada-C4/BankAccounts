@@ -1,4 +1,3 @@
-require "./bankaccounts.rb"
 
 module Bank
 
