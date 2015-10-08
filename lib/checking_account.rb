@@ -24,7 +24,7 @@ module Bank
           @check_number +=1
         end
       else
-        @fee = 2
+        @fee = 2.0
         @min_balance = -10
         withdraw(amount_to_withdraw)
         if @balance != initial_balance

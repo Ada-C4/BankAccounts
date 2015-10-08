@@ -3,7 +3,7 @@ module Bank
   class Account
 
     attr_reader :balance, :id
-    attr_accessor :owner, :min_balance, :fee
+    attr_accessor :owner, :min_balance, :fee, :acct_type
 
 
     def initialize(id, initial_balance, open_date)
@@ -12,6 +12,7 @@ module Bank
       @open_date = open_date
       @min_balance =  0
       @fee = 0
+      @acct_type = nil
       #open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       #@owner = nil
 
@@ -91,20 +92,29 @@ module Bank
 
       amount_to_withdraw = orig_amount_to_withdraw + @fee
       # Checks that the user is not withdrawing more than what is available in the account
-      binding.pry
       if (@balance - amount_to_withdraw) < @min_balance
-        puts "The requested withdrawal is more than the available funds."
-        if (@balance-@min_balance-@fee) < 0
-          puts "You have no money left to withdraw."
+        if @acct_type == "MoneyMarket"
+          if (@balance - amount_to_withdraw - @fee) < 0
+            puts "Sorry you cannot make that withdrawal without depositing more money."
+          else
+            puts "As this transaction puts your balance below $#{@min_balance}, a fee of $#{@fee} has been imposed."
+            @balance -= (amount_to_withdraw + @fee)
+            puts "Your balance is $#{@balance}"
+          end
         else
-          puts "You only have $#{@balance-@min_balance-@fee} available for withdrawal."
+          puts "The requested withdrawal is more than the available funds."
+          if (@balance-@min_balance-@fee) < 0
+            puts "You have no money left to withdraw."
+          else
+            puts "You only have $#{@balance-@min_balance-@fee} available for withdrawal."
+          end
         end
         return @balance
       else
         # makes the withdrawal and displays info to the user
         @balance -= (amount_to_withdraw)
-        puts balance
-        puts amount_to_withdraw
+      #  puts balance
+      #  puts amount_to_withdraw
         puts "You have withdrawn $#{orig_amount_to_withdraw}"
         if @fee != 0
           puts "You have also incurred a $#{@fee} fee."
