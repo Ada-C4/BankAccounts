@@ -7,21 +7,22 @@ module Bank
       if @balance < 0
         raise ArgumentError.new ("You must start an account with more funds than $0")
       else
-      puts "Welcome, #{@name}.  Thank you for opening a new account. Your balance is $#{@balance}"
+        puts "Welcome, #{@name}.  Thank you for opening a new account. Your balance is $#{@balance}"
       end
     end
 
-    def withdrawal (withdrawal_amount)
+    def withdraw (withdrawal_amount)
       if withdrawal_amount > @balance
-      puts "You have insufficient funds. You have $#{@balance} in your account."
-    elsif withdrawal_amount > 0
-      @balance = @balance - withdrawal_amount
-      puts "You withdrew $#{withdrawal_amount}.  Your new balance is #{@balance}."
+        puts "You have insufficient funds. You have $#{@balance} in your account."
+      elsif withdrawal_amount > 0
+        @balance = @balance - withdrawal_amount
+        puts "You withdrew $#{withdrawal_amount}. Your new balance is #{@balance}."
       end
+      return @balance
     end
 
     def balance
-      puts @balance
+      return @balance
     end
 
     def deposit (deposit_amount)
@@ -29,6 +30,7 @@ module Bank
         @balance = @balance + deposit_amount
         puts "You deposited $#{deposit_amount}.  Your new balance is #{@balance}."
       end
+      return @balance
     end
   end
 end
