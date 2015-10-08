@@ -1,10 +1,7 @@
 require "csv"
 require "pry"
 
-module Bank
-end
-
-
-require "./savings.rb"
-require "./owner.rb"
 require "./account.rb"
+require "./owner.rb"
+require "./savings.rb"
+require "./checkingaccount.rb"
