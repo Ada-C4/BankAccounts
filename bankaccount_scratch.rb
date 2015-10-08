@@ -31,7 +31,7 @@ module Bank
       csv_accounts = CSV.read("./support/accounts.csv")
       id_match = csv_accounts.find{ |row| row[0] == id}
       return Bank::Account.new(id_match[0], id_match[1], id_match[2])
-    end
+    end  
 
   #method to create an ID number, not unique number yet
     def generate_id
