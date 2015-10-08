@@ -1,4 +1,7 @@
-require "./account_class.rb"
+module Bank
+  class Checking < Account
+  end
+end
 
 #Create a `CheckingAccount` class which should inherit behavior from the `Account` class. It should include the following updated functionality:
 #- Updated withdrawal functionality:

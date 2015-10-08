@@ -9,7 +9,7 @@ module Bank
       @time = account_opened
       #prevents initial balance from being a negative amount
       if balance < 0
-        raise ArgumentError, "No negative balance allowed! Live within your means!"
+        raise Exception.new, "No negative balance allowed! Live within your means!"
       end
     end
 

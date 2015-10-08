@@ -1,4 +1,7 @@
-require "./account_class.rb"
+module Bank
+  class Savings < Account
+  end
+end
 
 #Create a `SavingsAccount` class which should inherit behavior from the `Account` class. It should include the following updated functionality:
 #- The initial balance cannot be less than $10. If it is, this will `raise` an `ArgumentError`
