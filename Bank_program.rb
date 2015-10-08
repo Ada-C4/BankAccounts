@@ -8,7 +8,7 @@ owners_csv = CSV.read("./support/owners.csv")
 account_owners_csv = CSV.read("./support/account_owners.csv")
 
 #make a bank account manually
-acct = Bank::Account.new(1212, 1235667, "1999-03-27 11:30:09 -0800")
+acct = Bank::Account.new(1212, 1000, "1999-03-27 11:30:09 -0800")
 
 
 #withdraw money

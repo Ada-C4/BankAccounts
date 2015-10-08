@@ -16,6 +16,7 @@ module Bank
       @open_date = open_date
       @owner = owner
       @withdrawalcap = @balance
+      @withdrawalfee = 0
       @@account_list.push(self)
       confirm_initial_balance
       account_info
@@ -40,12 +41,12 @@ module Bank
     def withdraw(withdrawal_amount)
       # print "\nEnter value to be withdrawn: "
       # withdrawal_amount = gets.chomp.to_i
-      if withdrawal_amount > @balance
+      if withdrawal_amount > @withdrawalcap
         puts "\nWithdrawal denied."
         puts "Balance: #{@balance}\n"
         return @balance
       else
-        @balance = @balance - withdrawal_amount
+        @balance = @balance - (withdrawal_amount + @withdrawalfee)
         puts "\nBalance after withdrawal: #{@balance}\n"
         return @balance
       end
