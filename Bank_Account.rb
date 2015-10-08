@@ -1,7 +1,8 @@
-require 'pry'
-require 'csv'
+#still have wave two final option prelim code in here as comments
 
 module Bank
+  require 'pry'
+  require 'csv'
 
   class Account
 
@@ -80,6 +81,27 @@ module Bank
         puts "\n#{idmatch}"
         puts idmatch.balance
     end
+
+    # def self.match_account_to_owner(account_owner, Owner.owner_list) #given an array of owners and a file telling use which owner goes with which account, assign an owner to an account
+    #   account_owner.each do |a|
+    #     account = self.find(a[0]) #gives us the account from the account list that matches the account in account_owner. So now we are dealing with an actual account
+    #   Owner.owner_list.each do |a|
+
+
+      #add owner is a method to be used on an instance, not a class. hmmm.
+      #need to use this instance method within a class method
+      #so should go through instances to do this
+      #look at the account_owner list (starting at 0)
+      #account_list, owner_list will be used
+      #can just iterate or can find
+      #start by looking through account_owner
+      #see the account id number
+      #see the owner id attached to it
+      #find that owner id and add that owner to that account
+      #do that using something like the owner method I already have
+      # end
+      # end
+
   end
 
   class Owner
