@@ -1,7 +1,35 @@
 module Bank
   class Savings < Account
-    def initialize
-      super
+    def initialize(balance)
+      super(balance)
+      @transaction_fee = 2
+    end
+
+    def balance_restriction (balance)
+      if balance < 10
+        raise Exception.new("Your balance is not allowed to go below $10!")
+      else
+        return balance
+      end
+    end
+
+    def interest(rate)
+      previous_balance = @balance
+      @balance = previous_balance + (@balance * rate)/100
+      interest_earned = @balance - previous_balance
+      return "Your balance is #{@balance} dollars and you have earned #{interest_earned} dollars in interest"
+    end
+
+    def withdrawal(subtract_money)
+      if (@balance - subtract_money - @transaction_fee) >= 10
+        @balance = (@balance - subtract_money - @transaction_fee)
+        #returns updated account balance
+        return @balance
+      else
+      #rejects negative balance, and returns current balance
+        puts "Your withdrawal was rejected. You only have #{@balance} dollars."
+        puts "You are not allowed to overdraft. Try a smaller withdrawal."
+      end
     end
   end
 end
