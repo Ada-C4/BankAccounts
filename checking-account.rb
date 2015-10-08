@@ -1,8 +1,6 @@
-require "./bank-accounts.rb"
+module Bank
+  class CheckingAccount
 
-module Bank #maybe?
-  class SavingsAccount
-    
   end
 
 end

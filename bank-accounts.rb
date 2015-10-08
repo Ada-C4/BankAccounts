@@ -14,7 +14,7 @@ module Bank
       @ident = ident
       @open_date = DateTime.strptime(open_date, '%Y-%m-%d %H:%M:%S %z')
       @balance = balance
-      raise ArgumentError.new("Your intial balance can't be less than #{@@min_balance}") if balance < @@min_balance
+      raise ArgumentError.new("Insufficient initial balance") if balance < @@min_balance
     end
 
     def self.all
