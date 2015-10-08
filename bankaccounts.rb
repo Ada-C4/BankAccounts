@@ -1,18 +1,19 @@
+require 'csv'
+require 'pry'
+
 module Bank
   class Account
-    attr_reader :balance, :owner, :id
-    def initialize(initial_balance, owner = nil)
-      @balance = check_initial_balance(initial_balance)
-      @id = rand(99999)
-      @owner = owner
-    end
+    attr_reader :id, :balance, :open_date
+    attr_accessor :owner
 
-    def check_initial_balance(initial_balance)
-      if initial_balance < 0
+    def initialize(id, initial_balance, open_date, owner = nil)
+      @balance = initial_balance.to_i
+      if initial_balance.to_i < 0
           raise ArgumentError, "Invalid Balance: Balance may not be negative."
-      else
-        return initial_balance
       end
+      @id = id.to_i
+      @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
+      @owner = owner
     end
 
     def withdraw(withdraw_amount)
@@ -30,31 +31,62 @@ module Bank
       return @balance
     end
 
-    def assign_owner(owner_name)
-      @owner = owner_name
+    def self.all
+      accounts_array = []
+      CSV.read('support/accounts.csv').map do |account|
+         x = Bank::Account.new(account[0],account[1],account[2])
+         accounts_array.push(x)
+      end
+      return accounts_array
+    end
+
+    def self.find(id)
+      accounts_array = self.all
+      accounts_array.find do |account|
+        account.id == id
+      end
+    end
+
+    def self.connect_owners
+      account_owners = []
+      CSV.read('support/account_owners.csv').each do |row|
+        account = self.find(row[0].to_i)
+        owner = Bank::Owner.find(row[1].to_i)
+        account.owner = owner
+        account_owners.push(account)
+      end
+      return account_owners
     end
 
   end
 
   class Owner
-    attr_reader :id, :firstname, :lastname, :birthdate, :address
-    def initialize(owner_hash)
-      @id = rand(99999)
-      @firstname = owner_hash[:firstname]
-      @lastname = owner_hash[:lastname]
-      @birthdate = owner_hash[:birthdate]
-      @address = owner_hash[:address]
+    attr_reader :id, :lastname, :firstname, :street, :city, :state
+    def initialize(id, lastname, firstname, street, city, state)
+      @id = id.to_i
+      @lastname = lastname
+      @firstname = firstname
+      @street = street
+      @city = city
+      @state = state
     end
+
+    def self.all
+      owners_array =[]
+      CSV.read('support/owners.csv').map do |o|
+         x = Bank::Owner.new(o[0],o[1],o[2],o[3],o[4],o[5])
+         owners_array.push(x)
+      end
+      return owners_array
+    end
+
+    def self.find(id)
+      owners_array = self.all
+      owners_array.find do |owner|
+        owner.id == id
+      end
+    end
+
   end
 
 end
-
-
-# Testing
-# a = Bank::Account.new(500000)
-# b = Bank::Account.new(4000)
-# chandler_hash = { firstname: "Chandler", lastname: "Bing", birthdate: "4/8/68", address: "NYC" }
-# chandler = Bank::Owner.new(chandler_hash)
-# joey = Bank::Owner.new({firstname: "Joey", lastname: "Tribbiani", birthdate: "1/9/68", address: "NYC" })
-# a.assign_owner(chandler)
-# b.assign_owner(joey)
