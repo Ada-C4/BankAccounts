@@ -3,6 +3,7 @@
 # Dependency: Ruby money -- gem install money
 require 'csv'
 require 'money'
+require 'colorize'
 I18n.enforce_available_locales = false
 
 module Bank
@@ -13,34 +14,35 @@ module Bank
     def initialize(id, balance, open_date = "today", owner = nil)
       @owner = owner
       # Creates an ID of random numbers
-      @id = id
+      @id = id.to_i
       @open_date = open_date
+      @type = "Standard"
+      # Create a minimum balance for this type of account
+      @min_balance = 0
+      @fee = 0
+      @balance = balance.to_i
       # Raises an error with a rescue for a negative initial balance
-      if balance < 0
-        begin
-          raise ArgumentError.new("You may not create an account with a negative balance.")
-        rescue
-          puts "Setting balance to a default value of 0."
-          @balance = 0
-        end
-      else
-        @balance = balance
+      if balance.to_i < @min_balance
+          raise ArgumentError.new("You may not create an account below the minimum balance.")
       end
     end
 
     def withdraw(amount)
-      if @balance - amount < 0
-        puts "You cannot withdraw more than your account balance."
+      puts "------WITHDRAWAL------".colorize(:blue)
+      if @balance - (amount + @fee) < @min_balance
+        puts "You cannot go below the minimum account balance of " + Money.new(@min_balance, "USD").format
       else
         puts "Starting balance: " + Money.new(@balance, "USD").format
         puts "Amount withdrawn: " + Money.new(amount, "USD").format
-        @balance -= amount
+        puts "Fee: " + Money.new(@fee, "USD").format
+        @balance -= (amount + @fee)
         puts "Updated balance: " + Money.new(@balance, "USD").format
       end
       return @balance
     end
 
     def deposit(amount)
+      puts "-------DEPOSIT-------".colorize(:blue)
       puts "Starting balance: " + Money.new(@balance, "USD").format
       puts "Amount deposited: " + Money.new(amount, "USD").format
       @balance += amount
@@ -49,8 +51,9 @@ module Bank
     end
 
     def print_balance
+      puts "----PRINTING BALANCE----".colorize(:blue)
       money = Money.new(@balance, "USD")
-      puts "The current balance of this account is " + money.format
+      puts "The current balance of this #{@type} account is " + money.format
     end
 
     # Assign an owner to an account
