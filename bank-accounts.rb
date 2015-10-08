@@ -6,13 +6,15 @@ require 'csv'
 module Bank
 
   class Account
+    @@min_balance = 0
+
     attr_reader :balance, :owner, :open_date, :ident
 
-    def initialize(ident, balance, open_date)
+    def initialize(ident, open_date, balance)
       @ident = ident
-      @balance = balance
-      raise ArgumentError.new("Your intial balance can't be negative") if balance < 0
       @open_date = DateTime.strptime(open_date, '%Y-%m-%d %H:%M:%S %z')
+      @balance = balance
+      raise ArgumentError.new("Your intial balance can't be less than #{@@min_balance}") if balance < @@min_balance
     end
 
     def self.all
@@ -53,8 +55,9 @@ module Bank
     end
 
     def withdraw(withdraw_amount)
-      if @balance - withdraw_amount < 0
-        puts "Insufficient funds. Withdraw denied."
+      min_balance = 0
+      if @balance - withdraw_amount < @@min_balance
+        puts "Insufficient new balance. Withdraw denied."
         @balance
       else
         @balance -= withdraw_amount
