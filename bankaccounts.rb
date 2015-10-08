@@ -3,21 +3,17 @@ require 'pry'
 
 module Bank
   class Account
-    attr_reader :id, :balance, :open_date, :owner
+    attr_reader :id, :balance, :open_date
+    attr_accessor :owner
 
     def initialize(id, initial_balance, open_date, owner = nil)
-      @balance = check_initial_balance(initial_balance)
+      @balance = initial_balance.to_i
+      if initial_balance.to_i < 0
+          raise ArgumentError, "Invalid Balance: Balance may not be negative."
+      end
       @id = id.to_i
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       @owner = owner
-    end
-
-    def check_initial_balance(initial_balance)
-      if initial_balance.to_i < 0
-          raise ArgumentError, "Invalid Balance: Balance may not be negative."
-      else
-        return initial_balance.to_i
-      end
     end
 
     def withdraw(withdraw_amount)
@@ -35,14 +31,10 @@ module Bank
       return @balance
     end
 
-    def assign_owner(owner_name)
-      @owner = owner_name
-    end
-
     def self.all
-      accounts_array =[]
-      CSV.read('support/accounts.csv').map do |a|
-         x = Bank::Account.new(a[0],a[1],a[2])
+      accounts_array = []
+      CSV.read('support/accounts.csv').map do |account|
+         x = Bank::Account.new(account[0],account[1],account[2])
          accounts_array.push(x)
       end
       return accounts_array
@@ -53,6 +45,17 @@ module Bank
       accounts_array.find do |account|
         account.id == id
       end
+    end
+
+    def self.connect_owners
+      account_owners = []
+      CSV.read('support/account_owners.csv').each do |row|
+        account = self.find(row[0].to_i)
+        owner = Bank::Owner.find(row[1].to_i)
+        account.owner = owner
+        account_owners.push(account)
+      end
+      return account_owners
     end
 
   end
