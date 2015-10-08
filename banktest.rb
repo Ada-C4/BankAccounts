@@ -1,5 +1,12 @@
 require './lib/savings'
 require './lib/checking'
+require './lib/mma'
+
+# - Money Market Account Tests -
+mma = Bank::MoneyMarketAccount.new(1, 999999999999) # Valid MMA account
+mma.print_balance
+
+mma = Bank::MoneyMarketAccount.new(1, 9999) # Invalid account - not enough funds
 
 # - Normal Account Tests -
 # account = Bank::Account.new(1, 100)
@@ -20,14 +27,14 @@ require './lib/checking'
 # savings.add_interest(1)
 
 # - Checking Account Tests -
-checking = Bank::CheckingAccount.new(1, 10000)
-# checking.print_balance
-
-5.times do
-  checking.withdraw_using_check(600)
-end
-
-checking.reset_checks
-2.times do
-  checking.withdraw_using_check(6000)
-end
+# checking = Bank::CheckingAccount.new(1, 10000)
+# # checking.print_balance
+#
+# 5.times do
+#   checking.withdraw_using_check(600)
+# end
+#
+# checking.reset_checks
+# 2.times do
+#   checking.withdraw_using_check(6000)
+# end
