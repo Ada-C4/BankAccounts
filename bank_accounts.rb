@@ -4,13 +4,18 @@ module Bank
   class Account
     attr_reader :balance, :owner, :id, :open_date
     def initialize(id, initial_balance, open_date, owner = nil)
-      if(initial_balance < 0)
-        raise ArgumentError, "Your initial balance must be a positive value."
-      end
-      @balance = initial_balance
       @id = id
+      @balance = initial_balance
+      @min_balance = 0
       @open_date = open_date
       @owner = owner
+      check_balance
+    end
+
+    def check_balance
+      if @balance < @min_balance
+        raise ArgumentError, "Your initial balance must be at least #{@min_balance/100}."
+      end
     end
 
     def self.all
@@ -43,8 +48,8 @@ module Bank
     end
 
     def withdraw(amount)
-      if (@balance < amount)
-        puts "This will result in a negative account balance. Transaction terminated."
+      if (@balance - amount < @min_balance)
+        puts "Your balance cannot be below the minimum amount of #{@min_balance/100}. Transaction terminated."
       else
         @balance -= amount
       end
@@ -79,6 +84,7 @@ module Bank
       owner = Owner.new(match[0].to_i, match[1], match[2], match[3], match[4], match[5])
       return owner
     end
-
   end
 end
+
+require "./SavingsAccount.rb"
