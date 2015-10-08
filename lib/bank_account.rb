@@ -18,7 +18,7 @@ module Bank
     def withdraw(withdraw_amount)
       if @balance < withdraw_amount
         puts "Insufficient funds: withdraw denied. Your balance is #{@balance}."
-      elsif @balance >= withdraw_amount
+      elsif
       @balance = @balance.to_i - withdraw_amount.to_i
       puts "Here is your cash monays. Your account balance is now #{@balance}"
       end
