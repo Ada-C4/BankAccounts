@@ -1,4 +1,7 @@
 require 'csv'
+reqiure "./SavingAccount.rb"
+require "./CheckingAccount.rb"
+
   # Create a module with the name Bank that will contain the class Account
 module Bank
   # Create an Account class
@@ -81,7 +84,7 @@ class Account
 
 end
 
-
+require "./SavingAccountclass.rb"
 
 # new_user = Bank::Owner.new("Andre")
 # new_account = Bank::Account.new(1234, 2000)
