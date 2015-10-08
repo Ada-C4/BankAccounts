@@ -1,10 +1,13 @@
 module Bank
   class Account
-    attr_reader :balance # makes it so the user can only see their balance, not change it.
-    def initialize(id, balance)
+    require 'csv' #is this in the right place?
+
+    attr_reader :id, :balance, :open_date # makes it so the user can only see their balance, not change it.
+    def initialize(id, balance, open_date)
       @id = id
       @balance = balance
-      raise ArgumentError.new("Permission Denied") if balance < 0
+      @open_date  = open_date
+      raise ArgumentError.new("Permission Denied") if balance < "0"
     end
 
 # Once a new Owner is created, the variable holding the hash is passed in as 'person parameter'
@@ -25,6 +28,32 @@ module Bank
     def deposit(amnt_deposited)
       @balance = @balance + amnt_deposited #Return the updated account balance.
       puts "Your current balance is: #{@balance}"
+    end
+
+# This method returns all of the accounts in one array as Account instances.
+    def self.all
+      # reads the csv and puts it in an array.
+      @csv_info = CSV.read("./support/accounts.csv")
+      # Makes an empty array
+      account_all = []
+      # goes through each array
+      @csv_info.each do |l|
+        # Creates a new instance of an Account and pushes the info from
+        # index 0..2 into my empty array.
+        account_all.push(Account.new(l[0], l[1], l[2]))
+      end
+      # Prints the new array.
+      account_all
+    end
+
+# This method takes in an ID
+    def self.find(id)
+      # 'self' contains the account_all information. I use the find method to
+      # go through each thing in the aray...
+      self.all.find do |a|
+        # ...and checks to see if anything in the array equals the id passed in.
+        a.id.to_i == id
+      end
     end
   end
 
