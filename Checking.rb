@@ -1,9 +1,8 @@
 module Bank
-  # inherit behavior from Account class
+  # this will inherit behavior from Account class
   class CheckingAccount < Account
 
-    # Updated withdrawl functionality
-    def withdrawl
+    def withdrawl # add withdrawl functionality
       super
       # Each withdrawl -$1 from balance
       # RETURNS updated balance

@@ -7,7 +7,7 @@ module Bank
       @id = id
       @balance = balance
       @open_date  = open_date
-      raise ArgumentError.new("Permission Denied") if balance < "0"
+      raise ArgumentError.new("Permission Denied") if balance < 0
     end
 
 # Once a new Owner is created, the variable holding the hash is passed in as 'person parameter'
