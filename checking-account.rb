@@ -16,7 +16,7 @@ module Bank
 
     def withdraw_using_check(amount)
       if @balance - amount <= -1000
-        print "You cannot overdraft your account more than $10."
+        print "You cannot overdraft your account more than $10. "
       else
         @balance -= amount
         @checks += 1

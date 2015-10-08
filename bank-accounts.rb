@@ -38,7 +38,6 @@ module Bank
   end
 
   class Account
-    # @@id_variable = 1000
 
     attr_reader :balance, :id, :date
     attr_accessor :owner
