@@ -18,7 +18,7 @@ module Bank
 #create instance variable for balance?
     def initialize (id, balance, open_date)
         if balance < 0
-          raise ArgumentError
+          raise ArgumentError, "You cannot open an account with a negative balance."
         end
       @balance = balance
       @id = id
