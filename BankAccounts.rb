@@ -1,12 +1,16 @@
+require 'csv'
+
 module Bank
   class Account
-    attr_reader :balance, :owner, :id
-    def initialize(owner, balance = 0)
-      @id = rand(1000000)
-      @balance = balance
-      if balance < 0
+    attr_reader :ident, :balance, :open_date
+    attr_accessor :owner
+    def initialize(ident, balance, open_date, owner = nil)
+      @ident = ident.to_i
+      @balance = balance.to_i
+      if @balance < 0
         raise ArgumentError, "Not a valid initial balance!"
       end
+      @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       @owner = owner
     end
     def withdraw(amount)
@@ -20,7 +24,18 @@ module Bank
     def deposit(amount)
       @balance = @balance + amount
     end
+    def self.all
+      CSV.read("./support/accounts.csv").map do |row|
+      Bank::Account.new(row[0], row[1], row[2])
+      end
+    end
+    def self.find(id)
+      self.all.find do |account|
+        account.ident == id
+      end
+    end
   end
+
   class Owner
     attr_reader :id, :first, :last, :street_address, :city, :state, :zip
     def initialize(owner_info)
@@ -35,8 +50,4 @@ module Bank
   end
 end
 
-owner_info = {first: "Kelly", last: "Devlin", street_address: "4538 46th Ave SW", city: "Seattle",
-              state: "WA", zip: "98116"}
-owner = Bank::Owner.new(owner_info)
-account = Bank::Account.new(owner)
-puts "Account ##{account.id} is owned by #{account.owner.first} #{account.owner.last} (owner id##{account.owner.id})."
+Bank::Account.find(1213)
