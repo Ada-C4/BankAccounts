@@ -14,13 +14,9 @@ module Bank
     end
 
     def self.all
-      file_array = CSV.read("support/accounts.csv")
-      accounts_array = []
-      file_array.each do |line|
-        new_account = Account.new(line[0].to_i, line[1].to_i, line[2])
-        accounts_array.push(new_account)
+      CSV.read("support/accounts.csv").map do |line|
+        Account.new(line[0].to_i, line[1].to_i, line[2])
       end
-      return accounts_array
     end
 
     def self.find(id)
@@ -73,13 +69,9 @@ module Bank
     end
 
     def self.all
-      file_array = CSV.read("support/owners.csv")
-      owners_array = []
-      file_array.each do |line|
-        new_owner = Owner.new(line[0].to_i, line[1], line[2], line[3], line[4], line[5])
-        owners_array.push(new_owner)
+      CSV.read("support/owners.csv").map do |line|
+        Owner.new(line[0].to_i, line[1], line[2], line[3], line[4], line[5])
       end
-      return owners_array
     end
 
     def self.find(id)
