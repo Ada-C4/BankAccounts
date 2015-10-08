@@ -35,5 +35,9 @@ module Bank
       return @balance
     end
 
+    def reset_checks
+      @check_number = 0
+    end
+
   end
 end
