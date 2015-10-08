@@ -21,8 +21,8 @@ module Bank
     def add_interest(rate)
     interest = @balance * rate/100
     @balance = @balance + interest
-    # puts @balance.to_i.to_s
-    # puts interest.to_i.to_s
+    puts @balance.to_i.to_s
+    puts interest.to_i.to_s
     return interest.to_i
     end
   end
