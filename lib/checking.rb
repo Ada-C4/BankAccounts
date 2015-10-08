@@ -26,6 +26,7 @@ module Bank
       else
         puts "You cannot go below the minimum overdraft balance of " + Money.new(OVERDRAFT, "USD").format
       end
+      return @balance
     end
 
     def reset_checks
