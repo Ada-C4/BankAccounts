@@ -1,3 +1,5 @@
+require 'csv'
+
 module Bank
   class Account
     attr_accessor :account_id, :account_balance, :amount
@@ -20,7 +22,7 @@ module Bank
       @amount = gets.chomp.to_i
       if @account_balance - @amount < 0
         puts ("Cannot withdraw an amount that will make the balance negative.")
-        puts @account_balance
+        puts "Your current balance is #{@account_balance}."
       else
         @account_balance  -= @amount
         puts "Your new balance is: #{@account_balance} dollars."
