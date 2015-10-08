@@ -6,14 +6,14 @@ module Bank
     attr_reader :id, :balance, :open_date
     attr_accessor :owner
 
-    def initialize(id, initial_balance, open_date, owner = nil)
+    def initialize(id, initial_balance, open_date)
       @balance = initial_balance.to_i
       if initial_balance.to_i < 0
           raise ArgumentError, "Invalid Balance: Balance may not be negative."
       end
       @id = id.to_i
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
-      @owner = owner
+      @owner = nil
     end
 
     def withdraw(withdraw_amount)
