@@ -3,6 +3,7 @@ module Bank
 
     def initialize(balance)
       super(balance)
+      @check_count = 0
     end
 
     #method for withdrawal
@@ -23,6 +24,13 @@ module Bank
       if (@balance - subtract_money.abs) >= -10
         @balance = (@balance - subtract_money.abs)
         #returns updated account balance with a transaction fee of $1 removed from balance
+        #check_count = 0
+        @check_count += 1
+          if @check_count > 3
+            transaction_fee = 2
+            @balance = @balance - transaction_fee
+          end
+        puts @check_count
         return @balance
       else
       #rejects negative balance, and returns current balance
@@ -30,6 +38,10 @@ module Bank
         puts "You are not allowed to overdraft more than $10. Try a smaller withdrawal."
       end
     end
+
+    def reset_checks
+      @check_count = 0
+    end  
   end
 end
 
