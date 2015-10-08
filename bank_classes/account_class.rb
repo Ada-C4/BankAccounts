@@ -60,7 +60,7 @@ module Bank
   end
 
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
-    def withdraw (withdraw_amount, min_balance = 0)
+    def withdraw (withdraw_amount, fee = 0, min_balance = 0)
       transacting = true
       while transacting do
         withdraw_check = withdraw_amount
@@ -90,7 +90,13 @@ module Bank
           else
             balance_before = @balance
             @balance = @balance - withdraw_check
-            puts "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}. Your balance is now #{@balance}."
+            print "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}"
+              if fee != 0
+                print " plus a #{fee} fee. "
+              else
+                print ". "
+              end
+            puts "Your balance is now #{@balance}."
             transacting = false
           end
         end
