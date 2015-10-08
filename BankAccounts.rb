@@ -7,16 +7,17 @@ module Bank
 
     attr_reader :balance, :owner, :account_id
 
-    def initialize(account_id, initial_balance, open_date, min_balance = 0)
+    def initialize(account_id, initial_balance, open_date, min_balance = 0, fee = 0)
       @account_id = account_id.to_i
       @min_balance = min_balance
       @balance = check_initial_balance(initial_balance.to_i)
       @open_date = Chronic.parse(open_date)
+      @fee = fee
     end
 
     def withdraw(amount)
-      if amount <= @balance
-        @balance -= amount
+      if amount <= @balance - @min_balance
+        @balance -= (amount + @fee)
       else
         puts "Your balance is #{@balance}. You cannot withdraw #{amount} at this time."
         return @balance
