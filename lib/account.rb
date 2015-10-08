@@ -11,26 +11,24 @@ module Bank
   class Account
     attr_reader :balance, :id, :owner, :open_date
     FEE = 0
+    MIN_BALANCE = 0
     # Instantiation of object has optional parameters of balance and owner
     def initialize(id, balance, open_date = "today", owner = nil)
       @owner = owner
-      # Creates an ID of random numbers
       @id = id.to_i
       @open_date = open_date
       @type = "Standard"
-      # Create a minimum balance for this type of account
-      @min_balance = 0
       @balance = balance.to_i
       # Raises an error with a rescue for a negative initial balance
-      if balance.to_i < @min_balance
+      if balance.to_i < MIN_BALANCE
           raise ArgumentError.new("You may not create an account below the minimum balance.")
       end
     end
 
     def withdraw(amount)
       puts "------WITHDRAWAL------".colorize(:blue)
-      if @balance - (amount + self.class::FEE) < @min_balance
-        puts "You cannot go below the minimum account balance of " + Money.new(@min_balance, "USD").format
+      if @balance - (amount + self.class::FEE) < self.class::MIN_BALANCE
+        puts "You cannot go below the minimum account balance of " + Money.new(self.class::MIN_BALANCE, "USD").format
       else
         puts "Starting balance: " + Money.new(@balance, "USD").format
         puts "Amount withdrawn: " + Money.new(amount, "USD").format
