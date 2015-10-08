@@ -10,7 +10,7 @@ module Bank
 
     def withdraw(withdrawal)
       if @balance - withdrawal <= 1000
-        puts "Your account balance cannot drop below $10."
+        print "Your account balance cannot drop below $10."
       else
         super
         @balance -= 200
