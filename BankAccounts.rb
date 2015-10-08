@@ -46,9 +46,13 @@ module Bank
       account_all
     end
 
+# This method takes in an ID
     def self.find(id)
-      if id == @csv_info[0]
-        puts @csv_info[0] + @csv_info[1] + @csv_info[2]
+      # 'self' contains the account_all information. I use the find method to
+      # go through each thing in the aray...
+      self.all.find do |a|
+        # ...and checks to see if anything in the array equals the id passed in.
+        a.id.to_i == id
       end
     end
   end
