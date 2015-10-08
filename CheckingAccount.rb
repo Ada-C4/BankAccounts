@@ -16,7 +16,7 @@ module Bank
         check_fee = 200
       end
 
-      if amount <= (@balance + 1000)
+      if (amount + check_fee) <= (@balance + 1000)
           @balance -= (amount + check_fee)
           @free_check -= 1
       else
