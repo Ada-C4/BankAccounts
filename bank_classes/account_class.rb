@@ -15,11 +15,11 @@ module Bank
   attr_reader :balance
 
 # - A new account should be created with an ID and an initial balance
-    def initialize
+    def initialize(open_deposit_min = 0)
       array_of_accounts = CSV.read("./support/accounts.csv")
       @account_num = array_of_accounts[@@number_of_accounts][0]
       initial_deposit = array_of_accounts[@@number_of_accounts][1]
-      @balance = open_deposit_check(initial_deposit.to_i)
+      @balance = open_deposit_check(initial_deposit.to_i, open_deposit_min)
       @open_date = array_of_accounts[@@number_of_accounts][2]
       @@number_of_accounts += 1
     end
@@ -47,11 +47,11 @@ module Bank
 # ### Error handling
 # - A new account cannot be created with initial negative balance - this will `raise` an `ArgumentError` (Google this)
   # begin
-    def open_deposit_check(initial_deposit)
+    def open_deposit_check(initial_deposit, open_deposit_min)
     transacting = true
     while transacting do
-      if initial_deposit <= 0
-        raise Exception.new("New accounts must be opened with a positive balance.")
+      if initial_deposit <= open_deposit_min
+        raise Exception.new("New accounts must be opened with a balance of at least #{open_deposit_min}.")
       else
         transacting = false
       end

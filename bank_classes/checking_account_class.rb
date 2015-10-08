@@ -8,15 +8,16 @@ require "pry"
     class CheckingAccount < Account
 
       def initialize
-        super
+        super(10_00)
         @checks_used = 0
       end
 
+# Each withdrawal 'transaction' incurs a fee of $1 that is taken out of the balance.
       def withdraw(withdraw_amount, fee = 100, checking_min_balance = -10_00)
         min_balance = (checking_min_balance + fee)
-        binding.pry
-        #inherits these from account_class withdraw
-          # Each withdrawal 'transaction' incurs a fee of $1 that is taken out of the balance. Returns the updated account balance.
+        #inherits these from account_class withdraw:
+
+          # Returns the updated account balance.
           # Does not allow the account to go negative. Will output a warning message and return the original un-modified balance.
         @balance = super(withdraw_amount, fee, min_balance)
       end #of withdraw method
