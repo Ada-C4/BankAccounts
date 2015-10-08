@@ -17,7 +17,7 @@ module Bank
       end
 
       def add_interest(rate)
-        interest = @balance * (rate/100)
+        interest = @balance * (rate.to_f/100)
         balance += interest
         return interest
       end

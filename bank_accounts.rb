@@ -14,7 +14,7 @@ module Bank
 
     def check_balance
       if @balance < @min_balance
-        raise ArgumentError, "Your initial balance must be at least #{@min_balance/100}."
+        raise ArgumentError, "Your initial balance must be at least $#{@min_balance/100}."
       end
     end
 
@@ -49,7 +49,7 @@ module Bank
 
     def withdraw(amount)
       if (@balance - amount < @min_balance)
-        puts "Your balance cannot be below the minimum amount of #{@min_balance/100}. Transaction terminated."
+        puts "Your balance cannot be below the minimum amount of $#{@min_balance/100}. Transaction terminated."
       else
         @balance -= amount
       end
@@ -88,3 +88,4 @@ module Bank
 end
 
 require "./SavingsAccount.rb"
+require "./CheckingAccount.rb"
