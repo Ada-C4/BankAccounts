@@ -4,7 +4,7 @@ module Bank
 
   class Owner
 
-    attr_reader :id, :last, :first, :street, :city, :state
+    attr_accessor :id, :last, :first, :street, :city, :state
 
     def initialize(id, last, first, street, city, state)
       @id = id.to_i
@@ -40,10 +40,10 @@ module Bank
   class Account
     # @@id_variable = 1000
 
-    attr_reader :balance, :id
-    attr_accessor :owner, :date, :account_list
+    attr_reader :balance, :id, :date
+    attr_accessor :owner
 
-    def initialize(id, initial_balance, open_date, owner = nil)
+    def initialize(id, initial_balance, open_date = nil, owner = nil)
       @id = id.to_i
       @balance = initial_balance.to_i
 
@@ -71,7 +71,7 @@ module Bank
       return @balance
     end
 
-    def self.all
+    def self.all # Create array of account instances from accounts.csv
       account_list = []
       account_csv = CSV.read("./support/accounts.csv")
 
@@ -83,7 +83,7 @@ module Bank
       return account_list
     end
 
-    def self.find(id)
+    def self.find(id) # Find a particular account from accounts.csv and return its object
       account_list = self.all
 
       found = account_list.find do |instance|
@@ -93,7 +93,7 @@ module Bank
       return found
     end
 
-    def self.master_list
+    def self.master_list # Accounts and their respective owners in one big happy array
       master_list = []
       account_owners_csv = CSV.read("./support/account_owners.csv")
 
@@ -108,34 +108,14 @@ module Bank
       return master_list
     end
 
+    def self.find_account(id) # Find an account from the master_list! Then you can do stuff with it! Yay!
+      master_list = self.master_list
+
+      found = master_list.find do |instance|
+        instance.id.to_i == id
+      end
+
+      return found
+    end
   end
 end
-
-
-### TEST TAIMMMMMM
-
-# Test self.master_list
-# master = Bank::Account.master_list
-# puts master[0].id
-# puts master[0].owner.first
-
-# Test self.all method for Owner
-# test = Bank::Owner.all
-# puts test[0].first
-
-# Test self.find(id) for Owner
-# own = Bank::Owner.find(14)
-# puts own.first
-
-# Instantiate a test manually using CSV data and test it
-# test = Bank::Account.new("1212","1235667","1999-03-27 11:30:09 -0800")
-# puts test.id
-# puts test.date
-# puts test.balance
-# puts test.owner
-
-# Test self.all method for Account
-# puts Bank::Account.all
-
-# acc = Bank::Account.find(1212)
-# puts acc.id
