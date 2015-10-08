@@ -24,20 +24,16 @@ module Bank
       fee = 200
       if withdraw_amount > (@balance + 1000)
         puts "Warning: Can not overdraft account more than $10.00. Transaction terminated."
-        return @balance
+      elsif @checks_used < 3
+        @balance -= withdraw_amount
+        @checks_used += 1
       else
-        if @checks_used < 3
-          @balance -= withdraw_amount
-          @checks_used += 1
-          return @balance
-        else
-          @balance -= (withdraw_amount + fee)
-          puts "You have used up your 3 free check withdrawals this month."
-          puts "There is a transaction fee of $2.00"
-          @checks_used += 1
-          return @balance
-        end
+        puts "You have used up your 3 free check withdrawals this month."
+        puts "There is a transaction fee of $2.00"
+        @balance -= (withdraw_amount + fee)
+        @checks_used += 1
       end
+      return @balance
     end
 
     def reset_checks
