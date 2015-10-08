@@ -34,7 +34,7 @@ module Bank
   end
 
   class Account
-    attr_reader :balance, :account_id, :owner, :all_accounts
+    attr_reader :balance, :account_id, :owner, :all_accounts, :open_date
 
     def initialize(id, balance, open_date)
 
@@ -101,11 +101,22 @@ module Bank
     #     Bank::Owner.new(owner)
     #     end
 
-
         # take the account id (line[0] in each loop) and find which owners_id within account_owners.csv it shares,
         # then take that owners_id, switch over to the owners.cvs, and initialize a new Owner based on that
 
     # end
+  end
+
+  class SavingsAccount < Account
+    def initialize(id, balance, open_date)
+      super
+      if balance.to_i < 0
+        raise StandardError, "You cannot open an account with less than $10."
+      end
+    end
+
 
   end
+
+
 end
