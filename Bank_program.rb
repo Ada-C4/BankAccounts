@@ -1,7 +1,6 @@
 require 'pry'
 require 'csv'
-require './Bank_Account.rb'
-require './Savings_account.rb'
+require './Bank_master.rb'
 
 # require ./support/accounts.csv
 accounts_csv = CSV.read("./support/accounts.csv")
