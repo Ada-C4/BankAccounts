@@ -5,15 +5,26 @@ module Bank
     def initialize(balance)
       #creates ID#
       @account_id = generate_id
-      @balance = balance
+      @balance = balance_restriction(balance)
       @time = account_opened
+
+
       #prevents initial balance from being a negative amount
-      if balance < 0
-        raise Exception.new, "No negative balance allowed! Live within your means!"
-      end
+      #if balance < 0
+      #  raise Exception.new, "No negative balance allowed! Live within your means!"
+      #end
     end
 
   #method to create an ID number, not unique number yet
+
+    def balance_restriction (balance)
+      if balance < 0
+        raise Exception.new("No negative balance allowed! Live within your means!")
+      else
+        return balance
+      end
+    end
+    
     def generate_id
       user_id = rand(1000..9000)
       return user_id

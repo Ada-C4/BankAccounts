@@ -1,5 +1,35 @@
 module Bank
   class Checking < Account
+
+    def initialize(balance)
+      super(balance)
+    end
+
+    #method for withdrawal
+    def withdrawal(subtract_money)
+      if (@balance - subtract_money - 1) >= 0
+        @balance = (@balance - subtract_money - 1)
+        #returns updated account balance
+        return @balance
+      else
+      #rejects negative balance, and returns current balance
+        puts "Your withdrawal was rejected. You only have #{@balance} dollars."
+        puts "You are not allowed to overdraft. Try a smaller withdrawal."
+      end
+    end
+
+
+    def withdraw_using_check(subtract_money)
+      if (@balance - subtract_money.abs) >= -10
+        @balance = (@balance - subtract_money.abs)
+        #returns updated account balance with a transaction fee of $1 removed from balance
+        return @balance
+      else
+      #rejects negative balance, and returns current balance
+        puts "Your withdrawal was rejected. You only have #{@balance} dollars."
+        puts "You are not allowed to overdraft more than $10. Try a smaller withdrawal."
+      end
+    end
   end
 end
 

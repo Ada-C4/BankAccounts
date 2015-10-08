@@ -1,5 +1,8 @@
 module Bank
   class Savings < Account
+    def initialize
+      super
+    end
   end
 end
 
