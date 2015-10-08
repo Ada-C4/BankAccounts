@@ -2,11 +2,11 @@ module Bank
   class Account
     attr_reader :account_id, :balance, :time
     #allows account to be created with an initial balance as a parameter
-    def initialize(account_id, balance, time)
+    def initialize(balance)
       #creates ID#
-      @account_id = account_id
+      @account_id = generate_id
       @balance = balance
-      @time = time
+      @time = account_opened
       #prevents initial balance from being a negative amount
       if balance < 0
         raise ArgumentError, "No negative balance allowed! Live within your means!"
@@ -15,8 +15,13 @@ module Bank
 
   #method to create an ID number, not unique number yet
     def generate_id
-      user_id = rand(0..101)
+      user_id = rand(1000..9000)
       return user_id
+    end
+
+    def account_opened
+      time = Time.new
+      return time
     end
 
     #method for withdrawal
