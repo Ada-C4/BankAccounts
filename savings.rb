@@ -3,14 +3,15 @@ module Bank
   class SavingsAccount < Account
     def initialize(id, initial_balance, open_date)
       super(id, initial_balance, open_date)
-      if initial_balance.to_i < 1000
+      @min_balance = 1000
+      if initial_balance.to_i < @min_balance
           raise ArgumentError, "Invalid Balance: Balance may not be less than $10.00"
       end
     end
 
     def withdraw(withdraw_amount)
       fee = 200
-      if withdraw_amount > (@balance - 1000)
+      if withdraw_amount > @min_balance
         puts "Warning: Balance may not go under $10.00. Transaction terminated."
         return @balance
       else
@@ -20,9 +21,12 @@ module Bank
       end
     end
 
+    def add_interest(rate)
+      interest = @balance * (rate.to_f / 100)
+      @balance += interest
+      return interest
+    end
+
   end
 
 end
-
-
-# s = Bank::SavingsAccount.new("1212","10000","1999-03-27 11:30:09 -0800")
