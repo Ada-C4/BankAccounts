@@ -30,8 +30,8 @@ module Bank
       sample.each do |row|
         account = create_account(row)
         accounts.push(account)
-        return accounts
       end
+      return accounts
     end
 
     def self.find(id)
@@ -45,26 +45,6 @@ module Bank
     end
 
   end
-  # Bank::Account.all
-
-end
-
-
-
-
-
-
-
-
-
-
-#
-# #1212,1235667,1999-03-27 11:30:09 -0800
-#
-# def initial_balance (array_balance)
-# end
-
-
 
 
     #
@@ -111,22 +91,61 @@ end
 # end
 #
 #
-# #   class Owner
-#
-#     attr_accessor :name, :address, :job, :accounts, :id
-#
-#     def initialize (info_hash)
-#       @name = info_hash [:name]
-#       @address = info_hash [:address]
-#       @job = info_hash [:job]
-#       @accounts = []
-#       @id = info_hash[:id]
-#     end
-#
-#     def add_account
-#       account = Bank::Account.new(self)
-#       @accounts.push(account)
-#     end
+ class Owner
+
+    attr_accessor :id, :last_name, :first_name, :address, :city, :state
+
+    def initialize (info_hash)
+      @id = info_hash [:id]
+      @last_name = info_hash [:last_name]
+      @first_name = info_hash [:first_name]
+      @address = info_hash [:address]
+      @city = info_hash [:city]
+      @state = info_hash [:state]
+    end
+
+    def self.create_owner (person_array)
+      person_id = person_array[0]
+      person_last_name = person_array[1]
+      person_first_name = person_array[2]
+      person_address = person_array[3]
+      person_city = person_array[4]
+      person_state = person_array[5]
+      owner =   {id: person_id,
+                last_name: person_last_name,
+                first_name: person_first_name,
+                address: person_address,
+                city: person_city,
+                state: person_state
+                }
+      return Bank::Owner.new(owner)
+    end
+
+    def self.all
+      sample = CSV.read("./support/owners.csv")
+      owners = []
+      sample.each do |row|
+        owner = create_owner(row)
+        owners.push(owner)
+      end
+      return accounts
+    end
+
+    def self.fine(id)
+      sample = CSV.read("./support/owners.csv")
+      sample.find do |row|
+        row[0] == id
+      end
+    end
+
+    
+ end
+end
+
+
+
+
+
 #
 #
 #   nemo_hash = {
