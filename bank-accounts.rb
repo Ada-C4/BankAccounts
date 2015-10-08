@@ -55,7 +55,6 @@ module Bank
     end
 
     def withdraw(withdraw_amount)
-      min_balance = 0
       if @balance - withdraw_amount < @@min_balance
         puts "Insufficient new balance. Withdraw denied."
         @balance
