@@ -10,7 +10,10 @@ module Bank
       @account_id = id
       raise ArgumentError.new("You can't start an account with a negative balance.") if initial_balance <= 0
       @balance = initial_balance # in cents
+      open_date = open_date.to_s
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
+      @min_balance = 0
+      @withdrawal_fee = 0
     end
 
     # Return an array of all Account instances in account.csv
@@ -44,10 +47,10 @@ module Bank
       new_balance = @balance - amount
       if amount < 0
         puts "You can't withdraw a negative amount."
-      elsif new_balance < 0
-        puts "You don't have that much money. You can withdraw up to #{@balance} dollars."
+      elsif new_balance < @min_balance
+        puts "You don't have that much money. You can withdraw up to #{@balance - @min_balance - @withdrawal_fee} dollars."
       else
-        @balance = new_balance
+        @balance = new_balance - @withdrawal_fee
         return @balance
       end
     end
