@@ -49,6 +49,19 @@ module Bank
       end
     end
 
+    def self.add_relationships
+    add_owner_array = CSV.read("support/account_owners.csv")
+    accounts_with_owners = []
+
+    add_owner_array.each do |key|
+      account = Bank::Account.find(key[0].to_i)
+      owner = Bank::Owner.find(key[1].to_i)
+      account.add_owner(owner)
+      accounts_with_owners.push(account)
+      end
+    return accounts_with_owners
+    end
+
     def add_owner(owner)
       @owner = owner
     end
