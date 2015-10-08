@@ -17,7 +17,8 @@ class SavingsAccount < Bank::Account
     end
   end
   def add_interest(rate)
+    interest = @balance * (rate.to_f/100)
+    @balance += interest
+    return interest
   end
 end
-
-#savings = SavingsAccount.new("1212", "1001", "1999-03-27 11:30:09 -0800")
