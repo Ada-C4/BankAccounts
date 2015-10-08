@@ -9,8 +9,10 @@ module Bank
 
     def initialize(id, initial_balance, open_date)
       @id = id.to_i
-      @balance = initial_balance.to_i/100.0
-      @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
+      @balance = initial_balance.to_i/100.00
+      @open_date = open_date
+      @min_balance = 0
+      #open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       #@owner = nil
 
       # Raises an argument error if the initial balance is less than 0
@@ -85,9 +87,9 @@ module Bank
     # Method for withdrawing from account
     def withdraw(amount_to_withdraw)
       # Checks that the user is not withdrawing more than what is available in the account
-      if (@balance - amount_to_withdraw)< 0
+      if (@balance - amount_to_withdraw)< @min_balance
         puts "The requested withdrawal is more than the available funds."
-        puts "You only have $#{@balance} available for withdrawal."
+        puts "You only have $#{@balance-@min_balance} available for withdrawal."
         return @balance
       else
         # makes the withdrawal and displays info to the user
@@ -189,6 +191,34 @@ module Bank
 
         # end of extra work #
 # ----------------------------------------#
+
+  end
+
+
+
+
+
+
+
+
+  class SavingsAccount < Account
+
+    def initialize(id, initial_balance, open_date)
+      #@id = id.to_i
+      @balance = initial_balance.to_i/100.0
+      #@open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
+      #@owner = nil
+      @min_balance = 10
+
+      # Raises an argument error if the initial balance is less than 0
+      if initial_balance.to_i < 10
+        raise ArgumentError, "The balance cannot be less than $10."
+      end
+    end
+
+    def withdraw(amount_to_withdraw)
+      super
+    end
 
   end
 
