@@ -98,13 +98,25 @@ module Bank
 
   class Owner
     attr_reader :id, :first_name, :last_name, :address, :city, :state
-    def initialize(id, last_name, first_name, address, city, state)
-      @id = id
-      @last_name = last_name
-      @first_name = first_name
-      @address = address
-      @city = city
-      @state = state
+    def initialize(owner_hash)
+      @id = owner_hash[:id]
+      @last_name = owner_hash[:last_name]
+      @first_name = owner_hash[:first_name]
+      @address = owner_hash[:address]
+      @city = owner_hash[:city]
+      @state = owner_hash[:state]
+    end
+
+    # Converts an array to a hash for passing to owner instantiation
+    def self.convert_to_owner_hash(owner_array)
+      owner_hash = {}
+      owner_hash[:id] = owner_array[0].to_i
+      owner_hash[:last_name] = owner_array[1]
+      owner_hash[:first_name] = owner_array[2]
+      owner_hash[:address] = owner_array[3]
+      owner_hash[:city] = owner_array[4]
+      owner_hash[:state] = owner_array[5]
+      return owner_hash
     end
 
     def self.all
@@ -112,8 +124,10 @@ module Bank
       # Create empty array which will hold all the account objects
       owners_array = []
       csv_file.each do |row|
-        # Create an account object from each row in the csv file
-        temp = Bank::Owner.new(row[0].to_i, row[1], row[2], row[3], row[4], row[5])
+        # Convert the array to a hash
+        owner_hash = self.convert_to_owner_hash(row)
+        # Create an account object from each row-hash in the csv file
+        temp = Bank::Owner.new(owner_hash)
         # Push account object to array of accounts
         owners_array.push(temp)
       end
@@ -123,7 +137,8 @@ module Bank
     def self.find(id)
       csv_file = CSV.read("./support/owners.csv")
       match = csv_file.find { |row| row[0].to_i == id }
-      return Bank::Owner.new(match[0].to_i, match[1], match[2], match[3], match[4], match[5])
+      owner_hash = self.convert_to_owner_hash(match)
+      return Bank::Owner.new(owner_hash)
     end
   end
 end
