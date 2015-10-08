@@ -10,26 +10,8 @@ require "./account_class.rb"
         super
       end
 
-      def withdraw(withdraw_amount, min_balance)
-        transating = true
-        withdaw_limit = (@balance - (min_balance + 100))
-      while transating == true do
-        if (super(withdraw_amount, min_balance) 
-          @balance = super(withdraw_amount, min_balance)
-        else
-          puts "You are attempting to withdraw #{withdraw_amount} plus a $1 fee.\nYour account cannot overdraft more than   -10.\nWould you like with withdraw an amount less than #{@balance + 900}?"
-          again = gets.chomp.downcase
-          case again
-            when "yes" || "y"
-              puts "How much would you like to withdraw? "
-              withdraw_amount = gets.chomp.to_i
-              transating = true
-            else
-                transating = false
-            end #of case again
-          end #of if (super(withdraw_amount)
-        end #of while/do transating loop
-
+      def withdraw(withdraw_amount, min_balance = -10_000)
+        @balance = super
       end #of withdraw method
 
     end #of CheckingAccount class

@@ -1,7 +1,7 @@
 #WELCOME TO THE BANK OF LAUREN
 #
 require "csv"
-
+require "pry"
 # Create a `Bank` module which will contain your `Account` class and any future bank account logic.
 module Bank
 
@@ -60,7 +60,7 @@ module Bank
   end
 
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
-    def withdraw (withdraw_amount, min_balance)
+    def withdraw (withdraw_amount, min_balance = 0)
       transacting = true
       while transacting do
         withdraw_check = withdraw_amount
@@ -75,8 +75,9 @@ module Bank
             else
               transacting = false
             end
-          elsif @balance - withdraw_check <= min_balance
-            puts "You cannot withdaw #{withdraw_amount}. Your account currently have a blance of #{@balance}."
+          elsif (@balance - withdraw_check) <= min_balance
+                        binding.pry
+            puts "You cannot withdaw #{withdraw_amount}. Your account currently has a blance of #{@balance}."
             print "Would you like to withdaw a differnt amount? "
             diff_amount = gets.chomp.downcase
               if diff_amount == "yes" || diff_amount == "y"
