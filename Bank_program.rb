@@ -47,3 +47,5 @@ newsavings = Bank::SavingsAccount.new(23232, 3546345234,"1999-03-27 11:30:09 -07
 Bank::Account.all
 puts "line 49ish"
 puts newsavings.balance.to_s
+
+toolowsavings = Bank::SavingsAccount.new(23232, 9,"1999-03-27 11:30:09 -0700")
