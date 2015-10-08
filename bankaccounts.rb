@@ -19,11 +19,10 @@ module Bank
     def withdraw(withdraw_amount)
       if withdraw_amount > @balance
         puts "Warning: Can not withdraw more than is in account. Transaction terminated."
-        return @balance
       else
         @balance -= withdraw_amount
-        return @balance
       end
+    return @balance
     end
 
     def deposit(deposit_amount)
@@ -88,5 +87,4 @@ module Bank
     end
 
   end
-
 end

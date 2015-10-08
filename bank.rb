@@ -2,6 +2,7 @@ require "pry"
 require "./bankaccounts.rb"
 require "./savings.rb"
 require "./checking.rb"
+require "./moneymarket.rb"
 
 
 # Savings Account tests

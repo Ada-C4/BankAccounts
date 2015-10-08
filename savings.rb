@@ -13,12 +13,11 @@ module Bank
       fee = 200
       if withdraw_amount > @min_balance
         puts "Warning: Balance may not go under $10.00. Transaction terminated."
-        return @balance
       else
         @balance -= (withdraw_amount + fee)
         puts "There is a transaction fee of $2.00."
-        return @balance
       end
+      return @balance
     end
 
     def add_interest(rate)

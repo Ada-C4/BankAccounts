@@ -40,6 +40,5 @@ module Bank
       @checks_used = 0
     end
 
-
   end
 end
