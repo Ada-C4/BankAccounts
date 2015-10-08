@@ -52,7 +52,7 @@ module Bank
 
 
 
-    def initial_balance
+    def initial_balance (min_balance = 0)
       puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$".center(70)
       puts
       puts "$$$$$$$ Welcome to Tammy's Bank! $$$$$$$".center(70)
@@ -63,8 +63,8 @@ module Bank
       if money < 0
         raise ArgumentError.new("You can't deposit negativ amount of money")
         money = 0
-      elsif money == 0
-        puts "You have 30 days to deposit at least $5"
+      elsif  money < min_balance
+        raise ArgumentError.new("You can't deposit less then $#{min_balance}")
       end
       return money
     end
