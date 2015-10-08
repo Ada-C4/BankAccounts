@@ -5,10 +5,10 @@ module Bank
 
   class Account
     attr_accessor :balance, :id, :owner, :open_date
-    def initialize(id, balance, open_date, owner = nil)
+    def initialize(id, balance, open_date)
       @balance = balance.to_i
       @id = 7383092
-      @owner = owner
+      @owner = nil
       @open_date = open_date
       if @balance < 0
         raise ArgumentError, "Accounts cannot be opened with negative money"
@@ -66,16 +66,28 @@ module Bank
       end
       return everything_array
     end
+
+    def self.find_owner(id)
+      account_and_owner_csv = CSV.read("support/account_owners.csv")
+      owner_csv_array = CSV.read("support/owners.csv")
+      found_line = account_and_owner_csv.find do |line|
+         line[0].to_i == id
+      end
+      found_owner = owner_csv_array.find do |line|
+        line[0].to_i == found_line[1].to_i
+      end
+      return found_owner
+    end
   end
 
   class Owner
     attr_reader :account, :owner_id, :last_name, :first_name, :address, :city, :state
     def initialize(id, last_name, first_name, address, city, state)
-      @account = account
-      @first_name = first_name
-      @last_name = last_name
-      @address =  address
-      @owner_id = owner_id
+      #@account = account
+      #@first_name = first_name
+    #  @last_name = last_name
+      #@address =  address
+      #@owner_id = owner_id
     end
 
     def who_da_owna
@@ -85,10 +97,8 @@ module Bank
     def self.all
       owner_csv_array = CSV.read("support/owners.csv")
       owner_array = []
-      owner_csv_array.each do |line|
-        owner_array.push(Owner.new(line[0], line[1], line[2], line[3], line[4], line[5]))
-      end
-      return owner_array
+      owner_array = owner_csv_array.map{ |line|
+        Owner.new(line[0], line[1], line[2], line[3], line[4], line[5]) }
     end
 
     def self.find(id)
