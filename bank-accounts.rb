@@ -4,13 +4,35 @@ module Bank
 
   class Owner
 
-    attr_reader :first, :last, :address, :owner_id
+    attr_reader :id, :last, :first, :street, :city, :state
 
-    def initialize(owner_info)
-      @owner_id = owner_info[:owner_id]
-      @first = owner_info[:first]
-      @last = owner_info[:last]
-      @address = owner_info[:address]
+    def initialize(id, last, first, street, city, state)
+      @id = id.to_i
+      @first = first
+      @last = last
+      @street = street
+      @city = city
+      @state = state
+    end
+
+    def self.all
+      owners_list = []
+      owners_csv = CSV.read("./support/owners.csv")
+
+      owners_csv.each do |row|
+        owner = Bank::Owner.new(row[0], row[1], row[2], row[3], row[4], row[5])
+        owners_list.push(owner)
+      end
+
+      return owners_list
+    end
+
+    def self.find(id)
+      owners_list = self.all
+
+      owners_list.find do |instance|
+        instance.id == id
+      end
     end
 
   end
@@ -24,9 +46,10 @@ module Bank
     def initialize(id, initial_balance, open_date, owner = nil)
       @id = id.to_i
       @balance = initial_balance.to_i
-      # @id = @@id_variable
-      # @@id_variable += 1
-      @date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
+
+      if open_date != nil
+        @date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
+      end
       @owner = owner
 
       raise ArgumentError if @balance < 0
@@ -63,14 +86,46 @@ module Bank
     def self.find(id)
       account_list = self.all
 
-      account_list.find do |instance|
+      found = account_list.find do |instance|
         instance.id == id
       end
+
+      return found
+    end
+
+    def self.master_list
+      master_list = []
+      account_owners_csv = CSV.read("./support/account_owners.csv")
+
+       account_owners_csv.each do |row|
+        account = self.find(row[0].to_i)
+        owner_of_account = Bank::Owner.find(row[1].to_i)
+
+        account.owner = owner_of_account
+        master_list.push(account)
+      end
+
+      return master_list
     end
 
   end
-
 end
+
+
+### TEST TAIMMMMMM
+
+# Test self.master_list
+# master = Bank::Account.master_list
+# puts master[0].id
+# puts master[0].owner.first
+
+# Test self.all method for Owner
+# test = Bank::Owner.all
+# puts test[0].first
+
+# Test self.find(id) for Owner
+# own = Bank::Owner.find(14)
+# puts own.first
 
 # Instantiate a test manually using CSV data and test it
 # test = Bank::Account.new("1212","1235667","1999-03-27 11:30:09 -0800")
@@ -79,8 +134,8 @@ end
 # puts test.balance
 # puts test.owner
 
-# Test self.all method
+# Test self.all method for Account
 # puts Bank::Account.all
 
-acc = Bank::Account.find(1212)
-puts acc.id
+# acc = Bank::Account.find(1212)
+# puts acc.id
