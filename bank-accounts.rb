@@ -1,20 +1,55 @@
 # run this file with
 # irb -r "./bank-accounts.rb"
 
+require 'csv'
+
 module Bank
 
   class Account
-    attr_reader :balance, :owner
+    attr_reader :balance, :owner, :open_date, :ident
 
-    def initialize(ident, balance = 0)  # optional parameter
+    def initialize(ident, balance, open_date)
       @ident = ident
       @balance = balance
       raise ArgumentError.new("Your intial balance can't be negative") if balance < 0
+      @open_date = DateTime.strptime(open_date, '%Y-%m-%d %H:%M:%S %z')
     end
 
-    def assign_owner(person) # pass in an instance of Owner
+    def self.all
+      CSV.read("./support/accounts.csv", 'r').map do |row|
+        Bank::Account.new(row[0].to_i, row[1].to_i, row[2])
+      end
+    end
+
+    def self.find(id)
+      self.all.find do |account|
+        account.ident == id
+      end
+    end
+
+    def self.ultimate_list
+      ultimate_list = []
+      CSV.read("./support/account_owners.csv", 'r').each do |row|
+        acct = Bank::Account.find(row[0].to_i)
+        person = Bank::Owner.find(row[1].to_i)
+        acct.assign_to_owner(person)
+        ultimate_list.push(acct)
+      end
+      return ultimate_list
+    end
+
+    ### alternate method for making the list ###
+    # def self.other_thing
+    #   CSV.read("./support/account_owners.csv", 'r').map do |row|
+    #     acct = Bank::Account.find(row[0].to_i)
+    #     person = Bank::Owner.find(row[1].to_i)
+    #     acct.assign_to_owner(person)
+    #     acct
+    #   end
+    # end
+
+    def assign_to_owner(person) # pass in an instance of Owner
       @owner = person
-      puts "The owner of the account is #{@owner.first_name} #{@owner.last_name}"
     end
 
     def withdraw(withdraw_amount)
@@ -32,38 +67,29 @@ module Bank
   end
 
   class Owner
-    attr_reader :first_name, :last_name, :address_one, :address_two, :city, :state, :zip
+    attr_reader :ident, :last_name, :first_name, :address, :city, :state
 
-    def initialize(owner_hash)
-      @first_name = owner_hash[:first_name]
-      @last_name = owner_hash[:last_name]
-      @address_one = owner_hash[:address_one]
-      @address_two = owner_hash[:address_two]
-      @city = owner_hash[:city]
-      @state = owner_hash[:state]
-      @zip = owner_hash[:zip]
+    def initialize(ident, last_name, first_name, address, city, state)
+      @ident = ident
+      @last_name = last_name
+      @first_name = first_name
+      @address = address
+      @city = city
+      @state = state
+    end
+
+    def self.all
+      CSV.read("./support/owners.csv", 'r').map do |row|
+        Bank::Owner.new(row[0].to_i, row[1], row[2], row[3], row[4], row[5])
+      end
+    end
+
+    def self.find(id)
+      self.all.find do |owner|
+        owner.ident == id
+      end
     end
 
   end
 
 end
-
-
-### example ###
-### constants are used for availability in irb ###
-
-JENNA_ACCT = Bank::Account.new("Jenna ID", 1200)
-
-jenna_info = {
-  first_name: "Jenna",
-  last_name: "Nichols",
-  address_one: "4900 Linden Ave N",
-  city: "Seattle",
-  state: "WA",
-  zip: "98103"
-}
-
-JENNA_OWNER = Bank::Owner.new(jenna_info)
-
-# can assign JENNA_OWNER to JENNA_ACCT as follows
-# JENNA_ACCT.assign_owner(JENNA_OWNER)
