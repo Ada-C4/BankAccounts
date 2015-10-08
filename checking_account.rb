@@ -1,12 +1,13 @@
-
+module Bank
   class CheckingAccount < Account
+    attr_reader :used_checks, :balance, :account_id, :owner_id
 
-    def initialize
+    MIN_BALANCE = 0
+    WITHDRAWAL_FEE= 100
 
-    end
-
-    def withdraw
-
+    def initialize(id, initial_balance, open_date)
+      super
+      @used_checks = 0
     end
 
     # The input amount gets taken out of the account as a result of a check withdrawal. Returns the updated account balance.
@@ -15,11 +16,18 @@
     #reset_checks: Resets the number of checks used to zero
 
     def withdraw_using_check(amount)
-
+      if @used_checks >= 3
+        @balance = @balance - 200
+      end
+      new_balance = @balance - amount
+      raise ArgumentError.new("You don't have enough money for that.") if new_balance <= @balance - 1000
+      @used_checks += 1
+      @balance = new_balance
     end
 
     def reset_checks
-      #reset checks
+      @used_checks = 0
     end
 
   end
+end
