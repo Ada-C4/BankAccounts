@@ -4,14 +4,14 @@ require 'pry'
 module Bank
   class Account
 
-    attr_reader :balance, :owner, :id
+    attr_reader :balance, :id
+    attr_accessor :owner
 
     def initialize(id, initial_balance, open_date)
-      #@account_owner = owner.first_name
       @id = id.to_i
       @balance = initial_balance.to_i/100.0
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
-      @owner = nil
+      #@owner = nil
 
       # Raises an argument error if the initial balance is less than 0
       if initial_balance.to_i < 0
@@ -39,13 +39,27 @@ module Bank
       return found
     end
 
+    # Links owners with accounts
+    def self.link_owner
+      self.all
+      Bank::Owner.all
+      accounts_with_owners = []
+      account_owners_csv = CSV.read("support/account_owners.csv")
+      account_owners_csv.each do |row|
+        account = self.find(row[0].to_i)
+        owner_account = Bank::Owner.find(row[1].to_i)
+        account.owner = owner_account
+        accounts_with_owners.push(account)
+      end
+      return accounts_with_owners
+    end
+
     # ----------------------------------------- #
               # Work below is extra #
 
     # Displays (with formatting) the account details for all the accounts in accounts.csv
     # (Made this on accident and didn't want to let it go to waste!)
     def self.all_print_nice
-      #binding.pry
       if @accounts == nil
         puts "There are no accounts."
       else
@@ -99,6 +113,7 @@ module Bank
       puts "This account was set up on #{@open_date}"
     end
 
+
   end
 
   class Owner
@@ -143,7 +158,6 @@ module Bank
     # Finds the owner with the ID that matches the passed parameter and returns the instance
     def self.find(id_search)
       found = @owners.find do |owner|
-        binding.pry
         owner.id == id_search
       end
       return found
