@@ -14,8 +14,9 @@ module Bank
       @opendate = account_array[@@number_of_accounts][2]
       # @opendate = opendate
       # @account_id = account_id
-      @balance = @balance.to_i
-      # @amount = amount.to_i
+      @balance = balance.to_i
+      # @fee = fee
+      @amount = amount.to_i
       if @balance < 0
         raise ArgumentError.new("Cannot create a new account with a negative balance")
 
@@ -26,15 +27,15 @@ module Bank
       @@number_of_accounts += 1
     end #end statement for initialize method begining on line 10
 
-    def withdraw
-      puts "Type the amount you would like to withdraw:"
-      @amount = gets.chomp.to_i
-      if @balance - @amount < 0
+    def withdraw(amount)
+      # puts "Type the amount you would like to withdraw:"
+      # @amount = gets.chomp.to_i
+      if @balance - amount.to_i < 0
         puts ("Cannot withdraw an amount that will make the balance negative.")
         puts "Your current balance is #{@balance}."
       else
-        @balance  -= @amount
-        puts "Your new balance is: #{@balance} dollars."
+        @balance  -= amount.to_i
+        # puts "Your new balance is: #{@balance} dollars."
       end#end statment for the if/else beginning on line 32
     end#end for withdraw method beginning on line 29
 
