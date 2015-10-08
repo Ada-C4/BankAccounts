@@ -14,7 +14,6 @@ module Bank
       @balance = balance * 100
       @open_date = open_date
       @min_balance = 0
-      @overdraft_amt = 0
       @act_withdraw_fee = 0
       # @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %Q")
     end

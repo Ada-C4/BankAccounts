@@ -5,7 +5,6 @@ module Bank
       super
 
       @act_withdraw_fee = 100
-      @overdraft_amt = -1000
     end
 
     def withdraw(withdraw_amt)
@@ -13,8 +12,19 @@ module Bank
     end
 
     def withdraw_using_check(amount)
-      withdraw
+      withdraw_to_cents = amount * 100
 
+      free_checks = 3
+
+      if (@balance - withdraw_to_cents) < (@min_balance + 1000)
+        puts "You cannot withdraw that much. Your current balance is #{@balance} cents"
+      elsif free_checks > 0
+        @balance -= (withdraw_to_cents)
+        puts "Your account balance is now #{@balance} cents."
+        free_checks -= 1
+      else
+
+      end
 
     end
 
