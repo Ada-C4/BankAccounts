@@ -4,7 +4,7 @@ module Bank
 
     def initialize(id, initial_balance, open_date)
       super
-      @fee = 1
+      @fee = 1.0
       @check_number = 1
       #@min_balance = 0
     end
@@ -14,18 +14,25 @@ module Bank
     end
 
     def withdraw_using_check(amount_to_withdraw)
-      if check_number <= 3
-        @min_balance = -10
+      initial_balance = @balance
+      if @check_number <= 3
+        @fee = 0
+        @min_balance = -10.0
         withdraw(amount_to_withdraw)
         @min_balance = 0
-        @check_number +=1
+        if @balance != initial_balance
+          @check_number +=1
+        end
       else
         @fee = 2
         @min_balance = -10
         withdraw(amount_to_withdraw)
+        if @balance != initial_balance
+          @check_number +=1
+        end
         @min_balance = 0
       end
-
+      return @balance
     end
 
   end
