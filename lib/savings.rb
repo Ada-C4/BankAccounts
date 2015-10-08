@@ -12,16 +12,16 @@ module Bank
       end
     end
 
-
-    # def withdraw(amount)
-    #   fee = 200
-    #   if @balance - (amount + fee) < 1000
-    #     puts "You cannot go below the minimum balance of $10.00. Transaction cancelled."
-    #   else
-    #     return @balance -= (amount + fee)
-    #   end
-    # end
-
+    def add_interest(rate)
+      puts "------ADD INTEREST------".colorize(:blue)
+      interest = @balance * rate.to_f / 100
+      puts "Starting balance: " + Money.new(@balance, "USD").format
+      puts "You earned " + Money.new(interest, "USD").format + " at a rate of #{rate}%"
+      @balance += interest
+      puts "Updated balance: " + Money.new(@balance, "USD").format
+      puts "Actual balance is #{@balance}"
+      return interest
+    end
 
   end
 end
