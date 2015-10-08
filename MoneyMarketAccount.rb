@@ -26,9 +26,17 @@ module Bank
             @num_transactions += 1
           return @balance
         else
-          puts "You cannot make another transaction until your balance is increased."
+          puts "You cannot make another transaction until your balance is increased to the minimum balance, $#{@min_balance}."
         end
       end
+    end
+
+#not working right now
+    def deposit(amount)
+      if
+        true
+      end
+      @num_transactions += 1
     end
   end
 end
