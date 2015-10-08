@@ -6,7 +6,7 @@ module Bank
     def initialize(ident, balance, open_date)
       @ident = ident.to_i
       @balance = balance.to_i
-      @min_balance = 0  
+      @min_balance = 0
       check_valid_balance
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
     end

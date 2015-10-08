@@ -4,7 +4,6 @@ class CheckingAccount < Bank::Account
   def initialize(ident, balance, open_date)
     super
     @check_count = 0
-    @check_fee = 100
   end
   def withdraw(amount)
     amount += 100
@@ -15,12 +14,10 @@ class CheckingAccount < Bank::Account
       puts "Not enough fundz!"
     else
       if @check_count < 3
-        @check_fee = 100
-        @balance -= (amount + @check_fee)
+        @balance -= (amount + 100)
         @check_count += 1
       else
-        @check_fee = 300
-        @balance -= (amount + @check_fee)
+        @balance -= (amount + 300)
       end
       return @balance
     end
