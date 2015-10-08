@@ -29,8 +29,8 @@ module Bank
       @lock = false if deposit_amt + @balance > 1000000
 
       if @transactions < 6 && @lock == false
+        @transactions += 1 if deposit_amt <= @balance && @balance > 1000000
         super
-        @transactions += 1 if deposit_amt <= @balance
       else
         print "Your account is locked until your balance is restored to 1000000. " if @lock
         print "You have reached your maximum of 6 transactions this month. " if @lock == false
