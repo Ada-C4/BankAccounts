@@ -43,7 +43,7 @@ puts "line 41ish"
 # Bank::Account.match_account_to_owner(account_owners_csv)
 # Bank::Account.all
 
-newsavings = Bank::SavingsAccount.new(23232, 32,"1999-03-27 11:30:09 -0700")
+newsavings = Bank::SavingsAccount.new(23232, 10000,"1999-03-27 11:30:09 -0700")
 Bank::Account.all
 puts "line 49ish"
 puts newsavings.balance.to_s
@@ -51,3 +51,5 @@ puts
 # toolowsavings = Bank::SavingsAccount.new(23232, 9,"1999-03-27 11:30:09 -0700")
 
 newsavings.withdraw(20)
+newsavings.deposit(22)
+newsavings.add_interest(0.25)
