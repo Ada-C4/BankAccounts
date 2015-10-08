@@ -1,3 +1,4 @@
+require 'pry'
 module Bank
   class Account
 
@@ -85,18 +86,26 @@ module Bank
 # ----------------------------------------#
 
     # Method for withdrawing from account
-    def withdraw(amount_to_withdraw)
-      amount_to_withdraw = amount_to_withdraw/100.00
-      amount_to_withdraw += @fee
+    def withdraw(orig_amount_to_withdraw)
+      orig_amount_to_withdraw = orig_amount_to_withdraw/100.00
+
+      amount_to_withdraw = orig_amount_to_withdraw + @fee
       # Checks that the user is not withdrawing more than what is available in the account
-      if (@balance - amount_to_withdraw)< @min_balance
+      binding.pry
+      if (@balance - amount_to_withdraw) < @min_balance
         puts "The requested withdrawal is more than the available funds."
-        puts "You only have $#{@balance-@min_balance-@fee} available for withdrawal."
+        if (@balance-@min_balance-@fee) < 0
+          puts "You have no money left to withdraw."
+        else
+          puts "You only have $#{@balance-@min_balance-@fee} available for withdrawal."
+        end
         return @balance
       else
         # makes the withdrawal and displays info to the user
-        @balance -= (amount_to_withdraw + @fee)
-        puts "You have withdrawn $#{amount_to_withdraw}"
+        @balance -= (amount_to_withdraw)
+        puts balance
+        puts amount_to_withdraw
+        puts "You have withdrawn $#{orig_amount_to_withdraw}"
         if @fee != 0
           puts "You have also incurred a $#{@fee} fee."
         end
