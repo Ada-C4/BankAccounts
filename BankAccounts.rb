@@ -7,8 +7,9 @@ module Bank
 
     attr_reader :balance, :owner, :account_id
 
-    def initialize(account_id, initial_balance, open_date)
+    def initialize(account_id, initial_balance, open_date, min_balance = 0)
       @account_id = account_id.to_i
+      @min_balance = min_balance
       @balance = check_initial_balance(initial_balance.to_i)
       @open_date = Chronic.parse(open_date)
     end
@@ -27,8 +28,8 @@ module Bank
     end
 
     def check_initial_balance(initial_balance)
-      if initial_balance < 0
-        raise ArgumentError.new("Your initial balance must be positive!")
+      if initial_balance < @min_balance
+        raise ArgumentError.new("Your initial balance must be more than #{@min_balance}!")
       else
         return initial_balance
       end
