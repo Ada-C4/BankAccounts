@@ -5,15 +5,21 @@ module Bank
   class Account
     @@count_accounts = 0
 
-    attr_accessor :id, :balance, :date
+    attr_accessor :id, :balance, :date, :owner
 
     def initialize (id, balance, date)
       @balance = balance
       @id = id
       @date = date
       @@count_accounts += 1
+      @owner = nil
       #@owner = owner
     end
+
+    def set_owner (owner)
+      @owner = owner
+    end
+
     #get a row from index and return a new account
     def self.create_account (person_array)
       account_id = person_array[0].to_i
@@ -38,8 +44,7 @@ module Bank
       sample = CSV.read("./support/accounts.csv")
       sample.find do |row|
         if row[0].to_i == id
-          return row
-          break
+          return create_account(row)
         end
       end
     end
@@ -105,7 +110,7 @@ module Bank
     end
 
     def self.create_owner (person_array)
-      person_id = person_array[0]
+      person_id = person_array[0].to_i
       person_last_name = person_array[1]
       person_first_name = person_array[2]
       person_address = person_array[3]
@@ -128,17 +133,36 @@ module Bank
         owner = create_owner(row)
         owners.push(owner)
       end
-      return accounts
+      return owners
     end
 
-    def self.fine(id)
+    def self.find(id)
       sample = CSV.read("./support/owners.csv")
-      sample.find do |row|
-        row[0] == id
+      sample.each do |row|
+        if row[0] == id
+          return create_owner(row)
+        end
       end
     end
 
-    
+
+## Why isn't this working??
+
+    def self.owner_account
+      sample = CSV.read("./support/account_owners.csv")
+      owner_accounts_array =[]
+      sample.each do |row|
+        account = Bank::Account.find(row[0])
+        owner = self.find(row[1])
+        if account == nil
+          break
+        else
+        account.set_owner(owner)
+        owner_accounts_array.push(account)
+        end
+      end
+      return owner_accounts_array
+    end
  end
 end
 
