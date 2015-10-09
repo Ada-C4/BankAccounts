@@ -15,23 +15,16 @@ module Bank
     end
 
     def withdraw(amount)
-      puts "----MONEY MARKET WITHDRAWAL----".colorize(:blue)
       # Too many transactions
       if @transactions >= 6
         puts "You have already made #{@transactions} transactions this month. Sorry!"
-      # Do the transaction if the funds are above $10,000
-      elsif @balance - amount < 0
-        puts "You do not have sufficient funds to withdraw that amount."
       elsif @balance >= MIN_BALANCE
         @transactions += 1
-        puts "Starting balance: " + Money.new(@balance, "USD").format
-        puts "Amount withdrawn: " + Money.new(amount, "USD").format
-        if @balance - amount < MIN_BALANCE
-          puts "Penalty: " + Money.new(FEE, "USD").format
-          amount += FEE
+        if @balance - amount > MIN_BALANCE
+          super(amount, false, false)
+        else
+          super(amount, false)
         end
-        @balance -= amount
-        puts "Updated balance: " + Money.new(@balance, "USD").format
       # Print error message for not having enough funds to withdraw
       else
         puts "You may not do any more withdrawals until your balance is above " + Money.new(MIN_BALANCE, "USD").format

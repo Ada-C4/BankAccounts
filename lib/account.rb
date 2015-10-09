@@ -25,15 +25,20 @@ module Bank
       end
     end
 
-    def withdraw(amount)
-      puts "------WITHDRAWAL------".colorize(:blue)
-      if @balance - (amount + self.class::FEE) < self.class::MIN_BALANCE
+    def withdraw(amount, check_min = true, do_penalty = true)
+      puts "------#{@type.upcase} WITHDRAWAL------".colorize(:blue)
+      if @balance - amount < 0
+        puts "You do not have sufficient funds to withdraw that amount."
+      elsif @balance - (amount + self.class::FEE) < self.class::MIN_BALANCE && check_min
         puts "You cannot go below the minimum account balance of " + Money.new(self.class::MIN_BALANCE, "USD").format
       else
         puts "Starting balance: " + Money.new(@balance, "USD").format
         puts "Amount withdrawn: " + Money.new(amount, "USD").format
-        puts "Fee: " + Money.new(self.class::FEE, "USD").format
-        @balance -= (amount + self.class::FEE)
+        if do_penalty
+          puts "Fee: " + Money.new(self.class::FEE, "USD").format
+          @balance -= self.class::FEE
+        end
+        @balance -= amount
         puts "Updated balance: " + Money.new(@balance, "USD").format
       end
       return @balance
