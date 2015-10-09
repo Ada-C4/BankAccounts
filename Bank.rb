@@ -25,8 +25,6 @@ class Account
     @id = id
     @balance = balance
     @opendate = opendate
-    #@id_field = []
-      # @id_field = firs
   end
 
   def display_account
@@ -80,9 +78,9 @@ class Account
       end
     end
   end
-  
-end
 
+end
+end
 
 
 # new_user = Bank::Owner.new("Andre")
