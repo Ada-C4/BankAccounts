@@ -7,13 +7,14 @@ module Bank
     # :file
     @@number_of_accounts = 0
 
-    def initialize()
-      account_array = CSV.read("./support/accounts.csv")
-      @id = account_array[@@number_of_accounts][0]
-      @balance = account_array[@@number_of_accounts][1]
-      @opendate = account_array[@@number_of_accounts][2]
+    def initialize(id, balance)
+      # account_array = CSV.read("./support/accounts.csv")
+      # @id = account_array[@@number_of_accounts][0]
+      # @balance = account_array[@@number_of_accounts][1]
+      # @opendate = account_array[@@number_of_accounts][2]
       # @opendate = opendate
       # @account_id = account_id
+      @id = id
       @balance = balance.to_i
       # @fee = fee
       @amount = amount.to_i
@@ -24,7 +25,7 @@ module Bank
          puts "You deposited #{@balance} dollars."
          puts "Your new balance is #{@balance} dollars."
       end
-      @@number_of_accounts += 1
+      # @@number_of_accounts += 1
     end #end statement for initialize method begining on line 10
 
     def withdraw(amount)
@@ -35,14 +36,14 @@ module Bank
         puts "Your current balance is #{@balance}."
       else
         @balance  -= amount.to_i
-        # puts "Your new balance is: #{@balance} dollars."
+        puts "Your new balance is: #{@balance} dollars."
       end#end statment for the if/else beginning on line 32
     end#end for withdraw method beginning on line 29
 
-    def deposit
-      puts "Type the amount you would like to deposit:"
-      @amount = gets.chomp.to_i
-      @balance += @amount
+    def deposit(amount)
+      # puts "Type the amount you would like to deposit:"
+      # @amount = gets.chomp.to_i
+      @balance += amount.to_i
       puts "Your new balance is #{@balance} dollars."
     end#end statement for deposit method beginning on line 41
 
