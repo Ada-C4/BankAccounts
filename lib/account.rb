@@ -94,11 +94,11 @@ module Bank
       # Checks that the user is not withdrawing more than what is available in the account
       if (@balance - amount_to_withdraw) < @min_balance
         if @acct_type == "MoneyMarket"
-          if (@balance - amount_to_withdraw - @fee) < 0
+          if (@balance - amount_to_withdraw - @money_market_fee) < 0
             puts "Sorry you cannot make that withdrawal without depositing more money."
           else
-            puts "As this transaction puts your balance below $#{@min_balance}, a fee of $#{@fee} has been imposed."
-            @balance -= (amount_to_withdraw + @fee)
+            puts "As this transaction puts your balance below $#{@min_balance}, a fee of $#{@money_market_fee} has been imposed."
+            @balance -= (amount_to_withdraw + @money_market_fee)
             puts "Your balance is $#{@balance}"
           end
         else

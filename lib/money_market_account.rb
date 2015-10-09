@@ -7,6 +7,7 @@ module Bank
       @transactions = 0
       @min_balance = 10000
       @fee = 0
+      @money_market_fee = 100
       @acct_type = "MoneyMarket"
 
       if initial_balance.to_i/100.00 < @min_balance
