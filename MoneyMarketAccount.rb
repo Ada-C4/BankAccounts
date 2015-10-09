@@ -21,6 +21,7 @@ module Bank
         if @bal_above_min
           if (@balance - amount < @min_balance) #withdrawing the amount will put the account below the minimum balance
             amount += below_min_balance_fee
+            puts "Your account is locked until you reach the minimum balance of $#{@min_balance}."
             @bal_above_min = false
           end
             @balance -= amount
