@@ -5,19 +5,22 @@ module Bank
 
   class Account
 
+    MIN_BALANCE = 0
+    FEE = 0
+
     attr_reader :balance, :owner, :account_id
 
-    def initialize(account_id, initial_balance, open_date, min_balance = 0, fee = 0)
+    def initialize(account_id, initial_balance, open_date) #min_balance = 0, fee = 0)
       @account_id = account_id.to_i
-      @min_balance = min_balance
+      #@min_balance = min_balance
       @balance = check_initial_balance(initial_balance.to_i)
       @open_date = Chronic.parse(open_date)
-      @fee = fee
+      #@fee = fee
     end
 
     def withdraw(amount)
-      if amount <= @balance - @min_balance
-        @balance -= (amount + @fee)
+      if amount <= @balance - self.class::MIN_BALANCE - self.class::FEE
+        @balance -= (amount + self.class::FEE)
       else
         puts "Your balance is #{@balance}. You cannot withdraw #{amount} at this time."
         return @balance
@@ -29,8 +32,8 @@ module Bank
     end
 
     def check_initial_balance(initial_balance)
-      if initial_balance < @min_balance
-        raise ArgumentError.new("Your initial balance must be more than #{@min_balance}!")
+      if initial_balance < self.class::MIN_BALANCE
+        raise ArgumentError.new("Your initial balance must be more than #{self.class::MIN_BALANCE}!")
       else
         return initial_balance
       end

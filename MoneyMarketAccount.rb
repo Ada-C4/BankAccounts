@@ -1,9 +1,12 @@
 module Bank
 
   class MoneyMarketAccount < SavingsAccount
+
+    MIN_BALANCE = 1000000
+
     attr_reader :transaction_count
 
-    def initialize(account_id, initial_balance, open_date, min_balance = 1000000, fee = 0)
+    def initialize (account_id, initial_balance, open_date)
       super
       @transaction_count = 0
     end
@@ -11,7 +14,7 @@ module Bank
     def withdraw(amount)
         if account_frozen? || transaction_count_exceeded?
           return @balance
-        elsif amount <= @balance - @min_balance
+        elsif amount <= @balance - self.class::MIN_BALANCE
           @balance -= amount
         else
           @balance -= (amount + 10000)
@@ -23,7 +26,7 @@ module Bank
     def deposit(amount)
       if transaction_count_exceeded?
         return @balance
-      elsif account_frozen? && (@balance + amount) >= @min_balance
+      elsif account_frozen? && (@balance + amount) >= self.class::MIN_BALANCE
       else
         @transaction_count += 1
       end
@@ -31,7 +34,7 @@ module Bank
     end
 
     def account_frozen?
-      @balance < @min_balance
+      @balance < self.class::MIN_BALANCE
     end
 
     def transaction_count_exceeded?

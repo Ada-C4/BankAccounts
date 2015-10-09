@@ -2,7 +2,9 @@ module Bank
 
   class CheckingAccount < Account
 
-    def initialize(account_id, initial_balance, open_date, min_balance = 0, fee = 100)
+    FEE = 100
+
+    def initialize (account_id, initial_balance, open_date)
       super
       @free_check = 3
     end

@@ -2,7 +2,10 @@ module Bank
 
   class SavingsAccount < Account
 
-      def initialize(account_id, initial_balance, open_date, min_balance = 1000, fee = 200)
+    MIN_BALANCE = 1000
+    FEE = 200
+
+      def initialize (account_id, initial_balance, open_date)
         super
       end
 
