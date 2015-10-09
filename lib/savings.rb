@@ -19,7 +19,7 @@ module Bank
       puts "You earned " + Money.new(interest, "USD").format + " at a rate of #{rate}%"
       @balance += interest
       puts "Updated balance: " + Money.new(@balance, "USD").format
-      puts "Actual balance is #{@balance}"
+      @balance.to_i
       return interest
     end
 

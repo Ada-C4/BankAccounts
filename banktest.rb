@@ -12,17 +12,21 @@ mma = Bank::MoneyMarketAccount.new(1, 10000000) # Valid MMA account
 #
 # mma.reset_transactions
 
-# Test withdrawing to balance below $10,000
-4.times do
-  mma.withdraw(3300000)
-end
+# # Test withdrawing to balance below $10,000
+# 4.times do
+#   mma.withdraw(3300000)
+# end
+#
+# # Test depositing and counting transactions below $10,000
+# 2.times do
+#   mma.deposit(5000000)
+# end
 
-# Test depositing and counting transactions below $10,000
-2.times do
-  mma.deposit(5000000)
-end
+# Test Money Market interest
+mma.add_interest(0.25)
+mma.add_interest(1)
 
-# mma = Bank::MoneyMarketAccount.new(1, 9999) # Invalid account - not enough funds
+mma = Bank::MoneyMarketAccount.new(1, 9999) # Invalid account - not enough funds
 
 # - Normal Account Tests -
 # account = Bank::Account.new(1, 100)

@@ -1,7 +1,7 @@
 require './lib/account'
 
 module Bank
-  class MoneyMarketAccount < Account
+  class MoneyMarketAccount < SavingsAccount
     MAX_TRANSACTIONS = 6
     MIN_BALANCE = 1000000
     FEE = 10000
@@ -48,6 +48,10 @@ module Bank
       @transactions += 1 if @balance >= MIN_BALANCE
       super(amount)
       puts "Transactions: #{@transactions}"
+    end
+
+    def add_interest(rate)
+      super(rate)
     end
 
   end
