@@ -1,7 +1,5 @@
 module Bank
   # This will inherit behavior from Account class
-  attr_reader :id, :balance, :open_date # do I need this?
-
   class SavingsAccount < Account
     def initialize(id, balance, open_date)
       super
@@ -24,6 +22,7 @@ module Bank
       @balance = @balance + interest # adds interest to balance
       # puts the amount earned in a dollar (not cents) format.
       puts "You earned a measly $#{interest/100} in interest."
+      return interest
     end
   end
 end
