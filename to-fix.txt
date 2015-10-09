@@ -1,0 +1,5 @@
+Return two places for dollar amounts
+Floats instead of to_i
+Check returns
+Change overdraft wording
+Pull owner out of account

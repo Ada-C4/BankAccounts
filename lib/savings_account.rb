@@ -8,9 +8,10 @@ module Bank
       super
       @min_balance = 10.0
       @fee = 2.0
+      @acct_type = "Savings"
 
       #Raises an argument error if the initial balance is less than 0
-      if initial_balance.to_i/100.00 < @min_balance
+      if initial_balance.to_f < @min_balance
         raise ArgumentError, "The balance cannot be less than $#{@min_balance}."
       end
     end
@@ -21,9 +22,7 @@ module Bank
     end
 
     def add_interest(rate)
-      interest =  @balance * rate/100
-      @balance += interest
-      return interest
+      super
     end
 
 

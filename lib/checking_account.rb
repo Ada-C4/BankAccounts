@@ -6,6 +6,7 @@ module Bank
       super
       @fee = 1.0
       @check_number = 1
+      #@acct_type = "CheckingAccount"
       #@min_balance = 0
     end
 
@@ -23,6 +24,7 @@ module Bank
         if @balance != initial_balance
           @check_number +=1
         end
+        @fee = 1.0
       else
         @fee = 2.0
         @min_balance = -10
@@ -31,6 +33,7 @@ module Bank
           @check_number +=1
         end
         @min_balance = 0
+        @fee = 1.0
       end
       return @balance
     end
