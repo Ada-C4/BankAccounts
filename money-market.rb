@@ -2,20 +2,20 @@ module Bank
   class MoneyMarketAccount < Account
     attr_reader :transactions_permitted, :transaction_count, :balance
 
-    @@min_balance = 1000000   
+    @@min_balance = 1000000
 
     def initialize(ident, open_date, balance)
       super
       @transaction_count = 0
-      @transactions_permitted = true
+      @transactions_permitted = true      # this only refers to minimum balance concerns, not to transaction count
     end
 
     def withdraw(withdraw_amount)
-      if @balance - withdraw_amount < 0
+      if @balance - withdraw_amount < 0                         # balance can never go negative
         puts "Insufficient new balance. Withdraw denied."
         @balance
-      elsif @balance - withdraw_amount < @@min_balance && @transactions_permitted       # if balance will go below min balance
-        @transactions_permitted = false                   # no more transactions
+      elsif @balance - withdraw_amount < @@min_balance && @transactions_permitted
+        @transactions_permitted = false
         @balance = @balance - withdraw_amount - 10000
       elsif
         @transaction_count < 6 && @transactions_permitted
