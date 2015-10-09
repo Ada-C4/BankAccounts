@@ -8,6 +8,12 @@ module Bank
     end
 
     def withdraw(withdrawal)
+      if withdrawal < 0
+        print "You cannot withdraw a negative amount. "
+
+        return @balance
+      end
+      
       if @balance - withdrawal - 200 >= 1000
         super
         @balance -= 200 if withdrawal > 0
