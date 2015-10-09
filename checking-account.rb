@@ -9,12 +9,6 @@ module Bank
       @checks = 0
     end
 
-    def withdraw(withdrawal)
-      super
-
-      return @balance
-    end
-
     def withdraw_using_check(withdrawal)
       if withdrawal < 0
         print "You cannot withdraw a negative amount. "

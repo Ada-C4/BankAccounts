@@ -1,5 +1,5 @@
 module Bank
-  class MoneyMarketAccount < Account
+  class MoneyMarketAccount < SavingsAccount
 
     FEE = 10000
 
@@ -40,13 +40,6 @@ module Bank
       end
 
       return @balance
-    end
-
-    def add_interest(rate)
-      interest = @balance * rate/100
-      @balance += interest
-
-      return interest
     end
 
     def reset_transactions

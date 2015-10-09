@@ -11,12 +11,6 @@ module Bank
       raise ArgumentError if @balance < 1000
     end
 
-    def withdraw(withdrawal)
-        super
-
-      return @balance
-    end
-
     def add_interest(rate)
       interest = @balance * rate/100
       @balance += interest
