@@ -12,7 +12,7 @@ module Bank
 
       #Raises an argument error if the initial balance is less than 0
       if initial_balance.to_f < @min_balance
-        raise ArgumentError, "The balance cannot be less than $#{@min_balance}."
+        raise ArgumentError, "The balance cannot be less than $#{@min_balance.round(2)}."
       end
     end
 

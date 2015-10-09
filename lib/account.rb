@@ -151,7 +151,7 @@ module Bank
     end
 
     def add_interest(rate)
-      if acct_type == "MoneyMarket" || acct_type == "Savings"
+      if @acct_type == "MoneyMarket" || @acct_type == "Savings"
         interest =  @balance * rate/100
         @balance += interest
         puts "After adding interest, the balance is now $#{@balance.round(2)}"
