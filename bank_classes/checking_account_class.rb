@@ -22,28 +22,24 @@ require "pry"
         @balance = super(withdraw_amount, fee, min_balance)
       end #of withdraw method
 
+# - `#withdraw_using_check(amount)`: The input amount gets taken out of the account as a result of a check withdrawal. Returns the updated account balance.
+# calls withdraw method which:
+    #  - Allows the account to go into overdraft up to -$10 but not any lower
       def withdraw_using_check(withdraw_amount)
         if @checks_used < 3
-          withdraw(withdraw_amount)
+          withdraw(withdraw_amount, fee = 0)
           @checks_used += 1
+#   - The user is allowed three free check uses in one month, but any subsequent use adds a $2 transaction fee
         else
           withdraw(withdraw_amount, fee = 200)
         end
       end
-      # - `#withdraw_using_check(amount)`: The input amount gets taken out of the account as a result of a check withdrawal. Returns the updated account balance.
-      #   - Allows the account to go into overdraft up to -$10 but not any lower
-      #   - The user is allowed three free check uses in one month, but any subsequent use adds a $2 transaction fee
 
+      # # - `#reset_checks`: Resets the number of checks used to zero
       def reset_checks
         @checks_used = 0
       end
-      # # - `#reset_checks`: Resets the number of checks used to zero
 
     end #of CheckingAccount class
 
 end #end of medule
-
-# - `#withdraw_using_check(amount)`: The input amount gets taken out of the account as a result of a check withdrawal. Returns the updated account balance.
-#   - Allows the account to go into overdraft up to -$10 but not any lower
-#   - The user is allowed three free check uses in one month, but any subsequent use adds a $2 transaction fee
-# # - `#reset_checks`: Resets the number of checks used to zero
