@@ -23,9 +23,9 @@ module  Bank
         puts "Next time you need to deposit enouhg money to bring your account up to #{MIN_BALANCE}"
         @max_trans += 1
       else
+        @max_trans += 1
         @balance = new_balance
         return @balance
-        @max_trans += 1
       end
     end
 
