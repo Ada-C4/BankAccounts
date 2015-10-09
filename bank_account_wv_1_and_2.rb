@@ -21,27 +21,18 @@ module Bank
 		def withdraw(withdraw_amount)
 			withdraw_amount = withdraw_amount.to_i
 			while withdraw_amount > @balance
-				# raise ArgumentError.new("Cannot take more money out than you have.")
 				puts "Not enough money in this account."
 				puts "The current balance is #{@balance}. Please put in a different amount."
 				withdraw_amount = gets.chomp.to_i
 			end
 
 			@balance -= withdraw_amount.abs
-
 			puts "Your updated balance is: #{@balance}."
-
-			# Accepts a single parameter which represents the 
-			# amount of money that will be withdraw. 
-			# Return updated account balance. 
 		end
 
 		def deposit(deposit_amount)
 			@balance += @balance
 			puts "Your updated balance is: #{@balance}."
-			# Accepts a single parameter which represents the 
-			# amount of money that will be deposit.
-			# Return the updated account balance.  
 		end
 
 		def self.all 
@@ -58,15 +49,12 @@ module Bank
 			self.all.find do |line|
 				line.account_id.to_i == id
 			end
-
-			# match_account = Account.new(match_id[0].to_i, match_id[1].to_i, match_id[2])
-			# puts match_account
 		end
 	end
 
 	class Owner
 
-		attr_accessor :identifier, :first_name, :last_name, :street, :city, :state
+		attr_accessor :identifier, :first_name, :last_name, :street, :city, :state, :account
 	
 
 		def initialize(owner_hash)
@@ -76,6 +64,7 @@ module Bank
 			@street = owner_hash[:street]
 			@city = owner_hash[:city]
 			@state = owner_hash[:state]
+			@account = nil
 		end
 
 		def self.all 
@@ -96,16 +85,22 @@ module Bank
 			end
 		end
 
+		def self.master_list
+
+			master_list = []
+			account_owner_csv = CSV.read("./support/account_owners.csv")
+
+			account_owner_csv.each do |row|
+				account_list = Bank::Account.find(row[0].to_i)
+				account_owner = self.find(row[1].to_i)
+
+				account_owner.account = account_list
+				master_list.push(account_owner)
+			end
+
+			return master_list
+			puts master_list.find(1212)
+		end
+
 	end
 end
-
-# LOGAN = {
-# 			:first_name => "Logan",
-# 			:last_name => "McDonald",
-# 			:street => "1234 E. 1st",
-# 			:city => "Seattle",
-# 			:state => "WA",
-# 			:zip => 92839
-# 		}
-
-# my_account = Bank::Account.new(12345, 1000000)
