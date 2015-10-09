@@ -10,12 +10,10 @@ module Bank
 
     attr_reader :balance, :owner, :account_id
 
-    def initialize(account_id, initial_balance, open_date) #min_balance = 0, fee = 0)
+    def initialize(account_id, initial_balance, open_date)
       @account_id = account_id.to_i
-      #@min_balance = min_balance
       @balance = check_initial_balance(initial_balance.to_i)
       @open_date = Chronic.parse(open_date)
-      #@fee = fee
     end
 
     def withdraw(amount)
