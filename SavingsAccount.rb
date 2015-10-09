@@ -1,4 +1,3 @@
-#require "./bank_accounts.rb"
 
 module Bank
   class SavingsAccount < Account
