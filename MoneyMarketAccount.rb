@@ -1,5 +1,6 @@
 module Bank
   class MoneyMarketAccount < Account
+    attr_reader :num_transactions, :transaction_allowed
     def initialize(id, initial_balance, open_date, owner = nil)
       @id = id
       @balance = initial_balance
@@ -8,7 +9,7 @@ module Bank
       @owner = owner
       @num_transactions = 0
       @max_transactions = 6
-      @transaction_allowed = true
+      @bal_above_min = true
       check_balance
     end
 
@@ -17,26 +18,46 @@ module Bank
       if @num_transactions >= @max_transactions
         puts "You cannot make more than #{@max_transactions} transactions in one month. Transaction terminated."
       else
-        if @transaction_allowed
+        if @bal_above_min
           if (@balance - amount < @min_balance)
             amount += below_min_balance_fee
-            @transaction_allowed = false
+            @bal_above_min = false
           end
             @balance -= amount
             @num_transactions += 1
           return @balance
-        else
+        else #balance is below the minimum balance
           puts "You cannot make another transaction until your balance is increased to the minimum balance, $#{@min_balance}."
         end
       end
     end
 
-#not working right now
     def deposit(amount)
-      if
-        true
+      if !@bal_above_min
+        if (amount + @balance >= @min_balance)
+          super(amount)
+          @bal_above_min = true
+        else
+          puts "You cannot make another transaction until your balance is increased to the minimum balance, $#{@min_balance}."
+        end
+      else #balance is above the minimum balance
+        if @num_transactions >= @max_transactions
+          puts "You cannot make more than #{@max_transactions} transactions in one month. Transaction terminated."
+        else
+          super(amount)
+          @num_transactions += 1
+        end
       end
-      @num_transactions += 1
+    end
+
+    def reset_transactions
+      @num_transactions = 0
+    end
+
+    def add_interest(rate)
+      interest = @balance * (rate.to_f/100)
+      balance += interest
+      return interest
     end
   end
 end
