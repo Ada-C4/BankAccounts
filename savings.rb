@@ -11,11 +11,11 @@ module Bank
     end
 
     def withdraw(withdraw_amount)
-      if withdraw_amount > @min_balance
+      if (@balance - withdraw_amount) < @min_balance
         puts "Warning: Balance may not go under $10.00. Transaction terminated."
       else
         @balance -= (withdraw_amount + FEE)
-        puts "There is a transaction fee of $#{FEE/100}."
+        puts "There is a transaction fee of $#{FEE/100}.00."
       end
       return @balance
     end
