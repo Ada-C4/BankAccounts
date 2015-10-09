@@ -25,6 +25,10 @@ require 'csv'
       return @balance
     end
 
+    def add_interest(rate)
+      return "Not a function of this account."
+    end
+
     def reset_checks
       @checks_used = 0
       @withdrawal_fee = 1

@@ -4,17 +4,18 @@ require 'csv'
 
   class Account
 
+    @@min_balance = 0
+
     attr_accessor :balance, :account_id, :owner
 
     def initialize(account_id, balance, datetime_open, owner = nil)
       @account_id = account_id
       @balance = balance
-      @min_balance = 0
       @withdrawal_fee = 0
-      if balance < @min_balance
+      if balance < @@min_balance
         raise ArgumentError.new("Cannot start an account with a negative balance.")
       end
-      @datetime_open = datetime_open # DateTime.strptime(datetime_open, "%Y-%m-%d %H:%M:%S %z")
+      @datetime_open = DateTime.strptime(datetime_open, "%Y-%m-%d %H:%M:%S %z")
       @owner = owner
     end
 
@@ -60,9 +61,17 @@ require 'csv'
 
     def deposit(deposit_amount)
       # returns updated balance
-      @balance = @balance + deposit_amount
+      @balance += deposit_amount
       puts "Updated balance is: #{@balance}"
     end
+
+    def add_interest(rate)
+      interest = @balance * rate/100
+      puts "The interest earned on the account is: $#{interest.to_i}"
+      @balance = @balance + interest
+      puts "The new balance is: $#{@balance.to_i}"
+    end
+
 
     # def assign_owner(owner_hash)
     #   @owner = owner
