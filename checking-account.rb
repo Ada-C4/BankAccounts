@@ -1,6 +1,8 @@
 module Bank
   class CheckingAccount < Account
 
+    FEE = 100
+
     def initialize(id, initial_balance)
       super
 
@@ -8,14 +10,7 @@ module Bank
     end
 
     def withdraw(withdrawal)
-      if withdrawal < 0
-        print "You cannot withdraw a negative amount. "
-
-        return @balance
-      end
-
-      super(withdrawal + 100)
-      @balance -= 100 if withdrawal + 100 <= @balance && withdrawal > 0
+      super(withdrawal)
 
       return @balance
     end

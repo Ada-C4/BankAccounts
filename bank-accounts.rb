@@ -69,6 +69,9 @@ module Bank
     attr_reader :balance, :id, :date
     attr_accessor :owner
 
+    FEE = 0
+    MIN_BAL = 0
+
     def initialize(id, initial_balance, open_date = nil, owner = nil)
       @id = id.to_i
       @balance = initial_balance.to_i
@@ -88,8 +91,8 @@ module Bank
         return @balance
       end
 
-      if withdrawal <= @balance
-        @balance -= withdrawal
+      if @balance - withdrawal - self.class::FEE >= self.class::MIN_BAL
+        @balance -= (withdrawal + self.class::FEE)
       else
         print "You cannot withdraw more than is in your bank account. "
       end
