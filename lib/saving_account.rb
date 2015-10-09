@@ -1,9 +1,9 @@
 module Bank
-  require "./account.rb"
+   require "./account.rb"
   class SavingsAccount < Account
 
 
-    def initialize (id, balance, date)
+    def initialize(id, date)
       super
     end
 
@@ -12,15 +12,13 @@ module Bank
     end
 
 
-    def withdraw (amount)
+    def withdraw(amount)
       super(amount, 200, 1000) #in cents
     end
 
 
     def add_interest(rate)
-      interest = @balance * rate
-      @balance = @balance + interest
-      return interest
+      super(rate)
     end
 
   end
