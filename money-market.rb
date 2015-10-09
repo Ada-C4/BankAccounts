@@ -2,7 +2,7 @@ module Bank
   class MoneyMarketAccount < Account
     attr_reader :transactions_permitted, :transaction_count, :balance
 
-    @@min_balance = 1000000
+    @@min_balance = 10000   ### change this back
 
     def initialize(ident, open_date, balance)
       super
@@ -19,9 +19,9 @@ module Bank
       if @balance - withdraw_amount < 0
         puts "Insufficient new balance. Withdraw denied."
         @balance
-      elsif @balance - withdraw_amount < @@min_balance       # if balance will go below min balance
+      elsif @balance - withdraw_amount < @@min_balance && @transactions_permitted       # if balance will go below min balance
         @transactions_permitted = false                   # no more transactions
-        @balance -= 10000                                 # fee of $100
+        @balance = @balance - withdraw_amount - 100                                   # change this back
       elsif
         @transaction_count < 6 && @transactions_permitted
         @transaction_count += 1
@@ -46,6 +46,7 @@ module Bank
             @balance
           end
       elsif @transaction_count < 6
+        @transaction_count += 1
         @balance += deposit_amount
       else
         @balance
