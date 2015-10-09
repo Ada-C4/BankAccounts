@@ -9,8 +9,9 @@ module Bank
       @fee = 0
       @money_market_fee = 100
       @acct_type = "MoneyMarket"
+      @allowed_to_withdraw = true
 
-      if initial_balance.to_i/100.00 < @min_balance
+      if initial_balance.to_f < @min_balance
         raise ArgumentError, "The balance cannot be less than $#{@min_balance}."
       end
     end
@@ -40,6 +41,10 @@ module Bank
         super
         @transactions += 1
       end
+    end
+
+    def add_interest(rate)
+      super
     end
 
     def reset_transactions
