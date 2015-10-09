@@ -64,9 +64,52 @@ require 'csv'
       puts "Updated balance is: #{@balance}"
     end
 
-    def assign_owner(owner_hash)
-      @owner = owner
-      # puts "The owner of this account is #{@owner.first_name} #{@owner.last_name}."
+    # def assign_owner(owner_hash)
+    #   @owner = owner
+    #   # puts "The owner of this account is #{@owner.first_name} #{@owner.last_name}."
+    # end
+  end
+
+  class Owner
+
+    attr_reader :owner_id, :first_name, :last_name, :street, :city, :state, :zip
+
+    def initialize(owner_hash)
+      @owner_id = owner_hash[:owner_id]
+      @first_name = owner_hash[:first_name]
+      @last_name = owner_hash[:last_name]
+      @street = owner_hash[:street]
+      @city = owner_hash[:city]
+      @state = owner_hash[:state]
+      @zip = owner_hash[:zip]
     end
+
+    def self.all
+      owners_csv = CSV.read("./support/owners.csv")
+      owners_array = []
+      owners_csv.each do |row|
+        owner_hash = {:owner_id => row[0], :last_name => row[1], :first_name => row[2], :street => row[3], :city => row[4], :state => row[5]}
+        owners_array.push Owner.new(owner_hash)
+      end
+      return owners_array
+    end
+
+    def self.find(id)
+      self.all.find do |line|
+        line.owner_id.to_i == id
+      end
+    end
+
+    # def self.everything
+    #   account_owners_csv = CSV.read("./support/account_owners.csv")
+    #   everything_array = []
+    #   account_owners_csv.each do |line|
+    #     each_owner = self.find(line[1].to_i)
+    #     each_account = Bank::Account.find(line[0].to_i)
+    #     each_owner.account = each_account
+    #     everything_array.push(each_owner)
+    #   end
+    #   return everything_array
+    # end
   end
 end

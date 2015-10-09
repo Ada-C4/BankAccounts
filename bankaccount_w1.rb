@@ -66,10 +66,10 @@ require 'csv'
       puts "Your updated balance is: #{@balance}"
     end
 
-    def assign_owner(owner_hash)
-      @owner = owner
-      # puts "The owner of this account is #{@owner.first_name} #{@owner.last_name}."
-    end
+    # def assign_owner(owner_hash)
+    #   @owner = owner
+    #   # puts "The owner of this account is #{@owner.first_name} #{@owner.last_name}."
+    # end
   end
 
   class Owner
@@ -102,17 +102,17 @@ require 'csv'
       end
     end
 
-    def self.everything
-      account_owners_csv = CSV.read("./support/account_owners.csv")
-      everything_array = []
-      account_owners_csv.each do |line|
-        each_owner = self.find(line[1].to_i)
-        each_account = Bank::Account.find(line[0].to_i)
-        each_owner.account = each_account
-        everything_array.push(each_owner)
-      end
-      return everything_array
-    end
+    # def self.everything
+    #   account_owners_csv = CSV.read("./support/account_owners.csv")
+    #   everything_array = []
+    #   account_owners_csv.each do |line|
+    #     each_owner = self.find(line[1].to_i)
+    #     each_account = Bank::Account.find(line[0].to_i)
+    #     each_owner.account = each_account
+    #     everything_array.push(each_owner)
+    #   end
+    #   return everything_array
+    # end
   end
 end
 
