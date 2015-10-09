@@ -5,9 +5,9 @@ module Bank
     def initialize(id, initial_balance, open_date)
       super
       @transactions = 0
-      @min_balance = 10000
+      @min_balance = 10000.00
       @fee = 0
-      @money_market_fee = 100
+      @money_market_fee = 100.00
       @acct_type = "MoneyMarket"
       @allowed_to_withdraw = true
 
