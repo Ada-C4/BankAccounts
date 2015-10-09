@@ -4,7 +4,7 @@ require 'csv'
 
   class Account
 
-    @@min_balance = 0
+    # @@min_balance = 0
 
     attr_accessor :balance, :account_id, :owner
 
@@ -12,7 +12,8 @@ require 'csv'
       @account_id = account_id
       @balance = balance
       @withdrawal_fee = 0
-      if balance < @@min_balance
+      @min_balance = 0
+      if balance < @min_balance
         raise ArgumentError.new("Cannot start an account with a negative balance.")
       end
       @datetime_open = DateTime.strptime(datetime_open, "%Y-%m-%d %H:%M:%S %z")

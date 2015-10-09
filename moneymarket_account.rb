@@ -4,7 +4,7 @@ require 'csv'
 
   class MoneyMarket < Account
 
-    @@min_balance = 10000
+    # @@min_balance = 10000
 
     attr_accessor :transactions
 
@@ -12,6 +12,7 @@ require 'csv'
       super
       #max of 6 transactions (deposit or withdrawal)
       #initial balance !< $10000 - will raise ArgumentError
+      @min_balance = 10000
       @transactions = 0
       @min_balance_fee = 100
     end
@@ -21,7 +22,7 @@ require 'csv'
   # end
 
     def withdraw(withdraw_amount)
-      if (@balance - withdraw_amount) < @@min_balance && @transactions < 6
+      if (@balance - withdraw_amount) < @min_balance && @transactions < 6
         @balance -= (@min_balance_fee)
         puts "A $100 fee is imposed for going below $10000"
       end
