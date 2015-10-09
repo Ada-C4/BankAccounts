@@ -92,9 +92,10 @@ module Bank
       end
 
       if @balance - withdrawal - self.class::FEE >= self.class::MIN_BAL
-        @balance -= (withdrawal + self.class::FEE)
+        @balance -= (withdrawal + self.class::FEE) if self.class != MoneyMarketAccount
+        @balance -= withdrawal if self.class == MoneyMarketAccount
       else
-        print "You cannot withdraw more than is in your bank account. "
+        print "You cannot withdraw that amount. "
       end
 
       return @balance

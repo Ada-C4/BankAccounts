@@ -10,7 +10,7 @@ module Bank
     end
 
     def withdraw(withdrawal)
-      super(withdrawal)
+      super
 
       return @balance
     end

@@ -1,6 +1,8 @@
 module Bank
   class MoneyMarketAccount < Account
 
+    FEE = 10000
+
     def initialize(id, initial_balance)
       super
 
@@ -11,14 +13,9 @@ module Bank
 
     def withdraw(withdrawal)
       if @transactions < 6 && @lock == false
-        if withdrawal < 0
-          print "You cannot withdraw a negative amount. "
-
-          return @balance
-        end
-
         @transactions += 1 if withdrawal + 10000 <= @balance
-        super(withdrawal + 10000)
+
+        super
         if @balance < 1000000
           @balance -= 10000
           @lock = true
