@@ -1,4 +1,3 @@
-
 module Bank
 
   class Account
@@ -6,21 +5,20 @@ module Bank
 
     attr_accessor :id, :balance, :date, :owner
 
-    def initialize (id, balance, date)
+    def initialize(id, date)
       @balance = initial_balance
       @id = id
       @date = date
       @@count_accounts += 1
       @owner = nil
-      #@owner = owner
     end
 
-    def set_owner (owner)
+    def set_owner(owner)
       @owner = owner
     end
 
     #get a row from index and return a new account
-    def self.create_account (person_array)
+    def self.create_account(person_array)
       account_id = person_array[0].to_i
       account_balance = person_array[1].to_i
       account_date = person_array[2]
@@ -48,7 +46,6 @@ module Bank
       end
     end
 
-  end
 
 
 
@@ -65,131 +62,42 @@ module Bank
         money = 0
       elsif  money < min_balance
         raise ArgumentError.new("You can't deposit less then $#{min_balance}")
+        money = 0
       end
       return money
     end
 
+    def show_balance 
+      retuen @balance
+    end
 
-  def withdraw (amount, fee = 0, min_balance = 0)
-    if amount > (@balance + fee + min_balance) #since there is a minimum of $10 balance + $2 fee
-      puts " Your current balance is $#{@balance}."
-      puts "You can't go below of #{min_balance} in your account. Pay attention for $#{fee} fee"
-      return @balance
-    else
-      puts "There is a $#{fee} fee for each withdraw. Would you like to continue?"
-      answer = gets.chomp.downcase
-      if answer == y || answer == yes
-        puts "You had $#{@balance/100}"
-        @balance = @balance - amount -  fee
-        puts "Your update account balance is $#{@balance/100}"
+
+    def withdraw (amount, fee = 0, min_balance = 0)
+      if amount > (@balance + fee + min_balance) #since there is a minimum of $10 balance + $2 fee
+        puts " Your current balance is $#{@balance/100}."
+        puts "You can't go below of #{min_balance} in your account. Pay attention for $#{fee/100} fee"
+        return @balance
+      else
+        puts "There is a $#{fee/100} fee for this withdraw. Would you like to continue?"
+        answer = gets.chomp.downcase
+        if answer == "y" || answer == "yes"
+          puts "You had $#{@balance/100}"
+          @balance = @balance - amount -  fee
+          puts "Your update account balance is $#{@balance/100}"
+        end
       end
     end
+
+    def deposit (amount)
+      if amount < 0
+        puts "If you want to withdraw, that's a different method :)"
+      else
+        @balance = @balance + amount
+        puts "After you deposited $#{amount/100}"
+        puts "The update account balance is $#{@balance/100}"
+      end
+    end
+
+
   end
-  end
-  end
-#
-#     def deposit (amount)
-#       if amount < 0
-#         puts "If you want to withdraw, that's a different method :)"
-#       else
-#         @balance = @balance + amount
-#         puts "After you deposited $#{amount/100}"
-#         puts "The update account balance is $#{@balance/100}"
-#       end
-#     end
-#
-#     def print_balance
-#       puts "Your current balance is $#{@balance}"
-#     end
-#
-#   end
-# end
-# #
-# #
-#  class Owner
-#
-#     attr_accessor :id, :last_name, :first_name, :address, :city, :state
-#
-#     def initialize (info_hash)
-#       @id = info_hash [:id]
-#       @last_name = info_hash [:last_name]
-#       @first_name = info_hash [:first_name]
-#       @address = info_hash [:address]
-#       @city = info_hash [:city]
-#       @state = info_hash [:state]
-#     end
-#
-#     def self.create_owner (person_array)
-#       person_id = person_array[0].to_i
-#       person_last_name = person_array[1]
-#       person_first_name = person_array[2]
-#       person_address = person_array[3]
-#       person_city = person_array[4]
-#       person_state = person_array[5]
-#       owner =   {id: person_id,
-#                 last_name: person_last_name,
-#                 first_name: person_first_name,
-#                 address: person_address,
-#                 city: person_city,
-#                 state: person_state
-#                 }
-#       return Bank::Owner.new(owner)
-#     end
-#
-#     def self.all
-#       sample = CSV.read("./support/owners.csv")
-#       owners = []
-#       sample.each do |row|
-#         owner = create_owner(row)
-#         owners.push(owner)
-#       end
-#       return owners
-#     end
-#
-#     def self.find(id)
-#       sample = CSV.read("./support/owners.csv")
-#       sample.each do |row|
-#         if row[0] == id
-#           return create_owner(row)
-#         end
-#       end
-#     end
-#
-#
-# ## Why isn't this working??
-#
-#     def self.owner_account
-#       sample = CSV.read("./support/account_owners.csv")
-#       owner_accounts_array =[]
-#       sample.each do |row|
-#         account = Bank::Account.find(row[0].to_i)
-#         owner = Bank::Owner.find(row[1].to_i)
-#         if account == nil
-#           break
-#         else
-#         account.set_owner(owner)
-#         owner_accounts_array.push(account)
-#         end
-#       end
-#       return owner_accounts_array
-#     end
-#  end
-# end
-#
-#
-#
-#
-#
-# #
-# #
-# #   nemo_hash = {
-# #   name: "Nemo",
-# #   address: "Seattle",
-# #   job: "Student",
-# #   id: 1283
-# #   }
-# #
-# #   nemo = Bank::Owner.new(nemo_hash)
-# #
-# #   end
-# # end
+end
