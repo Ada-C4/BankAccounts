@@ -9,12 +9,18 @@ module Bank
 
     def withdraw(withdrawal)
       super
-      @balance -= 100 if withdrawal <= @balance
+      @balance -= 100 if withdrawal <= @balance && withdrawal > 0
 
       return @balance
     end
 
     def withdraw_using_check(amount)
+      if amount < 0
+        print "You cannot withdraw a negative amount. "
+
+        return @balance
+      end
+
       if @balance - amount <= -1000
         print "You cannot overdraft your account more than $10. "
       else

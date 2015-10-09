@@ -55,6 +55,12 @@ module Bank
     end
 
     def withdraw(withdrawal)
+      if withdrawal < 0
+        print "You cannot withdraw a negative amount. "
+
+        return @balance
+      end
+
       if withdrawal <= @balance
         @balance -= withdrawal
       else
@@ -65,7 +71,11 @@ module Bank
     end
 
     def deposit(deposit_amt)
-      @balance += deposit_amt
+      if deposit_amt > 0
+        @balance += deposit_amt
+      else
+        print "You can only deposit a positive amount. "
+      end
 
       return @balance
     end

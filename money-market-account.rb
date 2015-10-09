@@ -12,7 +12,7 @@ module Bank
     def withdraw(withdrawal)
       if @transactions < 6 && @lock == false
         super
-        @transactions += 1 if withdrawal <= @balance
+        @transactions += 1 if withdrawal <= @balance && withdrawal > 0
         if @balance < 1000000
           @balance -= 10000
           @lock = true
@@ -26,10 +26,10 @@ module Bank
     end
 
     def deposit(deposit_amt)
+      @transactions += 1 if deposit_amt <= @balance && @balance >= 1000000 && deposit_amt > 0
       @lock = false if deposit_amt + @balance > 1000000
 
-      if @transactions < 6 && @lock == false
-        @transactions += 1 if deposit_amt <= @balance && @balance > 1000000
+      if @transactions <= 6 && @lock == false
         super
       else
         print "Your account is locked until your balance is restored to 1000000. " if @lock
