@@ -4,15 +4,16 @@ module Bank
 
   class Owner
 
-    attr_accessor :id, :last, :first, :street, :city, :state
+    attr_accessor :id, :last, :first, :street, :city, :state, :accounts
 
-    def initialize(id, last, first, street, city, state)
+    def initialize(id, last, first, street = nil, city = nil, state = nil)
       @id = id.to_i
       @first = first
       @last = last
       @street = street
       @city = city
       @state = state
+      @accounts = {}
     end
 
     def self.all
@@ -33,6 +34,32 @@ module Bank
       owners_list.find do |instance|
         instance.id == id
       end
+    end
+
+    def self.master_list # Accounts and their respective owners in one big happy array
+      master_list = []
+      account_owners_csv = CSV.read("./support/account_owners.csv")
+
+      account_owners_csv.each do |row|
+        account = Bank::Account.find(row[0].to_i)
+        account_owner = self.find(row[1].to_i)
+
+        account_owner.accounts[:account] = account
+        master_list.push(account_owner)
+        account.owner = account_owner
+      end
+
+      return master_list
+    end
+
+    def self.find_owner(id) # Find an account from the master_list! Then you can do stuff with it! Yay!
+      master_list = self.master_list
+
+      found = master_list.find do |instance|
+        instance.id.to_i == id
+      end
+
+      return found
     end
 
   end
@@ -102,29 +129,5 @@ module Bank
       return found
     end
 
-    def self.master_list # Accounts and their respective owners in one big happy array
-      master_list = []
-      account_owners_csv = CSV.read("./support/account_owners.csv")
-
-       account_owners_csv.each do |row|
-        account = self.find(row[0].to_i)
-        owner_of_account = Bank::Owner.find(row[1].to_i)
-
-        account.owner = owner_of_account
-        master_list.push(account)
-      end
-
-      return master_list
-    end
-
-    def self.find_account(id) # Find an account from the master_list! Then you can do stuff with it! Yay!
-      master_list = self.master_list
-
-      found = master_list.find do |instance|
-        instance.id.to_i == id
-      end
-
-      return found
-    end
   end
 end
