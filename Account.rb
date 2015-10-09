@@ -1,9 +1,10 @@
 module Bank
   class Account
-    attr_accessor :name, :balance
+    attr_accessor :name, :balance, :check_count
     def initialize (name, initial_balance)
       @name = name
       @balance= initial_balance
+
       if @balance < 0
         raise ArgumentError.new ("You must start an account with more funds than $0")
       else
