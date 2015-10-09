@@ -10,11 +10,6 @@ module Bank
       @transactions_permitted = true
     end
 
-
-# If a withdrawal causes the balance to go below $10,000,
-# a fee of $100 is imposed and no more transactions are allowed until the balance is increased using a deposit transaction.
-# Each transaction will be counted against the maximum number of transactions
-
     def withdraw(withdraw_amount)
       if @balance - withdraw_amount < 0
         puts "Insufficient new balance. Withdraw denied."
@@ -30,10 +25,6 @@ module Bank
         @balance
       end
     end
-
-  # Updated deposit logic:
-  # Each transaction will be counted against the maximum number of transactions
-  # Exception to the above: A deposit performed to reach or exceed the minimum balance of $10,000 is not counted as part of the 6 transactions.
 
     def deposit(deposit_amount)
       if !@transactions_permitted
@@ -55,6 +46,12 @@ module Bank
 
     def reset_transaction_count
       @transaction_count = 0
+    end
+
+    def add_interest(rate)
+      interest = @balance * rate/100
+      @balance += interest
+      return interest
     end
 
   end
