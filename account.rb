@@ -4,15 +4,19 @@ require 'csv'
 
   class Account
 
+    # @@min_balance = 0
+
     attr_accessor :balance, :account_id, :owner
 
     def initialize(account_id, balance, datetime_open, owner = nil)
       @account_id = account_id
       @balance = balance
-      if balance < 0
+      @withdrawal_fee = 0
+      @min_balance = 0
+      if balance < @min_balance
         raise ArgumentError.new("Cannot start an account with a negative balance.")
       end
-      @datetime_open = datetime_open # DateTime.strptime(datetime_open, "%Y-%m-%d %H:%M:%S %z")
+      @datetime_open = DateTime.strptime(datetime_open, "%Y-%m-%d %H:%M:%S %z")
       @owner = owner
     end
 
@@ -39,7 +43,7 @@ require 'csv'
       account_owners_csv.each do |line|
         each_account = self.find(line[0].to_i)
         each_owner = Bank::Owner.find(line[1].to_i)
-        each_account.owner = each_owner
+        each_account.assign_owner(each_owner)
         everything_array.push(each_account)
       end
       return everything_array
@@ -47,24 +51,28 @@ require 'csv'
 
     def withdraw(withdraw_amount)
       # returns updated balance
-      withdraw_amount = gets.chomp.to_i
-      while withdraw_amount.abs > @balance
-        # raise ArgumentError.new("Cannot withdraw more than is in account.")
+      if withdraw_amount > (@balance + @withdrawal_fee)
         puts "Not enough money in account"
-        puts "The current balance is: #{@balance}"
-        withdraw_amount = gets.chomp.to_i
+        puts "The current balance is only: #{@balance}"
+      else
+        @balance = (@balance - withdraw_amount - @withdrawal_fee)
+        puts "Updated balance is: #{@balance}"
       end
-
-        @balance = @balance - withdraw_amount.abs
-
-        puts "Your updated balance is: #{@balance}"
     end
 
     def deposit(deposit_amount)
       # returns updated balance
-      @balance = @balance + deposit_amount
-      puts "Your updated balance is: #{@balance}"
+      @balance += deposit_amount
+      puts "Updated balance is: #{@balance}"
     end
+
+    def add_interest(rate)
+      interest = @balance * rate/100
+      puts "The interest earned on the account is: $#{interest.to_i}"
+      @balance = @balance + interest
+      puts "The new balance is: $#{@balance.to_i}"
+    end
+
 
     # def assign_owner(owner_hash)
     #   @owner = owner
@@ -115,13 +123,3 @@ require 'csv'
     # end
   end
 end
-
-# BILBO = {
-#   :owner_id => 1,
-#   :first_name => "Bilbo",
-#   :last_name => "Baggins",
-#   :street => "Bag End Bagshot Row",
-#   :city => "Hobbiton",
-#   :state => "Middle Earth",
-#   :zip => "na"
-# }
