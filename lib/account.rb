@@ -1,4 +1,6 @@
 require 'pry'
+require 'csv'
+
 module Bank
   class Account
 
@@ -8,13 +10,13 @@ module Bank
 
     def initialize(id, initial_balance, open_date)
       @id = id.to_i
-      @balance = initial_balance.to_i/100.00
+      #@balance = initial_balance.to_i/100.00
+      @balance = initial_balance.to_i
       @open_date = open_date
       @min_balance =  0
       @fee = 0
-      @acct_type = nil
+      #@acct_type = "Account"
       #open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
-      #@owner = nil
 
       # Raises an argument error if the initial balance is less than 0
       if initial_balance.to_i < @min_balance
@@ -28,7 +30,9 @@ module Bank
       @accounts = []
       accounts_csv = CSV.read("support/accounts.csv")
       accounts_csv.each do |id, balance, date|
-        id = Bank::Account.new(id,balance,date)
+        balance = balance.to_i/100
+        date = DateTime.strptime(date, "%Y-%m-%d %H:%M:%S %z")
+        id = Bank::Account.new(id, balance ,date)
         @accounts.push(id)
       end
       #puts @accounts
@@ -88,18 +92,22 @@ module Bank
 
     # Method for withdrawing from account
     def withdraw(orig_amount_to_withdraw)
-      orig_amount_to_withdraw = orig_amount_to_withdraw/100.00
+      #orig_amount_to_withdraw = orig_amount_to_withdraw/100.00
 
       amount_to_withdraw = orig_amount_to_withdraw + @fee
       # Checks that the user is not withdrawing more than what is available in the account
+
+      # if the requested withdrawal is more than the minimum balance
       if (@balance - amount_to_withdraw) < @min_balance
+        # If we are dealing with a MoneyMarket account
         if @acct_type == "MoneyMarket"
-          if (@balance - amount_to_withdraw - @money_market_fee) < 0
+          if (@balance - amount_to_withdraw - @money_market_fee) < 0 || @allowed_to_withdraw == false
             puts "Sorry you cannot make that withdrawal without depositing more money."
           else
             puts "As this transaction puts your balance below $#{@min_balance}, a fee of $#{@money_market_fee} has been imposed."
             @balance -= (amount_to_withdraw + @money_market_fee)
             puts "Your balance is $#{@balance}"
+            @allowed_to_withdraw = false
           end
         else
           puts "The requested withdrawal is more than the available funds."
@@ -140,6 +148,15 @@ module Bank
       puts "This account was set up on #{@open_date}"
     end
 
+    def add_interest(rate)
+      if acct_type == "MoneyMarket" || acct_type == "Savings"
+        interest =  @balance * rate/100
+        @balance += interest
+        return interest
+      else
+        puts "This type of account does not accumulate interest."
+      end
+    end
 
   end
 
