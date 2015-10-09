@@ -5,6 +5,9 @@ module Bank
 
   class Account
 
+    MIN_BALANCE = 0
+    FEE = 0
+
     attr_reader :balance, :owner, :account_id
 
     def initialize(account_id, initial_balance, open_date)
@@ -14,8 +17,8 @@ module Bank
     end
 
     def withdraw(amount)
-      if amount <= @balance
-        @balance -= amount
+      if amount <= @balance - self.class::MIN_BALANCE - self.class::FEE
+        @balance -= (amount + self.class::FEE)
       else
         puts "Your balance is #{@balance}. You cannot withdraw #{amount} at this time."
         return @balance
@@ -27,8 +30,8 @@ module Bank
     end
 
     def check_initial_balance(initial_balance)
-      if initial_balance < 0
-        raise ArgumentError.new("Your initial balance must be positive!")
+      if initial_balance < self.class::MIN_BALANCE
+        raise ArgumentError.new("Your initial balance must be more than #{self.class::MIN_BALANCE}!")
       else
         return initial_balance
       end
