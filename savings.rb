@@ -1,6 +1,7 @@
 module Bank
 
   class SavingsAccount < Account
+    FEE = 200
     def initialize(id, initial_balance, open_date)
       super(id, initial_balance, open_date)
       @min_balance = 1000
@@ -10,12 +11,11 @@ module Bank
     end
 
     def withdraw(withdraw_amount)
-      fee = 200
       if withdraw_amount > @min_balance
         puts "Warning: Balance may not go under $10.00. Transaction terminated."
       else
-        @balance -= (withdraw_amount + fee)
-        puts "There is a transaction fee of $2.00."
+        @balance -= (withdraw_amount + FEE)
+        puts "There is a transaction fee of $#{FEE/100}."
       end
       return @balance
     end

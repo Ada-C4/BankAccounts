@@ -32,7 +32,7 @@ module Bank
 
     def self.all
       accounts_array = []
-      CSV.read('support/accounts.csv').map do |account|
+      CSV.read('support/accounts.csv').each do |account|
          x = Bank::Account.new(account[0],account[1],account[2])
          accounts_array.push(x)
       end
