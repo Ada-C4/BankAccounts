@@ -17,7 +17,7 @@ module Bank
         puts "You have insufficient funds. You have $#{@balance} in your account."
       elsif withdrawal_amount > 0
         @balance = @balance - withdrawal_amount
-        puts "You withdrew $#{withdrawal_amount}. Your new balance is #{@balance}."
+        puts "You withdrew $#{withdrawal_amount}. Your new balance is #{@balance}. SUCKA"
       end
       return @balance
     end
