@@ -18,7 +18,7 @@ class Account
 
   attr_reader :account_id, :balance, :opendate
   # set my deafualt balance to 100
-  def initialize(id, balance=100, opendate)
+  def initialize(id, balance, opendate)
       if balance < 0
         raise ArgumentError, "Your balance is negative!"
       end
@@ -38,12 +38,14 @@ class Account
     # return updated balance
     ## balance sets up the method that will subtract the amount from the balance
     ## have the (-) subtracts from the set from below variable
-    @balance -= amount
-    puts @balance
     if @balance - amount < 0
-      puts "You have a negative balance!"
-      puts "Please deposit money into your account."
+     puts "You have a negative balance!"
+     puts "Please deposit money into your account."
+    else
+      @balance -= amount
+      puts @balance
     end
+    return @balance
   end
 
 
@@ -80,7 +82,7 @@ class Account
   end
 
 end
-
+end
 
 
 # new_user = Bank::Owner.new("Andre")

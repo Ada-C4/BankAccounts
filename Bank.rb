@@ -80,8 +80,8 @@ class Account
   end
 
 end
+end
 
-require "./SavingAccountclass.rb"
 
 # new_user = Bank::Owner.new("Andre")
 # new_account = Bank::Account.new(1234, 2000)
