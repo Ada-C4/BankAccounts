@@ -1,3 +1,5 @@
+# Master bank file
+# Requires all the seperate class files for Bank Accounts
 require './lib/account.rb'
 require './lib/owner.rb'
 require './lib/savings_account.rb'
