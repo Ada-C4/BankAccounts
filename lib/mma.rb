@@ -7,9 +7,6 @@ module Bank
     FEE = 10000
     def initialize(id, balance, open_date = "today", owner = nil)
       super(id, balance, open_date, owner)
-      if balance.to_i < MIN_BALANCE
-        raise ArgumentError.new("You may not create an account below the minimum balance.")
-      end
       @type = "Money Market"
       @transactions = 0
     end
@@ -20,12 +17,15 @@ module Bank
         puts "You have already made #{@transactions} transactions this month. Sorry!"
       elsif @balance >= MIN_BALANCE
         @transactions += 1
+        # if the withdrawal makes the balance go below the minimum balance
         if @balance - amount > MIN_BALANCE
+          # Do the withdrawal without a penalty
           super(amount, false, false)
         else
+          # Do the withdrawal with a penalty
           super(amount, false)
         end
-      # Print error message for not having enough funds to withdraw
+      # If the balance is < $10,000 print error message
       else
         puts "You may not do any more withdrawals until your balance is above " + Money.new(MIN_BALANCE, "USD").format
       end

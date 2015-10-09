@@ -7,9 +7,6 @@ module Bank
     def initialize(id, balance, open_date = "today", owner = nil)
       super(id, balance, open_date, owner)
       @type = "Savings"
-      if balance.to_i < MIN_BALANCE
-        raise ArgumentError.new("You may not create an account below the minimum balance.")
-      end
     end
 
     def add_interest(rate)

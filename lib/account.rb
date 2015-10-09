@@ -9,18 +9,18 @@ I18n.enforce_available_locales = false
 module Bank
 
   class Account
-    attr_reader :balance, :id, :owner, :open_date
+    attr_reader :balance, :id, :owner, :open_date, :type
     FEE = 0
     MIN_BALANCE = 0
-    # Instantiation of object has optional parameters of balance and owner
+    # Instantiation of object has optional parameters of open_date and owner
     def initialize(id, balance, open_date = "today", owner = nil)
       @owner = owner
       @id = id.to_i
       @open_date = open_date
       @type = "Standard"
       @balance = balance.to_i
-      # Raises an error with a rescue for a negative initial balance
-      if balance.to_i < MIN_BALANCE
+      # Raises an error if the balance is below the minimum balance
+      if balance.to_i < self.class::MIN_BALANCE
           raise ArgumentError.new("You may not create an account below the minimum balance.")
       end
     end
