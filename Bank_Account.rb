@@ -20,7 +20,7 @@ module Bank
     end
 
     def confirm_initial_balance
-      if @balance < 0 #Can improve on this later
+      if @balance < 0
         raise ArgumentError.new("Balance must be integer value 0 or greater.")
       end
     end
@@ -42,8 +42,6 @@ module Bank
     end
 
     def withdraw(withdrawal_amount, withdrawalcap = @balance)
-      # print "\nEnter value to be withdrawn: "
-      # withdrawal_amount = gets.chomp.to_i
       if (withdrawal_amount + @withdrawalfee) > withdrawalcap
         reject_withdrawal
       else
@@ -54,8 +52,6 @@ module Bank
     end
 
     def deposit(deposit_amount)
-      # print "\nEnter value to be deposited: "
-      # deposit_amount = gets.chomp.to_i
       @balance = @balance + deposit_amount
       puts "\nBalance after deposit: #{@balance}\n"
       return @balance

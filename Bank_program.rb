@@ -1,8 +1,8 @@
+#just a bunch of tests to try out Bank_master.
 require 'pry'
 require 'csv'
 require './Bank_master.rb'
 
-# require ./support/accounts.csv
 accounts_csv = CSV.read("./support/accounts.csv")
 owners_csv = CSV.read("./support/owners.csv")
 account_owners_csv = CSV.read("./support/account_owners.csv")
@@ -40,7 +40,6 @@ Bank::Owner.all
 Bank::Owner.find(15)
 puts "line 41ish"
 
-# binding.pry
 #now pair up the owners and accounts
 Bank::Account.match_account_to_owner(account_owners_csv)
 Bank::Account.all
@@ -51,6 +50,7 @@ Bank::Account.all
 puts "line 49ish"
 puts newsavings.balance.to_s
 puts
+
 # toolowsavings = Bank::SavingsAccount.new(23232, 9,"1999-03-27 11:30:09 -0700")
 
 newsavings.withdraw(20)

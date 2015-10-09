@@ -14,7 +14,6 @@ module Bank
 
     def withdraw_using_check(withdrawal_amount)
       #I'm assuming that a withdrawal with a free check incurs $0 transaction fee, unlike regular withdrawals
-      #have checks
       if @checks > 0
         if withdrawal_amount > (@balance + 10)
           reject_withdrawal
@@ -25,7 +24,7 @@ module Bank
           puts @checks
           return @balance
         end
-      #don't have checks
+      #if you don't have checks
       else
         if (withdrawal_amount + @withdrawalfee_nochecks) > (@balance + 10)
           reject_withdrawal
