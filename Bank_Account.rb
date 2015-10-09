@@ -1,7 +1,6 @@
-require 'pry'
-require 'csv'
-
 module Bank
+  require 'pry'
+  require 'csv'
 
   class Account
 
@@ -14,13 +13,14 @@ module Bank
       @balance = balance.to_i
       @open_date = open_date
       @owner = owner
+      @withdrawalfee = 0
       @@account_list.push(self)
       confirm_initial_balance
       account_info
     end
 
     def confirm_initial_balance
-      if @balance < 0 #Can improve on this later
+      if @balance < 0
         raise ArgumentError.new("Balance must be integer value 0 or greater.")
       end
     end
@@ -35,23 +35,23 @@ module Bank
       puts "\n#{@owner.first_name} is now the owner of account \##{@account_id}.\n"
     end
 
-    def withdraw(withdrawal_amount)
-      # print "\nEnter value to be withdrawn: "
-      # withdrawal_amount = gets.chomp.to_i
-      if withdrawal_amount > @balance
-        puts "\nWithdrawal denied."
-        puts "Balance: #{@balance}\n"
-        return @balance
+    def reject_withdrawal
+      puts "\nWithdrawal denied."
+      puts "Balance: #{@balance}\n"
+      return @balance
+    end
+
+    def withdraw(withdrawal_amount, withdrawalcap = @balance)
+      if (withdrawal_amount + @withdrawalfee) > withdrawalcap
+        reject_withdrawal
       else
-        @balance = @balance - withdrawal_amount
+        @balance -= withdrawal_amount + @withdrawalfee
         puts "\nBalance after withdrawal: #{@balance}\n"
         return @balance
       end
     end
 
     def deposit(deposit_amount)
-      # print "\nEnter value to be deposited: "
-      # deposit_amount = gets.chomp.to_i
       @balance = @balance + deposit_amount
       puts "\nBalance after deposit: #{@balance}\n"
       return @balance
@@ -79,6 +79,16 @@ module Bank
         end
         puts "\n#{idmatch}"
         puts idmatch.balance
+        return idmatch
+    end
+
+    def self.match_account_to_owner(account_owner, owner_list = Owner.read_owner_list)
+          account_owner.each do |a|
+            account = self.find(a[0]) #this is an account object that matches the csv
+            #now find owner
+            owner = Owner.find(a[1]) #this is the owner object
+            account.add_owner(owner) #add the corresponding owner to the account
+      end
     end
   end
 
@@ -97,6 +107,10 @@ module Bank
       @state = state
       @@owner_list.push(self)
       owner_info
+    end
+
+    def self.read_owner_list
+      @@owner_list
     end
 
     def owner_info
@@ -123,6 +137,7 @@ module Bank
         end
         puts "\n#{idmatch}"
         puts "\n#{idmatch.last_name}"
+        return idmatch
     end
 
   end
