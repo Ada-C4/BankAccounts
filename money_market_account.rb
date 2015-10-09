@@ -17,10 +17,10 @@ module  Bank
         puts "No more transactions available."
       elsif amount < 0
         puts "You can't withdraw a negative amount."
-      elsif new_balance < MIN_BALANCE
+      elsif new_balance < self.class::MIN_BALANCE
         @balance = @balance - amount - 10000
-        @good_standing ==  false
-        puts "Next time you need to deposit enouhg money to bring your account up to #{MIN_BALANCE}"
+        @good_standing =  false
+        puts "Next time you need to deposit enough money to bring your account up to #{self.class::MIN_BALANCE}"
         @max_trans += 1
       else
         @max_trans += 1
