@@ -49,7 +49,7 @@ module Bank
 
 
 
-    def initial_balance (min_balance = 0)
+    def initial_balance(min_balance = 0)
       puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$".center(70)
       puts
       puts "$$$$$$$ Welcome to Tammy's Bank! $$$$$$$".center(70)
@@ -60,14 +60,14 @@ module Bank
       if money < 0
         raise ArgumentError.new("You can't deposit negativ amount of money")
         money = 0
-      elsif  money < min_balance
+      elsif  money < min_balance.to_i
         raise ArgumentError.new("You can't deposit less then $#{min_balance}")
         money = 0
       end
       return money
     end
 
-    def show_balance 
+    def show_balance
       retuen @balance
     end
 
@@ -97,6 +97,14 @@ module Bank
         puts "The update account balance is $#{@balance/100}"
       end
     end
+
+
+    def add_interest(rate)
+      interest = @balance * rate
+      @balance = @balance + interest
+      return interest
+    end
+
 
 
   end
