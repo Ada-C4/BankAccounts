@@ -56,12 +56,11 @@ module Bank
     end
 
     def self.associate_everything
-      account_and_owner_csv = CSV.read("support/account_owners.csv")
       everything_array = []
-      account_and_owner_csv.each do |line|
+      CSV.foreach("support/account_owners.csv") do |line|
         each_account = Bank::Account.find(line[0].to_i)
         each_owner = Bank::Owner.find(line[1].to_i)
-        each_account.add_owner(each_owner)
+        each_account.owner = each_owner
         everything_array.push(each_account)
       end
       return everything_array

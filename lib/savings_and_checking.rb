@@ -9,10 +9,12 @@ module Bank
 
     def withdraw(withdraw_amount)
       transaction_fee = 200
-      @balance = @balance.to_i - transaction_fee.to_i - withdraw_amount.to_i
-      if @balance < 1000
+      temp_balance = @balance - transaction_fee.to_i - withdraw_amount.to_i
+      if temp_balance < 1000
         puts "You cannot have less than $10. This withdraw has been cancelled."
-        @balance = @balance + withdraw_amount.to_i + transaction_fee
+      else
+        @balance = temp_balance
+        puts "You new balance is #{@balance}"
       end
       return @balance
     end
@@ -21,6 +23,7 @@ module Bank
       interest_rate = rate.to_f
       added_rate = @balance * (interest_rate/100.to_f)
       @balance += added_rate
+      puts "Your balance is #{@balance}"
       return added_rate
     end
   end
@@ -33,27 +36,29 @@ module Bank
 
     def withdraw(withdraw_amount)
       transaction_fee = 100
-      @balance = @balance - transaction_fee.to_i - withdraw_amount.to_i
-      if @balance < 0
+      temp_balance = @balance - transaction_fee.to_i - withdraw_amount.to_i
+      if temp_balance < 0
         puts "You cannot have less than $0. This withdraw has been cancelled."
-        @balance = @balance + withdraw_amount.to_i + transaction_fee
+      else
+        @balance = temp_balance
+        puts "Your new balance is #{@balance} and you have used #{@check_count} checks this month."
       end
       return @balance
     end
 
     def withdraw_using_check(amount)
       many_checks_fee = 200
-      @balance -= amount.to_i
-      @check_count += 1
-      if @balance < -1000
-        puts "OVERDRAFT: You cannot have less than -$10. Transaction cancelled"
-        @balance += amount.to_i
+      temp_balance = @balance - amount.to_i
+      if @check_count > 2
+        temp_balance -= many_checks_fee
+        puts "You've already used your 3 free checks.  This transaction will incur a penalty."
       end
-      if @balance > -8000
-        if @check_count > 3
-          puts "You have used your three free checks this month. Now you get a fee!"
-          @balance = @balance - amount.to_i - many_checks_fee
-        end
+      if temp_balance < -1000
+        puts "OVERDRAFT: You cannot have less than -$10. Transaction cancelled"
+      else
+        @balance = temp_balance
+        @check_count += 1
+        puts "Your new balance is #{@balance} and you have used #{@check_count}checks this month."
       end
       return @balance
     end
@@ -74,29 +79,48 @@ module Bank
 
     def withdraw(withdraw_amount)
       overdraft_fee = 10000
-      if @balance >= 1000000
-        @balance -= withdraw_amount.to_i
-        @transaction_count += 1
-        return @balance
-        if @balance < 1000000
-          @balance -= overdraft_fee
-          puts "OVERDRAFT. Your account can not have less than $10,000. A fee of $#{overdraft_fee} has been imposed. Deposit more money before withdrawing again."
-          return @balance
-        end
-      else
-        puts "You do not have enough money in this account for this transaction. Deposit and try again."
+      if @balance < 1000000
+        puts "Your account is frozen due to low funds. Deposit more to continue."
         return @balance
       end
+      if @transaction_count > 5
+        puts "You have used all your transactions this month."
+        return @balance
+      end
+      @balance = @balance - withdraw_amount
+      if @balance < 1000000
+        @balance -= overdraft_fee
+        puts "OVERDRAFT. Your account can not have less than $10,000. A fee of $#{overdraft_fee/100} has been imposed. Deposit more money before withdrawing again."
+      end
+      @transaction_count += 1
+      puts "#{@transaction_count} is the count and $#{@balance/100} dollars is your balance"
+      return @balance
     end
 
     def deposit(deposit_amount)
       if @balance < 1000000
         @balance += deposit_amount
+      elsif @transaction_count >5
+        puts "You have used all your transactions this month."
+        return @balance
       else
         @balance += deposit_amount
-        transaction_count += 1
+        @transaction_count += 1
       end
+      puts "#{@transaction_count} is the count and $#{@balance/100} dollars is the balance"
       return @balance
+    end
+
+    def add_interest(rate)
+      interest_rate = rate.to_f
+      added_rate = @balance * (interest_rate/100.to_f)
+      @balance += added_rate
+      return added_rate
+    end
+
+    def reset_transactions
+      transaction_count = 0
+      puts "#{@transaction_count} is the count and #{@balance/100} is the balance"
     end
   end
 end
