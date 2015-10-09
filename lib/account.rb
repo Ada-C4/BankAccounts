@@ -25,15 +25,26 @@ module Bank
       end
     end
 
+    # The withdraw method withdraws from the account
+    # check_min parameter - BOOLEAN
+    #   whether to check if the balance minus amount & fee is less than the minimum balance
+    # do_penalty parameter - BOOLEAN
+    #   whether to subtract the fee from the balance
     def withdraw(amount, check_min = true, do_penalty = true)
       puts "------#{@type.upcase} WITHDRAWAL------".colorize(:blue)
+      # If the withdrawal will put balance below 0, don't do it an output an error
       if @balance - amount < 0
         puts "You do not have sufficient funds to withdraw that amount."
+      # This check is done with standard, checking, and savings accounts
       elsif @balance - (amount + self.class::FEE) < self.class::MIN_BALANCE && check_min
         puts "You cannot go below the minimum account balance of " + Money.new(self.class::MIN_BALANCE, "USD").format
+      # This section does the actual withdrawal
       else
         puts "Starting balance: " + Money.new(@balance, "USD").format
         puts "Amount withdrawn: " + Money.new(amount, "USD").format
+        # This section is mostly for the money market account.
+        # The MMA does not do the penalty(=false) if it is above $10,000
+        # otherwise it incurs a penalty(=true)
         if do_penalty
           puts "Fee: " + Money.new(self.class::FEE, "USD").format
           @balance -= self.class::FEE
