@@ -27,7 +27,7 @@ module Bank
         return @balance
       end
 
-      if @balance - withdrawal <= -1000
+      if (@balance - withdrawal < -1000 && @checks <= 3) || (@balance - withdrawal - 200 < -1000 && @checks > 3)
         print "You cannot overdraft your account more than $10. "
       else
         @balance -= withdrawal
