@@ -40,9 +40,11 @@ Bank::Owner.all
 Bank::Owner.find(15)
 puts "line 41ish"
 
+# binding.pry
 #now pair up the owners and accounts
-# Bank::Account.match_account_to_owner(account_owners_csv)
-# Bank::Account.all
+Bank::Account.match_account_to_owner(account_owners_csv)
+Bank::Account.all
+
 
 newsavings = Bank::SavingsAccount.new(23232, 1000,"1999-03-23 11:30:09 -0700")
 Bank::Account.all
