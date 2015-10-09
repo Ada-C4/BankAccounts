@@ -2,7 +2,7 @@ module Bank
   class MoneyMarketAccount < Account
     attr_reader :transactions_permitted, :transaction_count, :balance
 
-    @@min_balance = 10000   ### change this back
+    @@min_balance = 1000000   
 
     def initialize(ident, open_date, balance)
       super
@@ -16,7 +16,7 @@ module Bank
         @balance
       elsif @balance - withdraw_amount < @@min_balance && @transactions_permitted       # if balance will go below min balance
         @transactions_permitted = false                   # no more transactions
-        @balance = @balance - withdraw_amount - 100                                   # change this back
+        @balance = @balance - withdraw_amount - 10000
       elsif
         @transaction_count < 6 && @transactions_permitted
         @transaction_count += 1
