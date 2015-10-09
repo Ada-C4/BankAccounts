@@ -2,7 +2,6 @@ require './Account'
 module Bank
   class SavingsAccount < Account
 
-
         def initialize (name, initial_balance)
             super
           if @balance < 10
@@ -23,8 +22,8 @@ module Bank
 
         def add_interest
           rate = 0.25
-          interest_rate= @balance * rate/100
-          return interest_rate
+          interest_accrued= @balance * rate/100
+          return interest_accrued
         end
   end
 end
