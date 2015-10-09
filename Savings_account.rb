@@ -7,7 +7,6 @@ module Bank
     #change initialize class for the purpose of modifying withdrawal behavior
     def initialize (account_id, balance, open_date, owner = nil)
       super(account_id, balance, open_date, owner = nil)
-      @withdrawalcap = @balance - 12
       @withdrawalfee = 2
     end
 
@@ -16,6 +15,10 @@ module Bank
       if @balance < 10 #Can improve on this later
         raise ArgumentError.new("Balance must be integer value 10 or greater.")
       end
+    end
+
+    def withdraw(withdrawal_amount, withdrawalcap = (@balance - 10))
+      super(withdrawal_amount, withdrawalcap)
     end
 
     def add_interest(rate)

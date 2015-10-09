@@ -20,6 +20,7 @@ acct.deposit(1)
 #check amount in account
 acct.check_balance
 
+acct.withdraw(1000)
 
 lizzie = Bank::Owner.new(123, "Borden", "Lizzie", "453 Magpie Lane", "Wilhelm", "MA")
 
@@ -43,7 +44,7 @@ puts "line 41ish"
 # Bank::Account.match_account_to_owner(account_owners_csv)
 # Bank::Account.all
 
-newsavings = Bank::SavingsAccount.new(23232, 10000,"1999-03-23 11:30:09 -0700")
+newsavings = Bank::SavingsAccount.new(23232, 1000,"1999-03-23 11:30:09 -0700")
 Bank::Account.all
 puts "line 49ish"
 puts newsavings.balance.to_s
@@ -54,8 +55,15 @@ newsavings.withdraw(20)
 newsavings.deposit(22)
 newsavings.add_interest(0.25)
 newsavings.add_interest(10)
+newsavings.withdraw(100000)
 
 newchecking = Bank::CheckingAccount.new(34234, 20,"1989-03-23 11:30:09 -0700")
 Bank::Account.all
 puts newchecking.balance.to_s
 newchecking.withdraw(19)
+puts "Line 62ish"
+newchecking.deposit(20)
+newchecking.withdraw_using_check(10)
+newchecking.withdraw_using_check(10)
+newchecking.withdraw_using_check(10)
+newchecking.withdraw_using_check(10)

@@ -7,7 +7,39 @@ module Bank
     def initialize (account_id, balance, open_date, owner = nil)
       super(account_id, balance, open_date, owner = nil)
       @withdrawalfee = 1
-      @withdrawalcap = @balance - 1
+      @withdrawalcap = @balance
+      @withdrawalcap_with_check = @balance + 10
+      @withdrawalfee_nochecks = 2
+      @checks = 3
+    end
+
+    def withdraw_using_check(withdrawal_amount)
+      #I'm assuming that a withdrawal with a free check incurs $0 transaction fee, unlike regular withdrawals
+      #have checks
+      if @checks > 0
+        if withdrawal_amount > @withdrawalcap_with_check
+          reject_withdrawal
+        else
+          @checks -= 1
+          @balance -= withdrawal_amount
+          puts "\nBalance after withdrawal: #{@balance}\n"
+          return @balance
+        end
+      #don't have checks
+      else
+        if withdrawal_amount > @withdrawalcap_with_check
+          reject_withdrawal
+        else
+          @balance -= withdrawal_amount
+          puts "\nBalance after withdrawal: #{@balance}\n"
+          return @balance
+        end
+      end
+    end
+
+
+    def reset_checks
+      @checks = 0
     end
   end
 end

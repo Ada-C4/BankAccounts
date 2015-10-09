@@ -38,15 +38,19 @@ module Bank
       puts "\n#{@owner.first_name} is now the owner of account \##{@account_id}.\n"
     end
 
-    def withdraw(withdrawal_amount)
+    def reject_withdrawal
+      puts "\nWithdrawal denied."
+      puts "Balance: #{@balance}\n"
+      return @balance
+    end
+
+    def withdraw(withdrawal_amount, withdrawalcap = @balance)
       # print "\nEnter value to be withdrawn: "
       # withdrawal_amount = gets.chomp.to_i
-      if withdrawal_amount > @withdrawalcap
-        puts "\nWithdrawal denied."
-        puts "Balance: #{@balance}\n"
-        return @balance
+      if (withdrawal_amount + @withdrawalfee) > withdrawalcap
+        reject_withdrawal
       else
-        @balance = @balance - (withdrawal_amount + @withdrawalfee)
+        @balance -= withdrawal_amount + @withdrawalfee
         puts "\nBalance after withdrawal: #{@balance}\n"
         return @balance
       end
