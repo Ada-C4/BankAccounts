@@ -49,7 +49,7 @@ require 'csv'
 
     def withdraw(withdraw_amount)
       # returns updated balance
-      if withdraw_amount > (@balance + @min_balance + @withdrawal_fee)
+      if withdraw_amount > (@balance + @withdrawal_fee)
         puts "Not enough money in account"
         puts "The current balance is only: #{@balance}"
       else

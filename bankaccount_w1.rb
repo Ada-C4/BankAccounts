@@ -39,7 +39,7 @@ require 'csv'
       account_owners_csv.each do |line|
         each_account = self.find(line[0].to_i)
         each_owner = Bank::Owner.find(line[1].to_i)
-        each_account.assign_owner(each_owner)
+        each_account.owner = each_owner
         everything_array.push(each_account)
       end
       return everything_array
@@ -74,7 +74,7 @@ require 'csv'
 
   class Owner
 
-    attr_reader :owner_id, :first_name, :last_name, :street, :city, :state, :zip, :account
+    attr_reader :owner_id, :first_name, :last_name, :street, :city, :state, :zip
 
     def initialize(owner_hash)
       @owner_id = owner_hash[:owner_id]
@@ -84,7 +84,6 @@ require 'csv'
       @city = owner_hash[:city]
       @state = owner_hash[:state]
       @zip = owner_hash[:zip]
-      @account = nil
     end
 
     def self.all
