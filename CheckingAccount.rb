@@ -2,10 +2,8 @@ module Bank
 
   class CheckingAccount < Account
 
-    attr_reader :free_check
-
     def initialize(account_id, initial_balance, open_date, min_balance = 0, fee = 100)
-      super(account_id, initial_balance, open_date, min_balance, fee)
+      super
       @free_check = 3
     end
 
