@@ -18,7 +18,7 @@ module Bank
           @lock = true
         end
       else
-        print "Your account is locked until your balance is restored to 1000000. " if @lock
+        print "Your account is locked until your balance is restored to $10,000. " if @lock
         print "You have reached your maximum of 6 transactions this month. " if @lock == false
       end
 
@@ -32,7 +32,7 @@ module Bank
       if @transactions <= 6 && @lock == false
         super
       else
-        print "Your account is locked until your balance is restored to 1000000. " if @lock
+        print "Your account is locked until your balance is restored to $10,000. " if @lock
         print "You have reached your maximum of 6 transactions this month. " if @lock == false
       end
 
