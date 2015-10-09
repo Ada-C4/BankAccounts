@@ -1,4 +1,3 @@
-
 module Bank
   require 'pry'
   require 'csv'

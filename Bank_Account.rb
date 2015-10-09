@@ -15,7 +15,6 @@ module Bank
       @balance = balance.to_i
       @open_date = open_date
       @owner = owner
-      @withdrawalcap = @balance
       @withdrawalfee = 0
       @@account_list.push(self)
       confirm_initial_balance
