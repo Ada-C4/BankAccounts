@@ -9,7 +9,7 @@ module Bank
     end
 
     def withdraw(amount)
-        if account_frozen?
+        if account_frozen? || transaction_count_exceeded?
           return @balance
         elsif amount <= @balance - @min_balance
           @balance -= amount
@@ -21,7 +21,9 @@ module Bank
     end
 
     def deposit(amount)
-      if account_frozen? && (@balance + amount) >= @min_balance
+      if transaction_count_exceeded?
+        return @balance
+      elsif account_frozen? && (@balance + amount) >= @min_balance
       else
         @transaction_count += 1
       end
@@ -30,6 +32,14 @@ module Bank
 
     def account_frozen?
       @balance < @min_balance
+    end
+
+    def transaction_count_exceeded?
+      @transaction_count >= 6
+    end
+
+    def reset_transactions
+      @transaction_count = 0
     end
 
   end
