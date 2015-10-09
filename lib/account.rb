@@ -40,7 +40,7 @@ module Bank
     end
 
     def deposit(amount)
-      puts "-------DEPOSIT-------".colorize(:blue)
+      puts "-------#{@type.upcase} DEPOSIT-------".colorize(:blue)
       puts "Starting balance: " + Money.new(@balance, "USD").format
       puts "Amount deposited: " + Money.new(amount, "USD").format
       @balance += amount
