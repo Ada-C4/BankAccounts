@@ -22,6 +22,9 @@ module  Bank
         @good_standing =  false
         puts "Next time you need to deposit enough money to bring your account up to #{self.class::MIN_BALANCE}"
         @max_trans += 1
+      elsif new_balance < 0 
+        puts "That will make your balance negative. Please try a smaller amount."
+        return @balance
       else
         @max_trans += 1
         @balance = new_balance

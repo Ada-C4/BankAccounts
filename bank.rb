@@ -49,7 +49,7 @@ module Bank
       if amount < 0
         puts "You can't withdraw a negative amount."
       elsif new_balance < self.class::MIN_BALANCE
-        puts "You don't have that much money. You can withdraw up to #{@balance - self.class::MIN_BALANCE - self.class::WITHDRAWAL_FEE} dollars."
+        puts "You don't have that much money. You can withdraw up to #{@balance - self.class::MIN_BALANCE - self.class::WITHDRAWAL_FEE} cents."
       else
         @balance = new_balance - self.class::WITHDRAWAL_FEE
         return @balance

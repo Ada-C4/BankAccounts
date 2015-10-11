@@ -8,9 +8,13 @@ module Bank
   WITHDRAWAL_FEE = 200
 
     def add_interest(rate)
-      @interest = @balance * rate/100
-      @balance += @interest
-      return @interest
+      if rate < 0
+        puts "Please select a positive interest rate."
+      else
+        @interest = @balance * rate/100
+        @balance += @interest
+        return @interest
+      end
     end
 
   end
