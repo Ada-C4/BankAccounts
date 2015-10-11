@@ -1,28 +1,22 @@
 require './Account'
 module Bank
   class SavingsAccount < Account
-
-        def initialize (name, initial_balance)
-            super
-          if @balance < 10
-              raise ArgumentError.new ("You must start an account with more funds than $10")
-          end
-        end
+        MIN = 1000
 
         def withdraw (withdrawal_amount)
-          super
-          if @balance <= 10 #double check this. Want to check first before going forward.
+
+          if @balance <= MIN
             raise ArgumentError.new ("You cannot withdraw below a $10 minimum balance.  Your balance is $#{@balance}.")
           else
-            @balance = @balance - 2
+            @balance = @balance - 200
             puts "You were also charged a $2 transaction fee. Your new balance is $#{@balance}."
           end
           return @balance
         end
 
-        def add_interest
-          rate = 0.25
+        def add_interest (rate)
           interest_accrued= @balance * rate/100
+          @balance = @balance + interest_accrued
           return interest_accrued
         end
   end
