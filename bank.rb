@@ -6,10 +6,14 @@ module Bank
   class Account
     attr_reader :balance, :owner, :account_id, :owner_id
 
+    MIN_BALANCE = 0
+    WITHDRAWAL_FEE = 0
+
     def initialize (id, initial_balance, open_date)
       @account_id = id
-      raise ArgumentError.new("You can't start an account with a negative balance.") if initial_balance <= 0
+      raise ArgumentError.new("That's not enough money to start your account.") if initial_balance <= self.class::MIN_BALANCE
       @balance = initial_balance # in cents
+      open_date = open_date.to_s
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
     end
 
@@ -44,10 +48,10 @@ module Bank
       new_balance = @balance - amount
       if amount < 0
         puts "You can't withdraw a negative amount."
-      elsif new_balance < 0
-        puts "You don't have that much money. You can withdraw up to #{@balance} dollars."
+      elsif new_balance < self.class::MIN_BALANCE
+        puts "You don't have that much money. You can withdraw up to #{@balance - self.class::MIN_BALANCE - self.class::WITHDRAWAL_FEE} cents."
       else
-        @balance = new_balance
+        @balance = new_balance - self.class::WITHDRAWAL_FEE
         return @balance
       end
     end
