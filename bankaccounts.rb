@@ -6,24 +6,23 @@ module Bank
     attr_reader :id, :balance, :open_date
     attr_accessor :owner
 
-    def initialize(id, initial_balance, open_date, owner = nil)
+    def initialize(id, initial_balance, open_date)
       @balance = initial_balance.to_i
       if initial_balance.to_i < 0
           raise ArgumentError, "Invalid Balance: Balance may not be negative."
       end
       @id = id.to_i
       @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
-      @owner = owner
+      @owner = nil
     end
 
     def withdraw(withdraw_amount)
       if withdraw_amount > @balance
         puts "Warning: Can not withdraw more than is in account. Transaction terminated."
-        return @balance
       else
         @balance -= withdraw_amount
-        return @balance
       end
+    return @balance
     end
 
     def deposit(deposit_amount)
@@ -32,12 +31,9 @@ module Bank
     end
 
     def self.all
-      accounts_array = []
-      CSV.read('support/accounts.csv').map do |account|
-         x = Bank::Account.new(account[0],account[1],account[2])
-         accounts_array.push(x)
-      end
-      return accounts_array
+        accounts_array = CSV.read('support/accounts.csv').map do |account|
+           Bank::Account.new(account[0],account[1],account[2])
+        end
     end
 
     def self.find(id)
@@ -88,5 +84,4 @@ module Bank
     end
 
   end
-
 end
