@@ -17,6 +17,15 @@ module Bank
         puts "You have already used up your maximum amount of transactions this month. Transaction terminated."
       elsif @transaction_ban == true
         puts "Transaction denied. Balance must be increased with a deposit before further transactions."
+      elsif (@balance - withdraw_amount) < @min_balance
+        puts "A $100.00 fee will be incurred for balance going below $10,000.00."
+        puts "No more transactions allowed until the balance is increased."
+        @transaction_ban = true
+        @balance -= (withdraw_amount + fee)
+        @current_transactions += 1
+      else
+        @balance -= withdraw_amount
+        @current_transactions += 1
       end
       return @balance
     end
