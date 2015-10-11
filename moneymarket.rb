@@ -1,5 +1,5 @@
 module Bank
-  class MoneyMarketAccount < Account
+  class MoneyMarketAccount < SavingsAccount
     MAX_TRANSACTIONS = 6
     def initialize(id, initial_balance, open_date)
       super(id, initial_balance, open_date)
@@ -28,6 +28,27 @@ module Bank
         @current_transactions += 1
       end
       return @balance
+    end
+
+    def deposit(deposit_amount)
+      if @balance < @min_balance
+        @balance += deposit_amount
+        if @balance > @min_balance
+          @transaction_ban = false
+        end
+      else
+        @balance += deposit_amount
+        @current_transactions += 1
+      end
+      return @balance
+    end
+
+    def add_interest(rate)
+      if @transaction_ban == true
+        puts "Transaction's banned until balance is at a minimum of $10,000."
+      else
+        super(rate)
+      end
     end
 
     def reset_transactions
