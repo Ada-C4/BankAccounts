@@ -139,6 +139,10 @@ module Bank
       @balance += amount_to_deposit
       puts "You have deposited $#{amount_to_deposit.round(2)}."
       puts "Your current balance is $#{@balance.round(2)}."
+      # Special case to allow Money Market account to make withdrawals again
+      if @acct_type == "MoneyMarket" && @balance > min_balance
+        @allowed_to_withdraw = true
+      end
       return @balance
     end
 
