@@ -17,7 +17,7 @@ module Bank
       below_min_balance_fee = 10000
       if @num_transactions >= @max_transactions
         puts "You cannot make more than #{@max_transactions} transactions in one month. Transaction terminated."
-      else #number of transactions is less than the alloted maximum
+      else #number of transactions is less than the allotted maximum
         if @bal_above_min
           if (@balance - amount < @min_balance) #withdrawing the amount will put the account below the minimum balance
             amount += below_min_balance_fee
@@ -35,7 +35,7 @@ module Bank
 
     def deposit(amount)
       if !@bal_above_min
-        if (amount + @balance >= @min_balance) #deposit
+        if (amount + @balance >= @min_balance) #enough funds to bring balance above min balance, will deposit
           super(amount)
           @bal_above_min = true
         else
