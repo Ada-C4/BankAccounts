@@ -61,16 +61,11 @@ module Bank
         raise ArgumentError.new("You can't deposit negativ amount of money")
         money = 0
       elsif  money < min_balance.to_i
-        raise ArgumentError.new("You can't deposit less then $#{min_balance}")
+        raise ArgumentError.new("You can't deposit less then $#{min_balance/100}")
         money = 0
       end
       return money
     end
-
-    def show_balance
-      retuen @balance
-    end
-
 
     def withdraw (amount, fee = 0, min_balance = 0)
       if amount > (@balance + fee + min_balance) #since there is a minimum of $10 balance + $2 fee
