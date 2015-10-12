@@ -53,11 +53,18 @@ module Bank
     end
 
     def deposit(amount)
-      if check_transactions && check_min_balance ## check that the num of trasactions are less then 7 & the balance more then 10,000$
-        super
-        @num_transactions += 1
-      elsif reach_min_balance(amount) #if he want to deposit money to reach $10,000 - don't count transactions
+      if check_min_balance ## check the balance is greater  than 10,000$
+        if !check_transactions #check that the num of trasactions are less then 7 &
+          puts "You've reached 6 trasactions this months. You can't deposit money"
+        else
+          super(amount)
+          @num_transactions += 1
+        end
+      elsif reach_min_balance(amount) #if there is less then 10,000 in the acoount- but the deposit is greater than the gap -
+        super(amount)                     #doesn't count as a trasaction.
+      else
         super(amount)
+        @num_transactions += 1
       end
     end
 
