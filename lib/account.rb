@@ -1,5 +1,5 @@
 require 'csv'
-require './lib/owner.rb'
+#require './lib/owner.rb'
 
 module Bank
   class Account
