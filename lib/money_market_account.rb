@@ -51,6 +51,7 @@ module Bank
     # Method to reset the @transactions variabale and allow additional transactions
     def reset_transactions
       @transactions = 0
+      @allowed_to_withdraw = true
     end
 
   end
