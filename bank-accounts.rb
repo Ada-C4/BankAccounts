@@ -1,4 +1,7 @@
 require 'csv'
+require 'money'
+require 'colorize'
+I18n.enforce_available_locales = false
 
 module Bank
 
@@ -80,13 +83,14 @@ module Bank
         @date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       end
       @owner = owner
+      @colors_array = [:red, :light_red, :green, :light_green, :yellow, :light_yellow, :blue, :light_blue, :magenta, :light_magenta, :cyan, :light_cyan]
 
-      raise ArgumentError if @balance < 0
+      raise ArgumentError.new("You cannot open an account with a negative balance.") if @balance < 0
     end
 
     def withdraw(withdrawal)
-      if withdrawal < 0
-        print "You cannot withdraw a negative amount. "
+      if withdrawal <= 0
+        print "You can only withdraw a positive amount. "
 
         return @balance
       end
@@ -94,6 +98,11 @@ module Bank
       if @balance - withdrawal - self.class::FEE >= self.class::MIN_BAL
         @balance -= (withdrawal + self.class::FEE) if self.class != MoneyMarketAccount
         @balance -= withdrawal if self.class == MoneyMarketAccount
+
+        puts "___Withdrawal Receipt___".colorize(@colors_array[rand(0..@colors_array.length-1)])
+        puts "You withdrew: #{Money.new(withdrawal, "USD").format}"
+        puts "Fees: #{Money.new(self.class::FEE, "USD").format}" if self.class != MoneyMarketAccount
+        puts "Your balance: #{Money.new(@balance, "USD").format}" if self.class != MoneyMarketAccount
       else
         print "You cannot withdraw that amount. "
       end
@@ -104,6 +113,10 @@ module Bank
     def deposit(deposit_amt)
       if deposit_amt > 0
         @balance += deposit_amt
+
+        puts "___Deposit Receipt___".colorize(@colors_array[rand(0..@colors_array.length-1)])
+        puts "You deposited: #{Money.new(deposit_amt, "USD").format}"
+        puts "Your balance: #{Money.new(@balance, "USD").format}"
       else
         print "You can only deposit a positive amount. "
       end
