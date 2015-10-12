@@ -1,18 +1,22 @@
 require 'csv'
+require 'money'
+require 'colorize'
+I18n.enforce_available_locales = false
 
 module Bank
 
   class Owner
 
-    attr_accessor :id, :last, :first, :street, :city, :state
+    attr_accessor :id, :last, :first, :street, :city, :state, :accounts
 
-    def initialize(id, last, first, street, city, state)
+    def initialize(id, last, first, street = nil, city = nil, state = nil)
       @id = id.to_i
       @first = first
       @last = last
       @street = street
       @city = city
       @state = state
+      @accounts = {}
     end
 
     def self.all
@@ -35,13 +39,41 @@ module Bank
       end
     end
 
+    def self.master_list # Accounts and their respective owners in one big happy array
+      master_list = []
+      account_owners_csv = CSV.read("./support/account_owners.csv")
+
+      account_owners_csv.each do |row|
+        account = Bank::Account.find(row[0].to_i)
+        account_owner = self.find(row[1].to_i)
+
+        account_owner.accounts[:account] = account
+        master_list.push(account_owner)
+        account.owner = account_owner
+      end
+
+      return master_list
+    end
+
+    def self.find_owner(id) # Find an account from the master_list! Then you can do stuff with it! Yay!
+      master_list = self.master_list
+
+      found = master_list.find do |instance|
+        instance.id.to_i == id
+      end
+
+      return found
+    end
+
   end
 
   class Account
-    # @@id_variable = 1000
 
     attr_reader :balance, :id, :date
     attr_accessor :owner
+
+    FEE = 0
+    MIN_BAL = 0
 
     def initialize(id, initial_balance, open_date = nil, owner = nil)
       @id = id.to_i
@@ -51,22 +83,43 @@ module Bank
         @date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %z")
       end
       @owner = owner
+      @colors_array = [:red, :light_red, :green, :light_green, :yellow, :light_yellow, :blue, :light_blue, :magenta, :light_magenta, :cyan, :light_cyan]
 
-      raise ArgumentError if @balance < 0
+      raise ArgumentError.new("You cannot open an account with a negative balance.") if @balance < 0
     end
 
     def withdraw(withdrawal)
-      if withdrawal <= @balance
-        @balance -= withdrawal
+      if withdrawal <= 0
+        print "You can only withdraw a positive amount. "
+
+        return @balance
+      end
+
+      if @balance - withdrawal - self.class::FEE >= self.class::MIN_BAL
+        @balance -= (withdrawal + self.class::FEE) if self.class != MoneyMarketAccount
+        @balance -= withdrawal if self.class == MoneyMarketAccount
+
+        puts "___Withdrawal Receipt___".colorize(@colors_array[rand(0..@colors_array.length-1)])
+        puts "You withdrew: #{Money.new(withdrawal, "USD").format}"
+        puts "Fees: #{Money.new(self.class::FEE, "USD").format}" if self.class != MoneyMarketAccount
+        puts "Your balance: #{Money.new(@balance, "USD").format}" if self.class != MoneyMarketAccount
       else
-        print "You cannot withdraw more than is in your bank account. "
+        print "You cannot withdraw that amount. "
       end
 
       return @balance
     end
 
     def deposit(deposit_amt)
-      @balance += deposit_amt
+      if deposit_amt > 0
+        @balance += deposit_amt
+
+        puts "___Deposit Receipt___".colorize(@colors_array[rand(0..@colors_array.length-1)])
+        puts "You deposited: #{Money.new(deposit_amt, "USD").format}"
+        puts "Your balance: #{Money.new(@balance, "USD").format}"
+      else
+        print "You can only deposit a positive amount. "
+      end
 
       return @balance
     end
@@ -93,29 +146,5 @@ module Bank
       return found
     end
 
-    def self.master_list # Accounts and their respective owners in one big happy array
-      master_list = []
-      account_owners_csv = CSV.read("./support/account_owners.csv")
-
-       account_owners_csv.each do |row|
-        account = self.find(row[0].to_i)
-        owner_of_account = Bank::Owner.find(row[1].to_i)
-
-        account.owner = owner_of_account
-        master_list.push(account)
-      end
-
-      return master_list
-    end
-
-    def self.find_account(id) # Find an account from the master_list! Then you can do stuff with it! Yay!
-      master_list = self.master_list
-
-      found = master_list.find do |instance|
-        instance.id.to_i == id
-      end
-
-      return found
-    end
   end
 end
