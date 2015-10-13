@@ -13,18 +13,22 @@ module Bank
     end
 
     def withdraw_using_check(amount)
-      puts "---CHECK WITHDRAWAL---".colorize(:blue)
-      # This is a shorthand if-else statement
-      @num_checks > 2 ? (penalty = 200) : (penalty = 0)
-      if @balance - amount - penalty >= OVERDRAFT
-        puts "Starting balance: " + Money.new(@balance, "USD").format
-        puts "Amount withdrawn: " + Money.new(amount, "USD").format
-        puts "Too Many Checks Penalty: " + Money.new(penalty, "USD").format
-        @balance -= (amount + penalty)
-        puts "Updated balance: " + Money.new(@balance, "USD").format
-        @num_checks += 1
+      if amount < 0
+        puts "You cannot withdraw a negative amount of money."
       else
-        puts "You cannot go below the minimum overdraft balance of " + Money.new(OVERDRAFT, "USD").format
+        puts "---CHECK WITHDRAWAL---".colorize(:blue)
+        # This is a shorthand if-else statement
+        @num_checks > 2 ? (penalty = 200) : (penalty = 0)
+        if @balance - amount - penalty >= OVERDRAFT
+          puts "Starting balance: " + Money.new(@balance, "USD").format
+          puts "Amount withdrawn: " + Money.new(amount, "USD").format
+          puts "Too Many Checks Penalty: " + Money.new(penalty, "USD").format
+          @balance -= (amount + penalty)
+          puts "Updated balance: " + Money.new(@balance, "USD").format
+          @num_checks += 1
+        else
+          puts "You cannot go below the minimum overdraft balance of " + Money.new(OVERDRAFT, "USD").format
+        end
       end
       return @balance
     end

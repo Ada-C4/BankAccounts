@@ -12,22 +12,26 @@ module Bank
     end
 
     def withdraw(amount)
-      # Too many transactions
-      if @transactions >= 6
-        puts "You have already made #{@transactions} transactions this month. Sorry!"
-      elsif @balance >= MIN_BALANCE
-        @transactions += 1
-        # if the withdrawal makes the balance go below the minimum balance
-        if @balance - amount > MIN_BALANCE
-          # Do the withdrawal without a penalty
-          super(amount, false, false)
-        else
-          # Do the withdrawal with a penalty
-          super(amount, false)
-        end
-      # If the balance is < $10,000 print error message
+      if amount < 0
+        puts "You cannot withdraw a negative amount of money."
       else
-        puts "You may not do any more withdrawals until your balance is above " + Money.new(MIN_BALANCE, "USD").format
+        # Too many transactions
+        if @transactions >= 6
+          puts "You have already made #{@transactions} transactions this month. Sorry!"
+        elsif @balance >= MIN_BALANCE
+          @transactions += 1
+          # if the withdrawal makes the balance go below the minimum balance
+          if @balance - amount > MIN_BALANCE
+            # Do the withdrawal without a penalty
+            super(amount, false, false)
+          else
+            # Do the withdrawal with a penalty
+            super(amount, false)
+          end
+          # If the balance is < $10,000 print error message
+        else
+          puts "You may not do any more withdrawals until your balance is above " + Money.new(MIN_BALANCE, "USD").format
+        end
       end
       return @balance
     end
