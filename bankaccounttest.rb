@@ -1,8 +1,8 @@
 require 'csv'
-
+# require "./bankrequirefiles.rb"
 module Bank
   class Account
-    attr_accessor :id, :balance, :amount
+    attr_accessor :id, :balance, :opendate, :amount
 
     # :file
     @@number_of_accounts = 0
@@ -12,10 +12,11 @@ module Bank
       # @id = account_array[@@number_of_accounts][0]
       # @balance = account_array[@@number_of_accounts][1]
       # @opendate = account_array[@@number_of_accounts][2]
-      # @opendate = opendate
+
       # @account_id = account_id
       @id = id
       @balance = balance.to_i
+      @opendate = opendate
       # @fee = fee
       @amount = amount.to_i
       if @balance < 0
@@ -28,11 +29,11 @@ module Bank
       # @@number_of_accounts += 1
     end #end statement for initialize method begining on line 10
 
-    def withdraw(amount)
+    def withdrawal(amount)
       # puts "Type the amount you would like to withdraw:"
       # @amount = gets.chomp.to_i
       if @balance - amount.to_i < 0
-        puts ("Cannot withdraw an amount that will make the balance negative.")
+        puts "Cannot withdraw an amount that will make the balance negative."
         puts "Your current balance is #{@balance}."
       else
         @balance  -= amount.to_i
@@ -52,15 +53,22 @@ module Bank
     end #end for balance method begining on line 48
 
     def self.all
-      @@number_of_accounts = 0
-      all_accounts_array = []
-      account_array = CSV.read("./support/accounts.csv")
-      while @@number_of_accounts < account_array.length do
-        account_name = "Account" + @@number_of_accounts.to_s
-        account_name = Account.new()
-        all_accounts_array.push(account_name)
+      account_array = []
+      CSV.read("./support/accounts.csv").each do |account|
+        print account
+        p = Account.new(account[0], account[1], account[2])
+        account_array.push(p)
       end
-      return all_accounts_array
+      # @@number_of_accounts = 0
+      # all_accounts_array = []
+      # account_array = CSV.read("./support/accounts.csv")
+      # while @@number_of_accounts < account_array.length do
+      #   account = "Account" + @@number_of_accounts.to_s
+      #   account_name = Account.new()
+      #   all_accounts_array.push(account_name)
+      #   @@number_of_accounts += 1
+      # end
+      # return all_accounts_array
     end#end statement for self.all method beginning on line 52
 
     def self.find(id)
