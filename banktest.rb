@@ -3,8 +3,15 @@ require './lib/checking'
 require './lib/mma'
 
 # - Money Market Account Tests -
-# mma = Bank::MoneyMarketAccount.new(1, 10000000) # Valid MMA account
+mma = Bank::MoneyMarketAccount.new(1, 10000000) # Valid MMA account
 # mma.print_balance
+
+# Test depositing more than 6 times
+10.times do
+  mma.deposit(1)
+end
+
+
 # # Test withdrawing more than 6 times
 # 10.times do
 #   mma.withdraw(1000000)

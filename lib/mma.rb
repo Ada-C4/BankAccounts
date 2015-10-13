@@ -38,9 +38,15 @@ module Bank
     end
 
     def deposit(amount)
-      @transactions += 1 if @balance >= MIN_BALANCE
-      super(amount)
-      puts "Transactions: #{@transactions}"
+      if @transactions < MAX_TRANSACTIONS || (@balance < MIN_BALANCE && @balance + amount >= MIN_BALANCE)
+        below_balance = true if @balance < MIN_BALANCE
+        # @transactions += 1 if @balance >= MIN_BALANCE
+        super(amount)
+        @transactions += 1 unless @balance >= MIN_BALANCE && below_balance
+      else
+        puts "You have already done #{@transactions} transactions this month. The limit is #{MAX_TRANSACTIONS} per month."
+      end
+      return @balance
     end
 
     def add_interest(rate)
