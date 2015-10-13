@@ -1,20 +1,19 @@
+require "pry"
+
 # Create a `CheckingAccount` class which should inherit behavior from the `Account` class. It should include the following updated functionality:
 # - Updated withdrawal functionality:
 module Bank
 
-require "./account_class.rb"
-require "pry"
+# require "./account_class.rb"
 
     class CheckingAccount < Account
 
       def initialize
-        super(10_00)
         @checks_used = 0
       end
 
 # Each withdrawal 'transaction' incurs a fee of $1 that is taken out of the balance.
-      def withdraw(withdraw_amount, fee = 100, checking_min_balance = -10_00)
-        min_balance = (checking_min_balance + fee)
+      def withdraw(withdraw_amount, fee = 100, min_balance = -10_00)
         #inherits these from account_class withdraw:
 
           # Returns the updated account balance.

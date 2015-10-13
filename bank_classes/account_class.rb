@@ -2,6 +2,7 @@
 #
 require "csv"
 require "pry"
+
 # Create a `Bank` module which will contain your `Account` class and any future bank account logic.
 module Bank
 
@@ -48,60 +49,64 @@ module Bank
 # - A new account cannot be created with initial negative balance - this will `raise` an `ArgumentError` (Google this)
   # begin
     def open_deposit_check(initial_deposit, open_deposit_min)
-    transacting = true
-    while transacting do
       if initial_deposit <= open_deposit_min
         raise Exception.new("New accounts must be opened with a balance of at least #{open_deposit_min}.")
-      else
-        transacting = false
       end
       return initial_deposit.to_i
     end
-  end
 
 # - Should have a `withdraw` method that accepts a single parameter which represents the amount of money that will be withdrawn. This method should return the updated account balance.
     def withdraw (withdraw_amount, fee = 0, min_balance = 0)
       transacting = true
       while transacting do
-        withdraw_check = withdraw_amount
+
+        withdraw_check = (withdraw_amount + fee)
         if withdraw_check < 0
           puts "You cannot withdaw a negative amount. Your account currently have a blance of #{@balance}."
           print "Would you like to withdaw a differnt amount? "
           diff_amount = gets.chomp.downcase
+
             if diff_amount == "yes" || diff_amount == "y"
-              puts "How much would you like to withdraw? "
-              withdraw_amount = gets.chomp.to_i
-              transacting = true
+              print "How much would you like to withdraw? >> "
+              withdraw_amount = gets.to_i
             else
               transacting = false
             end
-          elsif (@balance - withdraw_check) <= min_balance
-                        binding.pry
-            puts "You cannot withdaw #{withdraw_amount}. Your account currently has a blance of #{@balance}."
-            print "Would you like to withdaw a differnt amount? "
-            diff_amount = gets.chomp.downcase
-              if diff_amount == "yes" || diff_amount == "y"
-                puts "How much would you like to withdraw? "
-                withdraw_amount = gets.chomp.to_i
-                transacting = true
-              else
-                transacting = false
-              end
-          else
-            balance_before = @balance
-            @balance = @balance - withdraw_check
-            print "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}"
-              if fee != 0
-                print " plus a #{fee} fee. "
-              else
-                print ". "
-              end
-            puts "Your balance is now #{@balance}."
-            transacting = false
-          end
+
+        elsif (@balance - withdraw_check) <= min_balance
+          print "You cannot withdaw #{withdraw_check}"
+            if fee > 0
+              print ", #{withdraw_amount} plus the #{fee} fee"
+              puts ". Your account currently has a blance of #{@balance}."
+              print "Would you like to withdaw a differnt amount? "
+              diff_amount = gets.chomp.downcase
+            end
+
+            if diff_amount == "yes" || diff_amount == "y"
+              print "How much would you like to withdraw? >> "
+              withdraw_amount = gets.to_i
+            else
+              transacting = false
+            end
+
+        else
+          balance_before = @balance
+          @balance -= withdraw_check
+          print "Your balance was #{balance_before}. You have withdrawn #{withdraw_amount}"
+
+            if fee != 0
+              print " plus a #{fee} fee."
+            else
+              print ". "
+            end
+
+          puts "Your balance is now #{@balance}."
+          transacting = false
+
         end
+      end #of do while
       return @balance
-    end
+    end # of withdraw method
 
 # - Should have a `deposit` method that accepts a single parameter which represents the amount of money that will be deposited.
   def deposit(deposit_amount)
@@ -136,7 +141,8 @@ module Bank
       end
     end
   end
-  end
+
+end
 
 
 # #### Optional:
