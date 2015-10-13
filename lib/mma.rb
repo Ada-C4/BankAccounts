@@ -18,7 +18,7 @@ module Bank
         # Too many transactions
         if @transactions >= 6
           puts "You have already made #{@transactions} transactions this month. Sorry!"
-        elsif @balance >= MIN_BALANCE
+        elsif @balance >= MIN_BALANCE && @balance >= amount + FEE
           @transactions += 1
           # if the withdrawal makes the balance go below the minimum balance
           if @balance - amount > MIN_BALANCE
@@ -29,6 +29,8 @@ module Bank
             super(amount, false)
           end
           # If the balance is < $10,000 print error message
+        elsif @balance <= amount + FEE
+          puts "Withdrawing that amount would overdraw your account. Transaction cancelled."
         else
           puts "You may not do any more withdrawals until your balance is above " + Money.new(MIN_BALANCE, "USD").format
         end

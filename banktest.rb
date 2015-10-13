@@ -2,9 +2,13 @@ require './lib/savings'
 require './lib/checking'
 require './lib/mma'
 
-# - Money Market Account Tests -
+# # - Money Market Account Tests -
 # mma = Bank::MoneyMarketAccount.new(1, 1000000) # Valid MMA account
 # mma.print_balance
+
+# # Test withdrawing all of the MMA balance - PASS
+# mma.withdraw(1000000)
+# mma.withdraw(990000)
 
 # # Test doing more than 6 transactions if the deposit gets account above $10,000
 # 5.times do
