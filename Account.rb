@@ -1,15 +1,13 @@
-require 'csv'
-
 module Bank
   class Account
-    attr_accessor :id, :balance, :opendate
-    def initialize (id, balance, opendate)
-      @id = id
-      @balance= balance.to_i
-      @open_date = DateTime.strptime(opendate, "%Y-%m-%d %H:%M:%S %z")
+    attr_accessor :name, :balance, :check_count
+    MIN = 0
+    def initialize (name, initial_balance)
+      @name = name
+      @balance= initial_balance
 
-      if @balance < 0
-        raise ArgumentError.new ("You must start an account with more funds than $0")
+      if @balance < self.class::MIN
+        raise ArgumentError.new ("You must start an account with more funds than the minimum")
       else
         puts "Welcome, #{@name}.  Thank you for opening a new account. Your balance is $#{@balance}"
       end

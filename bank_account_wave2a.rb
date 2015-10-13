@@ -36,5 +36,20 @@ module Bank
       end
       return @balance
     end
+
+    def self.all
+      #returns a collection of Account instances representing all of the Accounts in CSV
+        account_csv = CSV.read("./support/accounts.csv")
+        account_array= [] 
+        account_csv.each do |row|
+        account =Bank::Account.new(row[0],row[1].to_i,row[2])
+        account_array.push(account)
+      end
+      return account_array
+    end
+
+      def self.find(id)
+  			self.find_all {|account| account.id == id}
+      end
   end
 end
