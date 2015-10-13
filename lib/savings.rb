@@ -10,14 +10,19 @@ module Bank
     end
 
     def add_interest(rate)
-      puts "------ADD INTEREST------".colorize(:blue)
-      interest = @balance * rate / 100
-      puts "Starting balance: " + Money.new(@balance, "USD").format
-      puts "You earned " + Money.new(interest, "USD").format + " at a rate of #{rate}%"
-      @balance += interest
-      puts "Updated balance: " + Money.new(@balance, "USD").format
-      @balance.to_i
-      return interest
+      if rate <= 0
+        puts "The interest rate must be greater than 0."
+        return 0
+      else
+        puts "------ADD INTEREST------".colorize(:blue)
+        interest = @balance * rate / 100
+        puts "Starting balance: " + Money.new(@balance, "USD").format
+        puts "You earned " + Money.new(interest, "USD").format + " at a rate of #{rate}%"
+        @balance += interest
+        puts "Updated balance: " + Money.new(@balance, "USD").format
+        @balance.to_i
+        return interest
+      end
     end
 
   end
