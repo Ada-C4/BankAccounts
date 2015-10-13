@@ -1,13 +1,15 @@
+require 'csv'
+
 module Bank
   class Account
-    attr_accessor :name, :balance, :check_count
-    MIN = 0
-    def initialize (name, initial_balance)
-      @name = name
-      @balance= initial_balance
+    attr_accessor :id, :balance, :opendate
+    def initialize (id, balance, opendate)
+      @id = id
+      @balance= balance.to_i
+      @open_date = DateTime.strptime(opendate, "%Y-%m-%d %H:%M:%S %z")
 
-      if @balance < self.class::MIN
-        raise ArgumentError.new ("You must start an account with more funds than the minimum")
+      if @balance < 0
+        raise ArgumentError.new ("You must start an account with more funds than $0")
       else
         puts "Welcome, #{@name}.  Thank you for opening a new account. Your balance is $#{@balance}"
       end
@@ -34,5 +36,20 @@ module Bank
       end
       return @balance
     end
+
+    def self.all
+      #returns a collection of Account instances representing all of the Accounts in CSV
+        account_csv = CSV.read("./support/accounts.csv")
+        account_array= [] 
+        account_csv.each do |row|
+        account =Bank::Account.new(row[0],row[1].to_i,row[2])
+        account_array.push(account)
+      end
+      return account_array
+    end
+
+      def self.find(id)
+  			self.find_all {|account| account.id == id}
+      end
   end
 end
