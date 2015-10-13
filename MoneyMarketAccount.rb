@@ -1,14 +1,22 @@
 module Bank
-  class MoneyMarketAccount < Savings
+
+  class MoneyMarketAccount < SavingsAccount
     attr_reader :transactions
 
     def initialize(id, balance, open_date)
-      super
-
+      @account_id = id.to_i
+      @balance = balance.to_i * 100
+      @open_date = open_date
+      @mm_account_fee = 0
       @transactions = 6
-      @min_balace = 0
       @act_withdraw_fee = 100_00
       @mm_min_balance = 10_000_00
+      @min_balance = 0
+
+      if @balance < @mm_min_balance
+        raise StandardError, "You cannot open an account with that little money."
+      end
+
     end
 
     def withdraw(amount)

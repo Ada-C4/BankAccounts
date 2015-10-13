@@ -1,4 +1,3 @@
-# figure out how to add to Bank module
 module Bank
 
   class Account
@@ -11,8 +10,7 @@ module Bank
       @open_date = open_date
       @min_balance = 0
       @act_withdraw_fee = 0
-      @mm_account_fee = 0
-      # @open_date = DateTime.strptime(open_date, "%Y-%m-%d %H:%M:%S %Q"
+
       if balance.to_i < @min_balance
         raise StandardError, "You cannot open an account with that little money."
       end
@@ -23,8 +21,8 @@ module Bank
 
       if (@balance - withdraw_to_cents) < (@min_balance + @act_withdraw_fee)
         puts "You cannot withdraw that much. Your current balance is #{@balance} cents"
-      elsif @act_withdraw_fee > 0
-        if (@balance - withdraw_to_cents) > @mm_min_balance
+      elsif @mm_min_balance > 0
+        if (@balance - withdraw_to_cents) > (-@mm_min_balance)
           @balance -= withdraw_to_cents
           puts "Your account balance is now #{@balance} cents."
         else

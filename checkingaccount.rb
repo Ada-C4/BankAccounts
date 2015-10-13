@@ -2,7 +2,7 @@ module Bank
 
   class CheckingAccount < Account
     attr_reader :free_checks
-    
+
     def initialize(id, balance, open_date)
       super
 
@@ -24,7 +24,7 @@ module Bank
         @free_checks -= 1
         puts "Your account balance is now #{@balance} cents."
       else
-        @balance -= (withdraw_to_cents - 200)
+        @balance -= (withdraw_to_cents + 200)
         puts "You already used up your free checks for this month, so you've been charged an extra $2."
         puts "Your new balance is #{@balance} cents."
       end
