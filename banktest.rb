@@ -1,58 +1,77 @@
-require './bank_account'
+require './lib/savings'
+require './lib/checking'
+require './lib/mma'
 
-# Test 1: Account 1 with positive balance
+# # - Money Market Account Tests -
+# mma = Bank::MoneyMarketAccount.new(1, 1000000) # Valid MMA account
+# mma.print_balance
 
-account1 = Bank::Account.new(5000)
-puts "Account created with ID ##{account1.id}"
-account1.print_balance
-puts ("*") * 30
-account1.withdraw(3000)
+# # Test withdrawing all of the MMA balance - PASS
+# mma.withdraw(1000000)
+# mma.withdraw(990000)
 
-puts ("*") * 30
-account1.deposit(3000)
+# # Test doing more than 6 transactions if the deposit gets account above $10,000
+# 5.times do
+#   mma.deposit(1)
+# end
+#
+# mma.withdraw(20000)
+# mma.deposit(20000)
+# mma.deposit(30000)
 
-puts ("*") * 30
-account1.print_balance
 
-# Test 2: Withdrawing more than the balance
-puts ("*") * 30
-account1.withdraw(30000000)
+# # Test withdrawing more than 6 times
+# 10.times do
+#   mma.withdraw(1000000)
+# end
+#
+# mma.reset_transactions
 
-# Test 3: Creating an owner
-puts ("*") * 30
-donald_hash = {
-  first_name: "Donald",
-  last_name: "Trump",
-  address1: "2000 Fashion Show Dr",
-  city: "Las Vegas",
-  state: "NV",
-  zip: "89109",
-}
-donald = Bank::Owner.new(donald_hash)
-puts "New owner created: #{donald.first_name} #{donald.last_name}"
+# # Test withdrawing to balance below $10,000
+# 4.times do
+#   mma.withdraw(3300000)
+# end
+#
+# # Test depositing and counting transactions below $10,000
+# 2.times do
+#   mma.deposit(5000000)
+# end
 
-# Test 4: Creating an account with an owner
-puts ("*") * 30
-account3 = Bank::Account.new(1000000000000, donald)
-puts "Account created with owner #{account3.formatted_name}"
-account3.print_balance
+# # Test Money Market interest
+# mma.add_interest(0.25)
+# mma.add_interest(1)
+#
+# mma = Bank::MoneyMarketAccount.new(1, 9999) # Invalid account - not enough funds
 
-# Test 5: Changing the owner of an account
-puts ("*") * 30
-hillary_hash = {
-  first_name: "Hillary",
-  last_name: "Clinton",
-  address1: "1271 6th Ave",
-  city: "New York",
-  state: "NY",
-  zip: "10020",
-}
+# - Normal Account Tests -
+# account = Bank::Account.new(1, 100)
+# account.print_balance
+# account.withdraw(20) # Regular withdrawal
+# account.withdraw(1100) # Withdrawing too much
 
-hillary = Bank::Owner.new(hillary_hash)
-account1.assign_owner(hillary)
+# account = Bank::Account.new(1, -10) # Account below min
 
-# Test 6: Creating account 2 with negative balance
-puts ("*") * 30
-account2 = Bank::Account.new(-5000)
-puts "Account created with #{account2.id}"
-account2.print_balance
+# # - Savings Account Tests -
+# savings = Bank::SavingsAccount.new(1, 100000)
+# savings.print_balance
+# savings.withdraw(20000) # Regular withdrawal
+# savings.withdraw(1000000000) # Withdrawing too much
+#
+# savings = Bank::SavingsAccount.new(1, 10) # Invalid account - Account below min
+
+# savings.add_interest(1)
+
+# # - Checking Account Tests -
+# checking = Bank::CheckingAccount.new(1, 10000)
+# checking.print_balance
+# #
+# checking = Bank::CheckingAccount.new(8, -12000)
+
+# 5.times do
+#   checking.withdraw_using_check(600)
+# end
+#
+# checking.reset_checks
+# 2.times do
+#   checking.withdraw_using_check(6000)
+# end
