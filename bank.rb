@@ -152,8 +152,8 @@ module Bank
       sample = CSV.read("./support/account_owners.csv")
       owner_accounts_array =[]
       sample.each do |row|
-        account = Bank::Account.find(row[0])
-        owner = self.find(row[1])
+        account = Bank::Account.find(row[0].to_i)
+        owner = Bank::Owner.find(row[1].to_i)
         if account == nil
           break
         else
