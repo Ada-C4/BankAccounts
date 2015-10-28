@@ -1,21 +1,24 @@
 require 'csv'
-
+# require "./bankrequirefiles.rb"
 module Bank
   class Account
-    attr_accessor :id, :balance, :amount
+    attr_accessor :id, :balance, :opendate, :amount
 
     # :file
     @@number_of_accounts = 0
 
-    def initialize()
-      account_array = CSV.read("./support/accounts.csv")
-      @id = account_array[@@number_of_accounts][0]
-      @balance = account_array[@@number_of_accounts][1]
-      @opendate = account_array[@@number_of_accounts][2]
-      # @opendate = opendate
+    def initialize(id, balance)
+      # account_array = CSV.read("./support/accounts.csv")
+      # @id = account_array[@@number_of_accounts][0]
+      # @balance = account_array[@@number_of_accounts][1]
+      # @opendate = account_array[@@number_of_accounts][2]
+
       # @account_id = account_id
-      @balance = @balance.to_i
-      # @amount = amount.to_i
+      @id = id
+      @balance = balance.to_i
+      @opendate = opendate
+      # @fee = fee
+      @amount = amount.to_i
       if @balance < 0
         raise ArgumentError.new("Cannot create a new account with a negative balance")
 
@@ -23,25 +26,25 @@ module Bank
          puts "You deposited #{@balance} dollars."
          puts "Your new balance is #{@balance} dollars."
       end
-      @@number_of_accounts += 1
+      # @@number_of_accounts += 1
     end #end statement for initialize method begining on line 10
 
-    def withdraw
-      puts "Type the amount you would like to withdraw:"
-      @amount = gets.chomp.to_i
-      if @balance - @amount < 0
-        puts ("Cannot withdraw an amount that will make the balance negative.")
+    def withdrawal(amount)
+      # puts "Type the amount you would like to withdraw:"
+      # @amount = gets.chomp.to_i
+      if @balance - amount.to_i < 0
+        puts "Cannot withdraw an amount that will make the balance negative."
         puts "Your current balance is #{@balance}."
       else
-        @balance  -= @amount
+        @balance  -= amount.to_i
         puts "Your new balance is: #{@balance} dollars."
       end#end statment for the if/else beginning on line 32
     end#end for withdraw method beginning on line 29
 
-    def deposit
-      puts "Type the amount you would like to deposit:"
-      @amount = gets.chomp.to_i
-      @balance += @amount
+    def deposit(amount)
+      # puts "Type the amount you would like to deposit:"
+      # @amount = gets.chomp.to_i
+      @balance += amount.to_i
       puts "Your new balance is #{@balance} dollars."
     end#end statement for deposit method beginning on line 41
 
@@ -50,21 +53,28 @@ module Bank
     end #end for balance method begining on line 48
 
     def self.all
-      @@number_of_accounts = 0
-      all_accounts_array = []
-      account_array = CSV.read("./support/accounts.csv")
-      while @@number_of_accounts < account_array.length do
-        account_name = "Account" + @@number_of_accounts.to_s
-        account_name = Account.new()
-        all_accounts_array.push(account_name)
+      account_array = []
+      CSV.read("./support/accounts.csv").each do |account|
+        print account
+        p = Account.new(account[0], account[1], account[2])
+        account_array.push(p)
       end
-      return all_accounts_array
+      # @@number_of_accounts = 0
+      # all_accounts_array = []
+      # account_array = CSV.read("./support/accounts.csv")
+      # while @@number_of_accounts < account_array.length do
+      #   account = "Account" + @@number_of_accounts.to_s
+      #   account_name = Account.new()
+      #   all_accounts_array.push(account_name)
+      #   @@number_of_accounts += 1
+      # end
+      # return all_accounts_array
     end#end statement for self.all method beginning on line 52
 
     def self.find(id)
       account_array = self.all
       # print account_array
-      return account_array.find {|i| i.id == id.to_s}
+      return account_array.each do |i| i.id.to_i == id}
     end
 
   end#end for the account class on line 4
