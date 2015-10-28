@@ -74,7 +74,7 @@ module Bank
     def self.find(id)
       account_array = self.all
       # print account_array
-      return account_array.find {|i| i.id == id.to_s}
+      return account_array.each do |i| i.id.to_i == id}
     end
 
   end#end for the account class on line 4
